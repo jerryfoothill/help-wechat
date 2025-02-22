@@ -7,11 +7,11 @@
 					<u-icon name="arrow-down-fill" class="u-p-l-10" color="#515356"></u-icon>
 				</view>
 				<!-- #ifdef MP-WEIXIN -->  
-				<u-search placeholder="你想住在哪儿" v-model="keyword" input-align="center"  :show-action="false" :clearabled="true"
+				<u-search placeholder="我要找房" v-model="keyword" input-align="center"  :show-action="false" :clearabled="true"
 :disabled="true" style="width: 380rpx;" @click="search"></u-search>
 				<!-- #endif -->
 				<!-- #ifndef MP-WEIXIN --> 
-				<u-search placeholder="你想住在哪儿" v-model="keyword" input-align="center"  :show-action="false" :clearabled="true"
+				<u-search placeholder="我要找房" v-model="keyword" input-align="center"  :show-action="false" :clearabled="true"
 				:disabled="true" style="width: 580rpx;" @click="search"></u-search>
 				<!-- #endif -->
 			</view>
@@ -23,7 +23,8 @@
 			<!-- #ifndef MP-WEIXIN --> 
 				<!-- <u-swiper :list="swiperList" height="350"></u-swiper> -->
 			<!-- #endif -->
-			<u-swiper :list="swiperList" height="350" @click="moreInfo"></u-swiper>
+			<u-swiper :list="swiperList" height="350" ></u-swiper>
+			<!-- <u-swiper :list="swiperList" height="350" @click="moreInfo"></u-swiper> -->
 		</view>
 		<view>
 			<view class="rowClass">
@@ -101,7 +102,7 @@
 				   {name:"整租",src:"/static/img/index/cover_2022/index_cover1.png",type:"0"},
 				   {name:"合租",src:"/static/img/index/cover_2022/index_cover2.png",type:"1"},
 				   {name:"避坑指南",src:"/static/img/index/cover_2022/index_cover3.png",url:"/pages/center/tips"},
-				   {name:"委托房源",src:"/static/img/index/cover_2022/index_cover4.png",type:"2"}
+				   {name:"我要出租",src:"/static/img/index/cover_2022/index_cover4.png",type:"2"}
 				],
 				loadStatus: 'loadmore',
 				flowList: [],
@@ -115,7 +116,7 @@
 			this.findHouseList();
 			this.getNoticecList();
 			// 流量统计
-			this.appSysFlowInfo();
+			// this.appSysFlowInfo();
 			uni.$on('findIndexHouseList', (obj) => {
 				// 获取数据
 				this.findHouseList(1);
@@ -272,7 +273,7 @@
 				}
 			},
 			code(){
-				this.$mytip.toast('请咨询作者')
+				this.$mytip.toast('我要咨询')
 			},
 			appSysFlowInfo(){
 				// 流量统计
@@ -289,7 +290,7 @@
 			server(){
 				// window.open ('https://sourcebyte.cn')
 				uni.makePhoneCall({
-				  phoneNumber: "18720989281",
+				  phoneNumber: "17721192050",
 				});
 			},
 			getNoticecList(){
