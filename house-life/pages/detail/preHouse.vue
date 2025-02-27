@@ -12,8 +12,13 @@
 				<u-form-item :label-position="labelPosition" label="详细地址" prop="address" label-width="180"
 				left-icon="file-text" :leftIconStyle="{color:'#d5d5d5'}" right-icon="map"
 				:rightIconStyle="{color:'#d5d5d5'}">
+				<!-- #ifdef MP-WEIXIN -->
 					<u-input :border="border" placeholder="请在地图选择详细地址" v-model="model.address" type="text" disabled
 					@click="chooseAddress"></u-input>
+				<!-- #endif -->
+				<!-- #ifndef MP-WEIXIN --> 
+					<u-input :border="border" placeholder="请在地图选择详细地址" v-model="model.address" type="text"></u-input>
+				<!-- #endif -->
 				</u-form-item>
 				<u-form-item  :label-position="labelPosition" label="房牌号" prop="houseNo" label-width="180"
 				left-icon="home" :leftIconStyle="{color:'#d5d5d5'}">

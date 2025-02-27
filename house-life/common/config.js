@@ -1,8 +1,10 @@
 // 全局配置文件
 // let baseUrl = 'http://192.168.0.108:8088';
 // let staticUrl = 'http://192.168.0.108:8088';
-let baseUrl = 'https://sourcebyte.vip';
-let staticUrl = 'https://sourcebyte.vip';
+// let baseUrl = 'https://sourcebyte.vip';
+// let staticUrl = 'https://sourcebyte.vip';
+let baseUrl = 'http://4fb23752.r19.cpolar.top';
+let staticUrl = 'http://4fb23752.r19.cpolar.top';
 // 版本号 用于更新
 let version = 1;
 // vuex_version版本号 用于显示

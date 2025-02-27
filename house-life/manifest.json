@@ -112,7 +112,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wxe822f409c1cf5a78",
+        "appid" : "wx0eda7144f347fc95",
         "setting" : {
             "urlCheck" : false,
             "minified" : true
@@ -145,7 +145,7 @@
             "mode" : "hash",
             "base" : "/house/"
         },
-        "title" : "租房",
+        "title" : "爱Lanxi",
         "domain" : "8.136.213.245",
         "sdkConfigs" : {
             "maps" : {
