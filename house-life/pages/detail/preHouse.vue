@@ -42,7 +42,9 @@
 					<u-input :border="border" type="select" :select-open="actionSheetShow" v-model="model.payType" placeholder="请选择付款方式(必选)" @click="actionSheetShow = true"></u-input>
 				</u-form-item>
 			</u-form>
-			
+			<u-select mode="single-column" :list="selectList" v-model="selectShow" @confirm="selectConfirm"></u-select>
+			<u-select mode="single-column" :list="decorationList" v-model="decorationShow" @confirm="decorationConfirm"></u-select>
+			<u-action-sheet :list="actionSheetList" v-model="actionSheetShow" @click="actionSheetCallback"></u-action-sheet>
 		</view>
 		<view class="bottom-btn">
 			<u-button type="primary" @click="submit">下一步</u-button>
