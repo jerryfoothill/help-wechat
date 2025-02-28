@@ -1,19 +1,21 @@
 <template>
 	<view class="">
+		<u-navbar :is-back="true" title="添加我的房子" :border-bottom="false"
+			back-text="返回" :custom-back="goHome" ></u-navbar>
 		<!-- #ifndef MP-WEIXIN --> 
 			<u-image width="100%" height="350rpx" :src="src"></u-image>
 		<!-- #endif -->
 		<view class="wrap">
 			<u-form :model="model" :rules="rules" ref="uForm" :errorType="errorType">
-				<u-form-item :label-position="labelPosition" label="小区名称" prop="villageName" label-width="180"
+				<u-form-item  :label-position="labelPosition" label="村庄名称" prop="villageName" label-width="180"
 				left-icon="map" :leftIconStyle="{color:'#d5d5d5'}">
-					<u-input :border="border" type="select" :select-open="selectShow" v-model="model.villageName" placeholder="请选择小区(必选)" @click="selectShow = true"></u-input>
+					<u-input :border="border" placeholder="请输入村庄名称(必填)" v-model="model.villageName" type="text"></u-input>
 				</u-form-item>
 				<u-form-item :label-position="labelPosition" label="详细地址" prop="address" label-width="180"
 				left-icon="file-text" :leftIconStyle="{color:'#d5d5d5'}" right-icon="map"
 				:rightIconStyle="{color:'#d5d5d5'}">
 				<!-- #ifdef MP-WEIXIN -->
-					<u-input :border="border" placeholder="请在地图选择详细地址" v-model="model.address" type="text" disabled
+					<u-input :border="border" placeholder="请在地图选择详细地址" v-model="model.address" type="text" 
 					@click="chooseAddress"></u-input>
 				<!-- #endif -->
 				<!-- #ifndef MP-WEIXIN --> 
@@ -22,7 +24,7 @@
 				</u-form-item>
 				<u-form-item  :label-position="labelPosition" label="房牌号" prop="houseNo" label-width="180"
 				left-icon="home" :leftIconStyle="{color:'#d5d5d5'}">
-					<u-input :border="border" placeholder="请输入门牌号(必填)" v-model="model.houseNo" type="text"></u-input>
+					<u-input :border="border" placeholder="请输入门牌号" v-model="model.houseNo" type="text"></u-input>
 				</u-form-item>
 				<u-form-item  :label-position="labelPosition" label="装修" prop="decoration" label-width="180" left-icon="eye" :leftIconStyle="{color:'#d5d5d5'}">
 					<u-input :border="border" type="select" placeholder="请选择装修(必选)":select-open="decorationShow" v-model="model.decoration"  @click="decorationShow = true"></u-input>
@@ -40,11 +42,7 @@
 					<u-input :border="border" type="select" :select-open="actionSheetShow" v-model="model.payType" placeholder="请选择付款方式(必选)" @click="actionSheetShow = true"></u-input>
 				</u-form-item>
 			</u-form>
-			<!-- 流量主-腾讯视频广告 -->
-			<ad unit-id="adunit-c6cdd74f48eed506" ad-type="video" ad-theme="white"></ad>
-			<u-select mode="single-column" :list="selectList" v-model="selectShow" @confirm="selectConfirm"></u-select>
-			<u-select mode="single-column" :list="decorationList" v-model="decorationShow" @confirm="decorationConfirm"></u-select>
-			<u-action-sheet :list="actionSheetList" v-model="actionSheetShow" @click="actionSheetCallback"></u-action-sheet>
+			
 		</view>
 		<view class="bottom-btn">
 			<u-button type="primary" @click="submit">下一步</u-button>
@@ -128,13 +126,13 @@ export default {
 						trigger: ['change','blur'],
 					}
 				],
-				houseNo: [
-					{
-						required: true,
-						message: '请输入门牌号',
-						trigger: ['change','blur'],
-					}
-				],
+				// houseNo: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入门牌号',
+				// 		trigger: ['change','blur'],
+				// 	}
+				// ],
 				decoration: [
 					{
 						required: true,
