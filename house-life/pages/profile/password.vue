@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-navbar :is-back="true" title="修改密码" :border-bottom="false"></u-navbar>
+		<!-- <u-navbar :is-back="true" title="修改密码" :border-bottom="false"></u-navbar> -->
 		<view class="u-m-20">
 			<u-toast ref="uToast" />
 			<view>

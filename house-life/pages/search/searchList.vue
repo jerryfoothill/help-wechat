@@ -95,7 +95,7 @@
             	let url = "/api/houseApi/findHouseRoomList";
 				let defaultData = {
 					state:1,
-					villageCity:uni.getStorageSync('lifeData').vuex_city,
+					// villageCity:uni.getStorageSync('lifeData').vuex_city,
             		pageNum: this.pageNum,
             		pageSize: this.pageSize,
             		orderByColumn: 'update_time,create_time',

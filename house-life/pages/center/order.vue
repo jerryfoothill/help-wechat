@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-navbar :is-back="true" title="我的委托" :border-bottom="false"></u-navbar>
+		<!-- <u-navbar title="我的委托" :border-bottom="false" back-text="返回" :custom-back="goHome" ></u-navbar> -->
 		<view class="wrap">
 			<view class="u-tabs-box">
 				<u-tabs-swiper activeColor="#2979ff" ref="tabs" :list="list" :current="current" @change="change" :is-scroll="false" swiperWidth="750"></u-tabs-swiper>
@@ -122,7 +122,7 @@
 				let defaultData = {
 					state:idx,
 					publishId:uni.getStorageSync('lifeData').vuex_user.user.userId,
-					villageCity:uni.getStorageSync('lifeData').vuex_city,
+					//villageCity:uni.getStorageSync('lifeData').vuex_city,
 					pageNum: this.pageNum,
 					pageSize: this.pageSize,
 					orderByColumn: 'update_time,create_time',

@@ -1,6 +1,6 @@
 <template>
 	<view style="margin: 20rpx;">
-		<u-navbar :is-back="true" title="常见问题" :border-bottom="false"></u-navbar>
+		<!-- <u-navbar :is-back="true" title="常见问题" :border-bottom="false"></u-navbar> -->
 		<u-collapse class="u-p-30">
 			<u-collapse-item :title="item.head" v-for="(item, index) in itemList" :key="index" :open="item.open">
 				{{item.body}}

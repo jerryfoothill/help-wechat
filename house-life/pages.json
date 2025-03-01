@@ -21,7 +21,7 @@
 		{
 			"path": "pages/center/center",
 			"style": {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
 				"navigationBarTitleText": "我的"
 			}
 		}
@@ -29,7 +29,7 @@
             "path" : "pages/login/login",
             "style" :                                                                                    
             {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
                 "navigationBarTitleText": "密码登录",
                 "enablePullDownRefresh": false
             }
@@ -47,7 +47,7 @@
 		    "path" : "pages/login/account",
 		    "style" :                                                                                    
 		    {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
 		        "navigationBarTitleText": "短信登录",
 		        "enablePullDownRefresh": false
 		    }
@@ -56,7 +56,7 @@
 		    "path" : "pages/login/problem",
 		    "style" :                                                                                    
 		    {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
 		        "navigationBarTitleText": "常见问题",
 		        "enablePullDownRefresh": false
 		    }
@@ -65,7 +65,7 @@
             "path" : "pages/profile/setting",
             "style" :                                                                                    
             {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
                 "navigationBarTitleText": "",
                 "enablePullDownRefresh": false
             }
@@ -74,7 +74,7 @@
 		    "path" : "pages/profile/profile",
 		    "style" :                                                                                    
 		    {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
 		        "enablePullDownRefresh": false
 		    }
 		}
@@ -82,7 +82,7 @@
             "path" : "pages/profile/password",
             "style" :                                                                                    
             {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
                 "navigationBarTitleText": "修改密码",
                 "enablePullDownRefresh": false
             }
@@ -92,7 +92,7 @@
             "path" : "pages/search/search",
             "style" :                                                                                    
             {
-               "navigationStyle": "custom" ,// 隐藏系统导航栏
+               //"navigationStyle": "custom" ,// 隐藏系统导航栏
                 "enablePullDownRefresh": false
 				
             }
@@ -101,7 +101,7 @@
 		,{
 		    "path" : "pages/location/location",
 		    "style": {
-		    	"navigationStyle": "custom" ,// 隐藏系统导航栏
+		    	//"navigationStyle": "custom" ,// 隐藏系统导航栏
 		    	"navigationBarTitleText": "选择城市"
 		    }
 		    
@@ -110,7 +110,7 @@
             "path" : "pages/notice/notice",
             "style" :                                                                                    
             {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
 				"navigationBarTitleText": "通知公告"
             }
             
@@ -118,7 +118,7 @@
 		{
 		    "path" : "pages/content/content",
 		    "style": {
-		    	"navigationStyle": "custom" ,// 隐藏系统导航栏
+		    	//"navigationStyle": "custom" ,// 隐藏系统导航栏
 		    	"navigationBarTitleText": "资讯"
 		    }
 		},
@@ -127,8 +127,8 @@
 		    "style" :                                                                                    
 		    {
 		        "navigationBarTitleText": "关于我",
-		        "enablePullDownRefresh": false,
-				"navigationStyle": "custom" // 隐藏系统导航栏
+		        "enablePullDownRefresh": false
+				//"navigationStyle": "custom" // 隐藏系统导航栏
 		    }
 		    
 		}
@@ -153,7 +153,7 @@
             "path" : "pages/detail/detail",
             "style" :                                                                                    
             {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
                 "navigationBarTitleText": "房源详情",
                 "enablePullDownRefresh": false
             }
@@ -172,15 +172,15 @@
             "path" : "pages/detail/preHouse",
             "style" :                                                                                    
             {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
-                "navigationBarTitleText": "预增房源",
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
+                "navigationBarTitleText": "新增房源",
                 "enablePullDownRefresh": false
             }
         }
         ,{
             "path" : "pages/center/tips",
             "style" : {
-                "navigationStyle": "custom" ,// 隐藏系统导航栏
+                //"navigationStyle": "custom" ,// 隐藏系统导航栏
                 "navigationBarTitleText": "避坑指南"
             }
         },
@@ -188,7 +188,7 @@
             "path" : "pages/center/order",
             "style" :                                                                                    
             {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
                 "navigationBarTitleText": "我的委托",
                 "enablePullDownRefresh": false
             }
@@ -197,7 +197,7 @@
 		    "path" : "pages/center/heart",
 		    "style" :                                                                                    
 		    {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
 		        "navigationBarTitleText": "收藏",
 		        "enablePullDownRefresh": false
 		    }
@@ -206,7 +206,7 @@
             "path" : "pages/center/history",
             "style" :                                                                                    
             {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
                 "navigationBarTitleText": "浏览记录",
                 "enablePullDownRefresh": false
             }
@@ -214,7 +214,7 @@
             "path" : "pages/profile/avatar",
             "style" :                                                                                    
             {
-				"navigationStyle": "custom" ,// 隐藏系统导航栏
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
                 "navigationBarTitleText": "设置头像",
                 "enablePullDownRefresh": false
             }

@@ -1,5 +1,7 @@
 <template>
 	<view>
+		<!-- <u-navbar :is-back="true" title="添加我的房子" :border-bottom="false"
+			back-text="返回" :custom-back="goHome" ></u-navbar> -->
 		<scroll-view scroll-y="true" class="scroll-wrapper">
 			<view>
 				<view class="wrap">

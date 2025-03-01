@@ -1,5 +1,5 @@
 {
-    "name" : "租部落",
+    "name" : "爱LanXi",
     "appid" : "__UNI__1443B25",
     "description" : "",
     "versionName" : "1.0.1",
@@ -112,7 +112,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wx0eda7144f347fc95",
+        "appid" : "wxff074c383be8786b",
         "setting" : {
             "urlCheck" : false,
             "minified" : true

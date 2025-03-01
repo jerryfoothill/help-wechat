@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-navbar :is-back="true" title="设置头像" :border-bottom="false"></u-navbar>
+		<!-- <u-navbar :is-back="true" title="设置头像" :border-bottom="false"></u-navbar> -->
 		<view class="wrap">
 			<u-upload :custom-btn="true" ref="uUpload" :auto-upload="true" :action="action" :max-size="10 * 1024 * 1024" max-count="1" width="690" height="690" :size-type="siteType">
 				<view slot="addBtn" class="slot-btn" hover-class="slot-btn__hover" hover-stay-time="150">

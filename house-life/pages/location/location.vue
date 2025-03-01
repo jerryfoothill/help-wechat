@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-navbar :is-back="false" title="选择城市" :border-bottom="false"></u-navbar>
+		<!-- <u-navbar :is-back="false" title="选择城市" :border-bottom="false"></u-navbar> -->
 		<view class="selected" >
 			<view class="title">
 				已选 : 
@@ -33,7 +33,7 @@
 		data() {
 			return {
 				locationCity:'',
-				hotList:['杭州市','郑州市','北京市','上海市','广州市','深圳市']
+				hotList:['金华市','杭州市','郑州市','北京市','上海市','广州市','深圳市']
 			}
 		},
 		onLoad() {

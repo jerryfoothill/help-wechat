@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<u-navbar :is-back="true" title="设置" :border-bottom="false">
-		</u-navbar>
+		<!-- <u-navbar :is-back="true" title="设置" :border-bottom="false">
+		</u-navbar> -->
 		<view>
 			<u-cell-group>
 				<u-cell-item title="个人信息" @click="profile"></u-cell-item>

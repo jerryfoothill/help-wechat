@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-navbar :is-back="true" title="浏览记录" :border-bottom="false">
+		<!-- <u-navbar :is-back="true" title="浏览记录" :border-bottom="false"> -->
 			<view class="u-nav-slot" slot="right" @click="clearHistory">
 				<u-icon name="trash"></u-icon>
 				清除

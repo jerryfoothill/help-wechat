@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<u-navbar :is-back="true" :title="title" :border-bottom="false"></u-navbar>
+		<!-- <u-navbar :is-back="true" :title="title" :border-bottom="false"></u-navbar> -->
 		<view class="u-content">
 			<u-parse :html="content"
 			:autosetTitle="true"

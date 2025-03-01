@@ -1,6 +1,6 @@
 <template>
 	<view class="u-m-20">
-		<u-navbar :is-back="true" title="个人信息" :border-bottom="false"></u-navbar>
+		<!-- <u-navbar :is-back="true" title="个人信息" :border-bottom="false"></u-navbar> -->
 		<view>
 			<u-cell-group>
 				<u-cell-item title="头像" :arrow="true" hover-class="none" @click="updateAvatar">

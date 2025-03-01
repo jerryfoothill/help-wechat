@@ -1,7 +1,7 @@
 <template>
     <view class="u-margin-left-20 u-margin-right-20">
-		<u-navbar :is-back="true" title="房源" :border-bottom="false"
-		back-text="返回" :custom-back="goHome" ></u-navbar>
+		<!-- <u-navbar :is-back="true" title="房源" :border-bottom="false"
+		back-text="返回" :custom-back="goHome" ></u-navbar> -->
         <view>
             <u-swiper :list="swiperlist" :height="750" mode="number" effect3d effect3d-previous-margin="20" :interval="5000" @click="clickImg"></u-swiper>
         </view>
@@ -30,7 +30,7 @@
 				</view>
 			</u-card>
 		</view>
-		<u-gap height="1" bg-color="#f8f8f8"></u-gap>
+		<!-- <u-gap height="1" bg-color="#f8f8f8"></u-gap>
 		<view style="position: relative;">
 			<u-card title="小区介绍" :border="false" :head-border-bottom="false" padding="0" title-size="38">
 				<view class="u-padding-top-45" slot="body">
@@ -45,7 +45,7 @@
 					</view>
 				</view>
 			</u-card>
-		</view>
+		</view> -->
 		<u-gap height="1" bg-color="#f8f8f8"></u-gap>
 		<view style="position: relative;">
 			<u-card :title="room.villageName" :border="false" :head-border-bottom="false" padding="0" title-size="38">
@@ -80,7 +80,7 @@
 				</view>
 			</u-card>
 		</view>
-		<u-gap height="1" bg-color="#f8f8f8"></u-gap>
+		<!-- <u-gap height="1" bg-color="#f8f8f8"></u-gap>
 		<view style="position: relative;">
 			<u-card title="服务介绍" :border="false" :head-border-bottom="false" padding="0" title-size="38">
 				<view class="u-padding-top-35" slot="body">
@@ -92,7 +92,7 @@
 					</u-cell-group>
 				</view>
 			</u-card>
-		</view>
+		</view> -->
 		<u-gap height="1" bg-color="#f8f8f8"></u-gap>
 		<view style="position: relative;">
 			<u-card title="房源评价" :border="false" :head-border-bottom="false" padding="0" title-size="38">				
@@ -110,7 +110,7 @@
 		</view>		
 		<u-gap height="10" bg-color="#f8f8f8"></u-gap>
 		<view style="position: relative;padding-bottom: 50rpx;">
-			<u-card title="经纪人" :border="false" :head-border-bottom="false" padding="0" title-size="38">
+			<u-card title="联系人" :border="false" :head-border-bottom="false" padding="0" title-size="38">
 				<view class="u-padding-top-45" slot="body">
 					<view class="u-flex">
 					    <view class="u-m-r-20">

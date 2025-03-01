@@ -1,7 +1,7 @@
 <template>
 	<view class="">
-		<u-navbar :is-back="true" title="添加我的房子" :border-bottom="false"
-			back-text="返回" :custom-back="goHome" ></u-navbar>
+		<!-- <u-navbar :is-back="true" title="添加我的房子" :border-bottom="false"
+			back-text="返回" :custom-back="goHome" ></u-navbar> -->
 		<!-- #ifndef MP-WEIXIN --> 
 			<u-image width="100%" height="350rpx" :src="src"></u-image>
 		<!-- #endif -->
@@ -10,6 +10,15 @@
 				<u-form-item  :label-position="labelPosition" label="村庄名称" prop="villageName" label-width="180"
 				left-icon="map" :leftIconStyle="{color:'#d5d5d5'}">
 					<u-input :border="border" placeholder="请输入村庄名称(必填)" v-model="model.villageName" type="text"></u-input>
+				</u-form-item>
+				<view class="custom-gap"></view>
+				<u-form-item :label-position="labelPosition" label="房源图片" label-width="150" required>
+					<u-upload 
+					:custom-btn="true" ref="uUpload" :auto-upload="true" :action="action" :max-size="10 * 1024 * 1024" max-count="9" width="160" height="160" :size-type="siteType">
+						<view slot="addBtn" class="slot-btn" hover-class="slot-btn__hover" hover-stay-time="150">
+							<u-icon name="plus" size="60" :color="$u.color['lightColor']"></u-icon>
+						</view>
+					</u-upload>
 				</u-form-item>
 				<u-form-item :label-position="labelPosition" label="详细地址" prop="address" label-width="180"
 				left-icon="file-text" :leftIconStyle="{color:'#d5d5d5'}" right-icon="map"
@@ -53,6 +62,8 @@
 </template>
 
 <script>
+	
+import config from "@/common/config.js" // 全局配置文件
 export default {
 	data() {
 		let that = this;
@@ -170,6 +181,8 @@ export default {
 			decorationShow: false,
 			labelPosition: 'left',
 			errorType: ['toast'],
+			// 服务器地址
+			action: config.staticUrl + '/common/upload',
 		};
 	},
 	onLoad(option) {
