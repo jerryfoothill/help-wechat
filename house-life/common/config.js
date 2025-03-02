@@ -3,8 +3,8 @@
 // let staticUrl = 'http://192.168.3.110:8088';
 // let baseUrl = 'https://40c67c04.r32.cpolar.top';
 // let staticUrl = 'https://40c67c04.r32.cpolar.top';
-let baseUrl = 'http://www.51mzp.com';
-let staticUrl = 'http://www.51mzp.com';
+let baseUrl = 'https://www.51mzp.com';
+let staticUrl = 'https://www.51mzp.com';
 // 版本号 用于更新
 let version = 1;
 // vuex_version版本号 用于显示
