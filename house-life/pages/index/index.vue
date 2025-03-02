@@ -101,8 +101,12 @@
 				navList:[
 				   {name:"整租",src:"/static/img/index/cover_2022/index_cover1.png",type:"0"},
 				   {name:"合租",src:"/static/img/index/cover_2022/index_cover2.png",type:"1"},
-				   {name:"避坑指南",src:"/static/img/index/cover_2022/index_cover3.png",url:"/pages/center/tips"},
-				   {name:"我要出租",src:"/static/img/index/cover_2022/index_cover4.png",type:"2"}
+				   {name:"租房指南",src:"/static/img/index/cover_2022/index_cover3.png",url:"/pages/center/tips"},
+				   {name:"我要出租",src:"/static/img/index/cover_2022/index_cover4.png",type:"2"},
+				   {name:"找工作",src:"/static/img/index/cover_2022/index_cover4.png",type:"3"},
+				   {name:"求职信息",src:"/static/img/index/cover_2022/index_cover4.png",type:"/pages/job/jobSeekingList"},
+				   {name:"招员工",src:"/static/img/index/cover_2022/index_cover4.png",type:"5"},
+				   {name:"招工信息",src:"/static/img/index/cover_2022/index_cover4.png",type:"pages/job/jobRecruitList"},
 				],
 				loadStatus: 'loadmore',
 				flowList: [],
@@ -237,7 +241,7 @@
 				if(item.url){
 					return this.$u.route(item.url);
 				}
-				if(item.type === "2"){
+				if(item.type === "2" || item.type === "3" || item.type === "4"){
 					// 判断是否有token
 					let lifeData = uni.getStorageSync('lifeData');
 					let token = lifeData.vuex_token
@@ -258,7 +262,15 @@
 									url:'../login/login'
 								})
 							}else{
-								return this.$u.route('/pages/detail/preHouse');
+								console.log(item.type)
+								if (item.type === "2") {
+									return this.$u.route('/pages/detail/preHouse');
+								} else if (item.type === "3") {
+									return this.$u.route('/pages/job/addJobSeeking')
+								} else if (item.type === "5") {
+									return this.$u.route('/pages/job/addJobRecruit')
+								}
+									
 							}
 						});
 					}

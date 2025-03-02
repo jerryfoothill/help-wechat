@@ -177,6 +177,27 @@
                 "enablePullDownRefresh": false
             }
         }
+		,{
+            "path" : "pages/job/addJobSeeking",
+            "style" : {
+                //"navigationStyle": "custom" ,// 隐藏系统导航栏
+                "navigationBarTitleText": "找工作"
+            }
+        }
+		,{
+		    "path" : "pages/job/jobSeekingList",
+		    "style" : {
+		        //"navigationStyle": "custom" ,// 隐藏系统导航栏
+		        "navigationBarTitleText": "求职信息"
+		    }
+		}
+		,{
+		    "path" : "pages/job/jobSeekingDetail",
+		    "style" : {
+		        //"navigationStyle": "custom" ,// 隐藏系统导航栏
+		        "navigationBarTitleText": "职位详情"
+		    }
+		}
         ,{
             "path" : "pages/center/tips",
             "style" : {
