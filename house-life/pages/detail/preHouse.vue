@@ -11,15 +11,6 @@
 				left-icon="map" :leftIconStyle="{color:'#d5d5d5'}">
 					<u-input :border="border" placeholder="请输入村庄名称(必填)" v-model="model.villageName" type="text"></u-input>
 				</u-form-item>
-				<view class="custom-gap"></view>
-				<u-form-item :label-position="labelPosition" label="房源图片" label-width="150" required>
-					<u-upload 
-					:custom-btn="true" ref="uUpload" :auto-upload="true" :action="action" :max-size="10 * 1024 * 1024" max-count="9" width="160" height="160" :size-type="siteType">
-						<view slot="addBtn" class="slot-btn" hover-class="slot-btn__hover" hover-stay-time="150">
-							<u-icon name="plus" size="60" :color="$u.color['lightColor']"></u-icon>
-						</view>
-					</u-upload>
-				</u-form-item>
 				<u-form-item :label-position="labelPosition" label="详细地址" prop="address" label-width="180"
 				left-icon="file-text" :leftIconStyle="{color:'#d5d5d5'}" right-icon="map"
 				:rightIconStyle="{color:'#d5d5d5'}">
