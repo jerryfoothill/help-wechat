@@ -303,7 +303,7 @@
 					this.swiperlist = room.imageList.map(val=>{
 						let imgUrl = val.imgUrl
 						if(!imgUrl.includes(config.staticUrl)){
-							imgUrl = config.staticUrl+val.imgUrl
+							imgUrl = config.staticUrl+"/web-api"+val.imgUrl
 						}else{
 							imgUrl = val.imgUrl
 						}
@@ -335,10 +335,19 @@
 					}else{
 						shareTitle = this.village.name + " " + room.roomType + " " + this.room.decoration+  " ¥" + this.room.price+"/月"
 					}
+
+					let imageUrl = ''
+					if(!this.room.faceUrl.includes(config.staticUrl)){
+						imageUrl = config.staticUrl+"/web-api"+this.room.faceUrl
+					}else{
+						imageUrl = this.room.faceUrl
+					}
+					this.room.faceUrl = imageUrl
+					console.log(this.room.faceUrl, imageUrl)
 					this.$u.mpShare = {
 						title:  shareTitle, // 默认为小程序名称，可自定义
 						// 支持PNG及JPG，默认为当前页面的截图
-						imageUrl: this.room.faceUrl, 
+						imageUrl: imageUrl, 
 					}
 					
 					// 添加到浏览历史
