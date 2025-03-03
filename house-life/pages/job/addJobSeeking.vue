@@ -11,9 +11,9 @@
         <u-input v-model="model.expectedSalary" placeholder="请输入期望薪资，如 8k-12k" />
       </u-form-item>
 
-      <u-form-item label="所在城市" prop="city"
+      <u-form-item label="求职地点" prop="expectedCity"
 	  label-width="180" :label-position="labelPosition" left-icon="account" :leftIconStyle="{color:'#d5d5d5'}">
-        <u-input v-model="model.city" placeholder="请输入所在城市" />
+        <u-input v-model="model.expectedCity" placeholder="请输入期望工作地点" />
       </u-form-item>
 
       <u-form-item label="工作经验" prop="experience"
@@ -50,7 +50,7 @@ export default {
       model: {
         expectedPosition: '',
         expectedSalary: '',
-        city: '',
+        expectedCity: '',
         experience: '',
         education: '',
         introduction: '',
@@ -58,26 +58,29 @@ export default {
         userId: uni.getStorageSync('lifeData').vuex_user.userId, // Get user ID
       },
       rules: {
-        expectedPosition: [{ required: true, message: '请输入期望职位', trigger: 'blur' }],
-        expectedSalary: [{ required: true, message: '请输入期望薪资', trigger: 'blur' }],
-        city: [{ required: true, message: '请输入所在城市', trigger: 'blur' }],
-        experience: [{ required: true, message: '请输入工作经验', trigger: 'blur' }],
-        education: [{required: true, message: '请输入学历', trigger: 'blur'}],
-        introduction: [{ required: true, message: '请输入个人简介', trigger: 'blur' }],
-        contactPhone: [
-          { required: true, message: '请输入联系电话', trigger: 'blur' },
-          { pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号码', trigger: 'blur' },
-        ],
+        expectedPosition: [{ required: true, message: '请输入期望职位', trigger: ['change','blur'] }],
+        expectedSalary: [{ required: true, message: '请输入期望薪资', trigger: ['change','blur'] }],
+        expectedCity: [{ required: true, message: '请输入所在城市', trigger: ['change','blur'] }],
+        experience: [{ required: true, message: '请输入工作经验', trigger: ['change','blur'] }],
+        education: [{required: true, message: '请输入学历', trigger: ['change','blur']}],
+        introduction: [{ required: true, message: '请输入个人简介', trigger: ['change','blur'] }],
+        contactPhone: [{ required: true, message: '请输入联系电话', trigger: ['change','blur'] }],
       },
     };
+  },
+  onReady() {
+  	this.$refs.uForm.setRules(this.rules);
   },
   methods: {
     submit() {
       this.$refs.uForm.validate(valid => {
         if (valid) {
+			if(!this.$u.test.mobile(this.model.contactPhone)){
+				return this.$mytip.toast('请输入正确的手机号码')
+			}
           // Send data to backend API
           uni.request({
-            url: '/api/jobApi/addJobSeeking', // Replace with your actual API endpoint
+            url: this.$u.http.config.baseUrl + '/api/jobApi/addJobSeeking', // Replace with your actual API endpoint
             method: 'POST',
             data: this.model,
             header: {

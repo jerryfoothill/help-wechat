@@ -10,8 +10,8 @@
         <text>{{ jobSeeking.expectedSalary }}</text>
       </view>
       <view class="section">
-        <text class="label">所在城市:</text>
-        <text>{{ jobSeeking.city }}</text>
+        <text class="label">求职地点:</text>
+        <text>{{ jobSeeking.expectedCity }}</text>
       </view>
       <view class="section">
         <text class="label">工作经验:</text>
@@ -49,8 +49,12 @@ export default {
   methods: {
     fetchJobSeekingDetail(id) {
       uni.request({
-        url: `/api/jobApi/getJobSeeking/${id}`, // Replace with your actual API endpoint
+		//url: this.$u.http.config.baseUrl + `/api/jobApi/findJobSeekingById/${id}`, // Replace with your actual API endpoint
+        url: this.$u.http.config.baseUrl + `/api/jobApi/findJobSeekingById`, // Replace with your actual API endpoint
         method: 'GET',
+		data: {
+		        id: id
+		    },
         header: {
           'Authorization': 'Bearer ' + uni.getStorageSync('token'), // Include token
         },
@@ -59,7 +63,7 @@ export default {
             this.jobSeeking = {
                 expectedPosition: res.data.data.expectedPosition,
                 expectedSalary: res.data.data.expectedSalary,
-                city: res.data.data.city,
+                expectedCity: res.data.data.expectedCity,
                 experience: res.data.data.experience,
                 education: res.data.data.education,
                 introduction: res.data.data.introduction,

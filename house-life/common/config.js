@@ -1,8 +1,8 @@
 // 全局配置文件
 // let baseUrl = 'http://192.168.3.110:8088';
 // let staticUrl = 'http://192.168.3.110:8088';
-// let baseUrl = 'https://40c67c04.r32.cpolar.top';
-// let staticUrl = 'https://40c67c04.r32.cpolar.top';
+// let baseUrl = 'https://6b80e893.r19.cpolar.top';
+// let staticUrl = 'https://6b80e893.r19.cpolar.top';
 let baseUrl = 'https://www.51mzp.com';
 let staticUrl = 'https://www.51mzp.com';
 // 版本号 用于更新

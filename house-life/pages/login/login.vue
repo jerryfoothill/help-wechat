@@ -11,7 +11,7 @@
 				欢迎使用 爱LanXi
 			</view>
 		</view>
-		<view class="login-view">
+		<!-- <view class="login-view">
 			<view class="t-login">
 				<form class="cl">
 					<view class="t-a">
@@ -26,7 +26,7 @@
 					<view class="reg" @tap="reg()">短信登录</view>
 				</form>
 			</view>
-		</view>
+		</view> -->
 		
 		<!-- #ifdef MP-WEIXIN -->  
 		<!-- <view class="buttom">

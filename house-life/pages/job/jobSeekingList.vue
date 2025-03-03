@@ -1,25 +1,36 @@
 <template>
   <view class="container">
-    <!-- <u-list @scrolltolower="loadMore">
-      <u-list-item v-for="(item, index) in jobSeekings" :key="index" @click="goToDetail(item.id)">
-        <view class="item">
+    <u-waterfall v-model="jobSeekings" ref="uWaterfall">
+      <template v-slot:left="{leftList}">
+        <view v-for="(item, index) in leftList" :key="index" class="item" @click="goToDetail(item.id)">
           <view class="position">{{ item.expectedPosition }}</view>
           <view class="salary">{{ item.expectedSalary }}</view>
           <view class="details">
-            {{ item.city }} | {{ item.experience }} | {{item.education}}
+            {{ item.expectedCity }} | {{ item.experience }} | {{item.education}}
           </view>
           <view class="introduction">{{ item.introduction }}</view>
         </view>
-      </u-list-item>
-      <u-loadmore :status="loadStatus" />
-    </u-list> -->
+      </template>
+      <template v-slot:right="{rightList}">
+        <view v-for="(item, index) in rightList" :key="index" class="item" @click="goToDetail(item.id)">
+          <view class="position">{{ item.expectedPosition }}</view>
+          <view class="salary">{{ item.expectedSalary }}</view>
+          <view class="details">
+            {{ item.expectedCity }} | {{ item.experience }} | {{item.education}}
+          </view>
+          <view class="introduction">{{ item.introduction }}</view>
+        </view>
+      </template>
+    </u-waterfall>
+    
+    <u-loadmore :status="loadStatus" @loadmore="loadMore" />
 
-     <u-empty
-        v-if="jobSeekings.length === 0 && loadStatus === 'nomore'"
-        mode="search"
-        :icon="emptyIcon"
-      >
-      </u-empty>
+    <u-empty
+      v-if="jobSeekings.length === 0 && loadStatus === 'nomore'"
+      mode="search"
+      :icon="emptyIcon"
+    >
+    </u-empty>
   </view>
 </template>
 
@@ -32,11 +43,17 @@ export default {
       page: 1,
       pageSize: 10,
       loadStatus: 'loadmore', // loadmore, loading, nomore
-      emptyIcon: "/static/empty/data.png"
+      emptyIcon: "/static/empty/default.png"
     };
   },
   onLoad() {
     this.fetchJobSeekings();
+  },
+  onReachBottom() {
+    // 页面触底时触发加载更多
+    if (this.loadStatus === 'loadmore') {
+      this.loadMore();
+    }
   },
   methods: {
     fetchJobSeekings() {
@@ -44,28 +61,30 @@ export default {
 
       this.loadStatus = 'loading';
       uni.request({
-        url: '/api/jobApi/getJobSeekings', // Replace with your actual API endpoint
+        url: this.$u.http.config.baseUrl + '/api/jobApi/findJobSeekingList', // 使用完整URL
         method: 'GET',
         data: {
           page: this.page,
           pageSize: this.pageSize,
         },
         header: {
-          'Authorization': 'Bearer ' + uni.getStorageSync('token'), // Include token
+          'Authorization': 'Bearer ' + uni.getStorageSync('token'), // 包含token
         },
         success: (res) => {
-          if (res.statusCode === 200 && res.data.code === 200) {
-            const newList = res.data.data.map(item => ({
-                id: item.id,
-                expectedPosition: item.expectedPosition,
-                expectedSalary: item.expectedSalary,
-                city: item.city,
-                experience: item.experience,
-                education: item.education,
-                introduction: item.introduction,
+          if (res.statusCode === 200 && res.data.code === 200) { // 修改为正确的成功码
+            const newList = res.data.rows.map(item => ({ // 修改为正确的数据字段
+              id: item.id,
+              expectedPosition: item.expectedPosition,
+              expectedSalary: item.expectedSalary,
+              expectedCity: item.expectedCity,
+              experience: item.experience,
+              education: item.education,
+              introduction: item.introduction,
             }));
 
-            this.jobSeekings = this.jobSeekings.concat(newList);
+            // 将新数据添加到瀑布流中
+            this.jobSeekings = [...this.jobSeekings, ...newList];
+            
             if (newList.length < this.pageSize) {
               this.loadStatus = 'nomore';
             } else {
@@ -92,7 +111,21 @@ export default {
         url: `/pages/job/jobSeekingDetail?id=${id}`,
       });
     },
+    // 清除数据并重新加载
+    refresh() {
+      this.jobSeekings = [];
+      this.page = 1;
+      this.loadStatus = 'loadmore';
+      this.fetchJobSeekings();
+    }
   },
+  // 下拉刷新
+  onPullDownRefresh() {
+    this.refresh();
+    setTimeout(() => {
+      uni.stopPullDownRefresh();
+    }, 1000);
+  }
 };
 </script>
 
@@ -101,8 +134,11 @@ export default {
   padding: 20rpx;
 }
 .item {
-  border-bottom: 1px solid #eee;
-  padding: 20rpx 0;
+  background-color: #ffffff;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
 }
 .position {
   font-size: 32rpx;
