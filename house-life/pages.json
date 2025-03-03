@@ -178,6 +178,27 @@
             }
         }
 		,{
+            "path" : "pages/job/recruitList",
+            "style" : {
+                //"navigationStyle": "custom" ,// 隐藏系统导航栏
+                "navigationBarTitleText": "招聘信息"
+            }
+        }
+		,{
+		    "path" : "pages/job/addRecruit",
+		    "style" : {
+		        //"navigationStyle": "custom" ,// 隐藏系统导航栏
+		        "navigationBarTitleText": "招聘员工"
+		    }
+		}
+		,{
+		    "path" : "pages/job/recruitDetail",
+		    "style" : {
+		        //"navigationStyle": "custom" ,// 隐藏系统导航栏
+		        "navigationBarTitleText": "招聘员工"
+		    }
+		}
+		,{
             "path" : "pages/job/addJobSeeking",
             "style" : {
                 //"navigationStyle": "custom" ,// 隐藏系统导航栏

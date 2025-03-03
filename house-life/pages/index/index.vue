@@ -105,8 +105,8 @@
 				   {name:"我要出租",src:"/static/img/index/cover_2022/index_cover4.png",type:"2"},
 				   {name:"找工作",src:"/static/img/index/cover_2022/seek.png",type:"3"},
 				   {name:"求职信息",src:"/static/img/index/cover_2022/jobs.png",url:"/pages/job/jobSeekingList"},
-				   {name:"招员工",src:"/static/img/index/cover_2022/recruit.png",url:"5"},
-				   {name:"招工信息",src:"/static/img/index/cover_2022/rlist.png",url:"pages/job/jobRecruitList"},
+				   {name:"招聘员工",src:"/static/img/index/cover_2022/recruit.png",type:"5"},
+				   {name:"招聘信息",src:"/static/img/index/cover_2022/rlist.png",url:"pages/job/recruitList"},
 				],
 				loadStatus: 'loadmore',
 				flowList: [],
@@ -238,6 +238,7 @@
 				})
 			},
 			clickNav(item){
+				//console.log("come to here", item.type)
 				if(item.url){
 					return this.$u.route(item.url);
 				}
@@ -268,7 +269,7 @@
 								} else if (item.type === "3") {
 									return this.$u.route('/pages/job/addJobSeeking')
 								} else if (item.type === "5") {
-									return this.$u.route('/pages/job/addJobRecruit')
+									return this.$u.route('/pages/job/addRecruit')
 								}
 									
 							}
