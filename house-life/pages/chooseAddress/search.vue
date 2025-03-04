@@ -21,7 +21,7 @@
 <script>
 	const QQMapWX = require('./js/qqmap-wx-jssdk.min.js')
 	var qqmapsdk = new QQMapWX({
-		key: 'FALBZ-J2G3I-ZY5GX-5ATUZ-GHOOZ-YVFAR'
+		key: 'PG3BZ-HQY6U-AOWV7-G6QVQ-6IN55-QTFVS'
 	})
 	export default {
 		data() {

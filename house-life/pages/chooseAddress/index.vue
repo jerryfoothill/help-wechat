@@ -30,7 +30,7 @@
 			:latitude="map.latitude"
 			@regionchange="onRegionchange"
 		>
-			<cover-image class="map-center-icon" src="https://7478-tx-cloud-mix-mall-d6944c-1302673523.tcb.qcloud.la/5bfbd58b18200d8e16f6b17a02e6ed9.png"></cover-image>
+			<cover-image class="map-center-icon" src="https://www.51mzp.com/static/img/logo_w.a6f3f4a9.png"></cover-image>
 		</map>
 		<!-- 结果集 -->
 		<scroll-view scroll-y class="addr-list-scroll">
@@ -50,7 +50,7 @@
 <script>
 	const QQMapWX = require('./js/qqmap-wx-jssdk.min.js')
 	const qqmapsdk = new QQMapWX({
-		key: 'FALBZ-J2G3I-ZY5GX-5ATUZ-GHOOZ-YVFAR'
+		key: 'PG3BZ-HQY6U-AOWV7-G6QVQ-6IN55-QTFVS'
 	})
 	let _mapCtx = null;
 	export default {
