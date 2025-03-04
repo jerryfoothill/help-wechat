@@ -38,8 +38,8 @@
       
       <u-form-item label="招聘图片" label-width="180" :label-position="labelPosition" left-icon="photo" :leftIconStyle="{color:'#d5d5d5'}">
         <view class="upload-box">
-          <view class="preview-box" v-if="model.jobImage">
-            <image :src="$u.http.config.baseUrl + model.jobImage" mode="aspectFill" class="preview-image"></image>
+          <view class="preview-box" v-if="model.trueJobImage">
+            <image :src="model.trueJobImage" mode="aspectFill" class="preview-image"></image>
             <view class="delete-icon" @click="deleteImage">
               <u-icon name="close" color="#ffffff" size="20"></u-icon>
             </view>
@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import config from "@/common/config.js" // 全局配置文件
 export default {
   data() {
     return {
@@ -87,6 +88,7 @@ export default {
         introduction: '',
         contactPhone: '',
         jobImage: '',
+		trueJobImage: '',
         jobFile: '',
         jobFileName: '',
         userId: uni.getStorageSync('lifeData').vuex_user.userId, // 获取用户ID
@@ -135,6 +137,7 @@ export default {
           const result = JSON.parse(uploadRes.data);
           if (result.code === 200) {
             this.model.jobImage = result.url;
+			this.model.trueJobImage = config.baseUrl + config.web_prefix + result.url;
             this.$u.toast('图片上传成功');
           } else {
             this.$u.toast(result.msg || '图片上传失败');
@@ -153,6 +156,7 @@ export default {
     // 删除图片
     deleteImage() {
       this.model.jobImage = '';
+	  this.model.truJobImage = '';
     },
     
     // 选择文件

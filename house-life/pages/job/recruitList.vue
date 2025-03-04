@@ -3,7 +3,7 @@
     <u-waterfall v-model="recruitList" ref="uWaterfall">
       <template v-slot:left="{leftList}">
         <view v-for="(item, index) in leftList" :key="index" class="item" @click="goToDetail(item.id)">
-          <image v-if="item.jobImage" :src="$u.http.config.baseUrl + item.jobImage" mode="widthFix" class="job-image"></image>
+          <image v-if="item.jobImage" :src="item.jobImage" mode="widthFix" class="job-image"></image>
           <view class="position">{{ item.expectedPosition }}</view>
           <view class="salary">{{ item.expectedSalary }}</view>
           <view class="details">
@@ -14,7 +14,7 @@
       </template>
       <template v-slot:right="{rightList}">
         <view v-for="(item, index) in rightList" :key="index" class="item" @click="goToDetail(item.id)">
-          <image v-if="item.jobImage" :src="$u.http.config.baseUrl + item.jobImage" mode="widthFix" class="job-image"></image>
+          <image v-if="item.jobImage" :src="item.jobImage" mode="widthFix" class="job-image"></image>
           <view class="position">{{ item.expectedPosition }}</view>
           <view class="salary">{{ item.expectedSalary }}</view>
           <view class="details">
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-	
+import config from "@/common/config.js" // 全局配置文件	
 export default {
   data() {
     return {
@@ -86,7 +86,8 @@ export default {
               experience: item.experienceReq,
               education: item.educationReq,
               introduction: item.jobDescription,
-              jobImage: item.jobImage,
+              //jobImage: 'https://6b80e893.r19.cpolar.top' + item.jobImage,
+			  jobImage: this.$u.http.config.baseUrl + this.$u.http.config.web_prefix + item.jobImage,
               jobFile: item.jobFile,
               jobFileName: item.jobFileName
             }));

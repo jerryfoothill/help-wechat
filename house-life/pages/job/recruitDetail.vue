@@ -26,9 +26,9 @@
         <view class="section-content">{{ recruit.introduction }}</view>
       </view>
       
-      <view class="section" v-if="recruit.jobImage">
+      <view class="section" v-if="recruit.trueJobImage">
         <view class="section-title">招聘图片</view>
-        <image :src="$u.http.config.baseUrl + recruit.jobImage" mode="widthFix" class="job-image"></image>
+        <image :src="recruit.trueJobImage" mode="widthFix" class="job-image"></image>
       </view>
       
       <view class="section" v-if="recruit.jobFile">
@@ -102,9 +102,11 @@ export default {
               state: data.state,
               viewCount: data.viewCount,
               jobImage: data.jobImage,
+			  trueJobImage: config.baseUrl + config.web_prefix + data.jobImage,
               jobFile: data.jobFile,
               jobFileName: data.jobFileName
             };
+			console.log(this.recruit)
           } else {
             this.$u.toast(res.data.msg || '获取详情失败');
           }
@@ -138,7 +140,7 @@ export default {
       
       // #ifdef APP-PLUS || H5
       uni.downloadFile({
-        url: this.$u.http.config.baseUrl + this.recruit.jobFile,
+        url: this.$u.http.config.baseUrl + config.web_prefix + this.recruit.jobFile,
         success: (res) => {
           if (res.statusCode === 200) {
             uni.saveFile({
