@@ -11,11 +11,14 @@ let version = 1;
 let vuex_version = '1.0.' + version;
 // 是否需要热更新（后台自动更新）
 let flag_hot = false;
+let web_prefix = "/web_api"
+// let web_prefix = ""
 
 export default {
 	baseUrl: baseUrl,
 	staticUrl:staticUrl,
 	version: version,
 	vuex_version: vuex_version,
+	web_prefix: web_prefix,
 }
 

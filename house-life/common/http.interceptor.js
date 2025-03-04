@@ -5,6 +5,7 @@ const install = (Vue, vm) => {
 	Vue.prototype.$u.http.setConfig({
 		// baseUrl打包app时放开，h5模式下会和vue.config.js代理冲突，导致失效
 		baseUrl: config.baseUrl,
+		web_prefix: config.web_prefix
 		
 	});
 	// 请求拦截，配置Token等参数
