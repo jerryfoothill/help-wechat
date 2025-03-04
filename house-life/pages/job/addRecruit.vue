@@ -1,5 +1,6 @@
 <template>
   <view class="container">
+	  <view class="warning">警告：禁止发布不合法的信息，违者自负 </view>
     <u-form :model="model" :rules="rules" ref="uForm">
       <u-form-item label="招聘职位" prop="expectedPosition" 
 	  label-width="180" :label-position="labelPosition" left-icon="account" :leftIconStyle="{color:'#d5d5d5'}">
@@ -51,7 +52,7 @@
         </view>
       </u-form-item>
       
-      <u-form-item label="招聘附件" label-width="180" :label-position="labelPosition" left-icon="file-text" :leftIconStyle="{color:'#d5d5d5'}">
+      <!-- <u-form-item label="招聘附件" label-width="180" :label-position="labelPosition" left-icon="file-text" :leftIconStyle="{color:'#d5d5d5'}">
         <view class="upload-box">
           <view class="file-box" v-if="model.jobFile">
             <view class="file-name">{{ model.jobFileName }}</view>
@@ -64,7 +65,7 @@
             <view class="upload-text">上传附件</view>
           </view>
         </view>
-      </u-form-item>
+      </u-form-item> -->
 
       <u-form-item>
         <u-button type="primary" @click="submit">发布</u-button>
@@ -278,6 +279,10 @@ export default {
 .container {
   padding: 20rpx;
 }
+.warning {
+	color: red;
+}
+
 textarea {
   width: 100%;
   height: 200rpx;

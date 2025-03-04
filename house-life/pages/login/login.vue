@@ -9,6 +9,8 @@
 				您好，
 				<br />
 				欢迎使用 爱LanXi
+				<br />
+				点击下面图片登录，才能发布信息
 			</view>
 		</view>
 		<!-- <view class="login-view">

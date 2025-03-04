@@ -1,5 +1,6 @@
 <template>
 	<view class="">
+		<view class="warning">警告：禁止发布不合法的信息，违者自负 </view>
 		<!-- <u-navbar :is-back="true" title="添加我的房子" :border-bottom="false"
 			back-text="返回" :custom-back="goHome" ></u-navbar> -->
 		<!-- #ifndef MP-WEIXIN --> 
@@ -15,7 +16,7 @@
 				left-icon="file-text" :leftIconStyle="{color:'#d5d5d5'}" right-icon="map"
 				:rightIconStyle="{color:'#d5d5d5'}">
 				<!-- #ifdef MP-WEIXIN -->
-					<u-input :border="border" placeholder="请在地图选择详细地址" v-model="model.address" type="text" 
+					<u-input :border="border" placeholder="请在地图选择详细地址" v-model="model.address" type="text" disabled
 					@click="chooseAddress"></u-input>
 				<!-- #endif -->
 				<!-- #ifndef MP-WEIXIN --> 
@@ -305,6 +306,10 @@ export default {
 <style scoped lang="scss">
 .wrap {
 	padding: 30rpx;
+}
+
+.warning {
+	color: red;
 }
 
 /* #ifdef MP-WEIXIN */  

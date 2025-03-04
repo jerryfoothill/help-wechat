@@ -135,7 +135,7 @@
 						// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
 						let item = this.houseList[i]
 						if(!item.faceUrl.includes(config.staticUrl)){
-							item.image = config.staticUrl+"/web-api"+item.faceUrl
+							item.image = config.staticUrl+config.web_prefix+item.faceUrl
 						}else{
 							item.image = item.faceUrl
 						}

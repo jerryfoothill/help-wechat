@@ -303,7 +303,7 @@
 					this.swiperlist = room.imageList.map(val=>{
 						let imgUrl = val.imgUrl
 						if(!imgUrl.includes(config.staticUrl)){
-							imgUrl = config.staticUrl+"/web-api"+val.imgUrl
+							imgUrl = config.staticUrl+config.web_prefix+val.imgUrl
 						}else{
 							imgUrl = val.imgUrl
 						}
@@ -338,7 +338,7 @@
 
 					let imageUrl = ''
 					if(!this.room.faceUrl.includes(config.staticUrl)){
-						imageUrl = config.staticUrl+"/web-api"+this.room.faceUrl
+						imageUrl = config.staticUrl+config.web_prefix+this.room.faceUrl
 					}else{
 						imageUrl = this.room.faceUrl
 					}

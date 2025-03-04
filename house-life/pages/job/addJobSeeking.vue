@@ -1,5 +1,6 @@
 <template>
   <view class="container">
+	  <view class="warning">警告：禁止发布不合法的信息，违者自负 </view>
     <u-form :model="model" :rules="rules" ref="uForm">
       <u-form-item  label="期望职位" prop="expectedPosition" 
 	  label-width="180" :label-position="labelPosition" left-icon="account" :leftIconStyle="{color:'#d5d5d5'}">
@@ -112,5 +113,9 @@ export default {
 <style scoped>
 .container {
   padding: 20rpx;
+}
+
+.warning {
+	color: red;
 }
 </style> 
