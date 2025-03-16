@@ -181,17 +181,19 @@ export default {
 	watch: {
 	    model: {
 	        handler(newName, oldName) {
-				this.houseTypeVo = newName.houseType
-				// 回显房源亮点
-				if(this.model.featureList){
-					this.checkboxList.forEach(item=>{
-						this.model.featureList.forEach(feature=>{
-							if(feature.feature == item.name){
-								item.checked=true
-							}
-						})
-					})
-				}
+	            if (newName) {
+	                this.houseTypeVo = newName.houseType || ''
+	                // 回显房源亮点
+	                if(newName.featureList){
+	                    this.checkboxList.forEach(item=>{
+	                        newName.featureList.forEach(feature=>{
+	                            if(feature.feature == item.name){
+	                                item.checked=true
+	                            }
+	                        })
+	                    })
+	                }
+	            }
 	        },
 	        immediate: true,
 	        deep: true
@@ -217,11 +219,19 @@ export default {
 				return this.$mytip.toast('请至少选择一张房源图片')
 			}
 			let imageList = files.map(val => {
+				if (!val.response) {
+					return {
+						imageName: '',
+						imagePath: '',
+						imgUrl: val.url || '', 
+						imageSize: val.file ? val.file.size : 0
+					}
+				}
 				return {
-					imageName: val.response.realName,
-					imagePath: val.response.fileName,
-					imgUrl: val.response.url, 
-					imageSize: val.file.size
+					imageName: val.response.realName || '',
+					imagePath: val.response.fileName || '',
+					imgUrl: val.response.url || val.url || '', 
+					imageSize: val.file ? val.file.size : 0
 				}
 			})
 			this.model.imageList = imageList

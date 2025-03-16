@@ -76,6 +76,9 @@ export default {
 				ownerName:'',
 				//房东电话
 				owerPhone:'',
+				agentPhone:'',
+				agentUserId:'',
+				agentName:'',
 				payType:'',
 				createName: uni.getStorageSync('lifeData').vuex_user.userName,
 				publishId: uni.getStorageSync('lifeData').vuex_user.userId,
@@ -221,6 +224,12 @@ export default {
 					if(!this.$u.test.mobile(this.model.owerPhone)){
 						return this.$mytip.toast('房东电话请输入手机号码')
 					}
+					//tmp hack for skip check stat
+					this.model.state = 1
+					this.model.agentPhone = this.model.owerPhone
+					this.model.agentUserId = this.model.publishId
+					this.model.agentName = this.model.ownerName
+					console.log(this.model)
 					return this.$u.route({
 						url: '/pages/detail/addHouse',
 						params: {

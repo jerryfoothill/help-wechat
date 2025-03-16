@@ -17,11 +17,11 @@
 			</view>
 		</view>
 		<!-- 小程序通讯 -->
-		<button type="default" open-type="contact"  class="clearBtn">
+		<!-- <button type="default" open-type="contact"  class="clearBtn">
 			<u-cell-group>
 				<u-cell-item title="服务费另计" value="在线咨询"></u-cell-item>
 			</u-cell-group>		
-		</button>
+		</button> -->
 		<view v-if="room.introduce">
 			<u-gap height="10" bg-color="#f8f8f8"></u-gap>
 			<u-card title="房源介绍" :border="false" :head-border-bottom="false" padding="0" title-size="38">
@@ -118,7 +118,7 @@
 					    </view>
 					    <view class="u-flex-1">
 							<view class="u-font-16 u-p-b-40">{{room.agentName}}</view>
-					        <!-- <view class="u-font-12 u-p-b-10">{{user.agentPhone}}</view> -->
+					        <!-- <view class="u-font-12 u-p-b-10">{{room.agentPhone}}</view> -->
 					    </view>
 					</view>
 					<view class="arrow-right" @click="clickItem">
@@ -157,7 +157,7 @@
 				</button>
 			</view>
 			<view class="right" @click="clickItem">
-				<view class="btn">联系经纪人</view>
+				<view class="btn">电话咨询</view>
 			</view>
 		</view>
     </view>
@@ -273,6 +273,7 @@
 					id: houseId
 				}).then(result => {
 					let room = result.data
+					console.log(room)
 					if(room.type == 0){
 						room.type = '整租'
 					}else if(room.type == 1){
@@ -317,12 +318,13 @@
 							title: val.feature,
 						}
 					})
-					if(!room.agentAvatar.includes(config.staticUrl)){
+					if(room.agentAvatar != null && !room.agentAvatar.includes(config.staticUrl)){
 						room.agentAvatar = config.staticUrl+room.agentAvatar
 					}
 					this.user = room.user
 					this.village = room.village
 					this.room = room
+					console.log(this.room.agentName, this.room.agentPhone, room.agentName, room.agentPhone)
 					// 判断是否收藏
 					this.selectHouseHeart(houseId);
 					//查询房源评价

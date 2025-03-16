@@ -165,18 +165,20 @@ export default {
 	watch: {
 	    model: {
 	        handler(newName, oldName) {
-				this.roomLabelVo = newName.roomLabel
-				// 回显房源亮点
-				if(this.model.featureList){
-					this.checkboxList.forEach(item=>{
-						this.model.featureList.forEach(feature=>{
-							if(feature.feature == item.name){
-								item.checked=true
-							}
-						})
-					})
-					this.directionVo = newName.direction
-				}
+	            if (newName) {
+	                this.roomLabelVo = newName.roomLabel || ''
+	                this.directionVo = newName.direction || ''
+	                // 回显房源亮点
+	                if(newName.featureList){
+	                    this.checkboxList.forEach(item=>{
+	                        newName.featureList.forEach(feature=>{
+	                            if(feature.feature == item.name){
+	                                item.checked=true
+	                            }
+	                        })
+	                    })
+	                }
+	            }
 	        },
 	        immediate: true,
 	        deep: true
