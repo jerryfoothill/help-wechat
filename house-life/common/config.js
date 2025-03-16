@@ -1,12 +1,12 @@
 // 全局配置文件
 // let baseUrl = 'http://192.168.3.110:8088';
 // let staticUrl = 'http://192.168.3.110:8088';
-// let baseUrl = 'https://170ad9cd.r19.cpolar.top';
-// let staticUrl = 'https://170ad9cd.r19.cpolar.top';
-// let web_prefix = ""
-let baseUrl = 'https://www.51mzp.com';
-let staticUrl = 'https://www.51mzp.com';
-let web_prefix = "/web-api"
+let baseUrl = 'https://4c7da468.r19.cpolar.top';
+let staticUrl = 'https://4c7da468.r19.cpolar.top';
+let web_prefix = ""
+// let baseUrl = 'https://www.51mzp.com';
+// let staticUrl = 'https://www.51mzp.com';
+// let web_prefix = "/web-api"
 // 版本号 用于更新
 let version = 1;
 // vuex_version版本号 用于显示

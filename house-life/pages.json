@@ -178,6 +178,27 @@
             }
         }
 		,{
+		    "path" : "pages/info/infoList",
+		    "style" : {
+		        //"navigationStyle": "custom" ,// 隐藏系统导航栏
+		        "navigationBarTitleText": "信息列表"
+		    }
+		}
+		,{
+		    "path" : "pages/info/addInfo",
+		    "style" : {
+		        //"navigationStyle": "custom" ,// 隐藏系统导航栏
+		        "navigationBarTitleText": "发布信息"
+		    }
+		}
+		,{
+		    "path" : "pages/info/infoDetail",
+		    "style" : {
+		        //"navigationStyle": "custom" ,// 隐藏系统导航栏
+		        "navigationBarTitleText": "信息详情"
+		    }
+		}
+		,{
             "path" : "pages/job/recruitList",
             "style" : {
                 //"navigationStyle": "custom" ,// 隐藏系统导航栏

@@ -46,7 +46,7 @@
 				并授权我们使用您的微信信息，用以监管信息的发布
 			</view>
 		</view>
-		<!-- <view class="buttom">
+		<view class="buttom">
 			<button @tap="wxLogin()" class="clearBtn">
 				<view class="loginType">
 					<view class="item">
@@ -59,8 +59,8 @@
 				登录代表同意
 				<text class="link">开源字节用户协议、隐私政策，</text>
 				并授权使用您的账号信息（如昵称、头像、收获地址）以便您统一管理
-			</view> --
-		</view> -->
+			</view> -->
+		</view>
 		<!-- #endif -->
 	</view>
 </template>
