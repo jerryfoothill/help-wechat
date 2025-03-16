@@ -6,13 +6,13 @@
 			<view>
 				<view class="wrap">
 					<u-form ref="uForm">
-						<u-form-item :label-position="labelPosition" label="户型" label-width="150" required>
+						<u-form-item :label-position="labelPosition" label="户型" label-width="150" >
 							<u-input :border="border" type="select" :select-open="selectShow" v-model="houseTypeVo" placeholder="请选择户型" @click="selectShow = true"></u-input>
 						</u-form-item>
-						<u-form-item label-width="150" :label-position="labelPosition" label="面积" required>
+						<u-form-item label-width="150" :label-position="labelPosition" label="面积" >
 							<u-input :border="border" placeholder="请输入面积" v-model="model.houseArea" type="number"></u-input>
 						</u-form-item>
-						<u-form-item label-width="150" :label-position="labelPosition" label="租金" required>
+						<u-form-item label-width="150" :label-position="labelPosition" label="租金" >
 							<u-input :border="border" placeholder="请输入租金" v-model="model.price" type="number"></u-input>
 						</u-form-item>
 						<u-form-item label-width="150" :label-position="labelPosition" label="起租日期">
@@ -21,7 +21,7 @@
 							</view>
 						</u-form-item>
 						<view class="custom-gap"></view>
-						<u-form-item :label-position="labelPosition" label="房源图片" label-width="150" required>
+						<u-form-item :label-position="labelPosition" label="房源图片" label-width="150" >
 							<u-upload 
 							:custom-btn="true" ref="uUpload" :auto-upload="true" :action="action" :max-size="10 * 1024 * 1024" max-count="9" width="160" height="160" :size-type="siteType">
 								<view slot="addBtn" class="slot-btn" hover-class="slot-btn__hover" hover-stay-time="150">
@@ -32,7 +32,7 @@
 						<u-form-item label-width="150"  :label-position="labelPosition" label="房源描述">	
 							<u-input type="textarea" :border="border" placeholder="请填写房屋描述" v-model="model.introduce" />
 						</u-form-item>
-						<u-form-item label-width="150"  :label-position="labelPosition" label="房源亮点" required>
+						<u-form-item label-width="150"  :label-position="labelPosition" label="房源亮点" >
 							<u-checkbox-group @change="checkboxGroupChange" :width="radioCheckWidth" :wrap="radioCheckWrap">
 								<u-checkbox v-model="item.checked" v-for="(item, index) in checkboxList" :key="index" :name="item.name">{{ item.name }}</u-checkbox>
 							</u-checkbox-group>
@@ -119,7 +119,7 @@ export default {
 			checkboxList: [
 				{
 					name: '看房方便',
-					checked: false,
+					checked: true,
 					disabled: false
 				},
 				{
@@ -202,22 +202,25 @@ export default {
 	methods: {
 		submit() {
 			if(this.$u.test.isEmpty(this.model.houseType)){
-				return this.$mytip.toast('请选择户型')
+				this.model.houseType = 0
+				// return this.$mytip.toast('请选择户型')
 			}
 			if(this.$u.test.isEmpty(this.model.houseArea)){
-				return this.$mytip.toast('请输入面积')
+				this.model.houseArea = 0
+				// return this.$mytip.toast('请输入面积')
 			}
 			if(this.$u.test.isEmpty(this.model.price)){
-				return this.$mytip.toast('请输入租金')
+				this.model.price = 0
+				// return this.$mytip.toast('请输入租金')
 			}
 			let files = [];
 			// 通过filter，筛选出上传进度为100的文件(因为某些上传失败的文件，进度值不为100，这个是可选的操作)
 			files = this.$refs.uUpload.lists.filter(val => {
 				return val.progress == 100;
 			})
-			if(this.$u.test.isEmpty(files)){
-				return this.$mytip.toast('请至少选择一张房源图片')
-			}
+			// if(this.$u.test.isEmpty(files)){
+			// 	return this.$mytip.toast('请至少选择一张房源图片')
+			// }
 			let imageList = files.map(val => {
 				if (!val.response) {
 					return {
@@ -236,7 +239,10 @@ export default {
 			})
 			this.model.imageList = imageList
 			if(this.$u.test.isEmpty(this.model.featureList)){
-				return this.$mytip.toast('请至少选择一个房源亮点')
+				let featureList = [{feature: "看房方便"}]
+				this.model.featureList = featureList
+				// console.log(this.model.featureList)
+				 // return this.$mytip.toast('请至少选择一个房源亮点')
 			}
 			let url = "api/houseApi/saveHouse";
 			if(this.model.id){

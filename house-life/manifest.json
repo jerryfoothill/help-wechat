@@ -1,6 +1,6 @@
 {
-    "name" : "爱LanXi",
-    "appid" : "__UNI__1443B25",
+    "name" : "职住无忧",
+    "appid" : "__UNI__9234B24",
     "description" : "",
     "versionName" : "1.0.1",
     "versionCode" : 1,
@@ -112,7 +112,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wxff074c383be8786b",
+        "appid" : "wxb29547773bf8d6fd",
         "setting" : {
             "urlCheck" : false,
             "minified" : true
@@ -123,6 +123,7 @@
                 "desc" : "您的位置将用于绑定您的区域"
             }
         },
+        "lazyCodeLoading" : "requiredComponents",
         "requiredPrivateInfos" : [
             "getLocation",
             "onLocationChange",

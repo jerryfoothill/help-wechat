@@ -102,8 +102,8 @@
             		isAsc: 'desc'
             	}
             	this.$u.get(url, {...defaultData,...this.searchData}).then(result => {
-					console.log(this.searchData);
-					console.log(result);
+					// console.log(this.searchData);
+					// console.log(result);
 					const data = result.rows;
             		if(this.pageNum>1 && data.length < this.pageSize){
             			return this.loadStatus = 'nomore';
@@ -112,6 +112,15 @@
             		for (let i = 0; i < this.houseList.length; i++) {
             		    // 先转成字符串再转成对象，避免数组对象引用导致数据混乱
             		    let item = this.houseList[i]
+				if(item.price == 0){
+					item.price = '面议'
+				}
+				if(!item.roomArea || item.roomArea == 0) {
+					item.roomArea = 'xx'
+				}
+				if(!item.houseArea || item.houseArea == 0) {
+					item.houseArea = 'xx'
+				}
             			if(!item.faceUrl.includes(config.staticUrl)){
             				item.image = config.staticUrl+config.web_prefix+item.faceUrl
             			}else{

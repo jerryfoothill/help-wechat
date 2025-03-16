@@ -134,6 +134,15 @@
 					for (let i = 0; i < this.houseList.length; i++) {
 						// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
 						let item = this.houseList[i]
+						if(item.price == 0){
+							item.price = '面议'
+						}
+						if(!item.roomArea || item.roomArea == 0) {
+							item.roomArea = 'xx'
+						}
+						if(!item.houseArea || item.houseArea == 0) {
+							item.houseArea = 'xx'
+						}
 						if(!item.faceUrl.includes(config.staticUrl)){
 							item.image = config.staticUrl+config.web_prefix+item.faceUrl
 						}else{

@@ -28,7 +28,7 @@
 					<u-input :border="border" placeholder="请输入门牌号" v-model="model.houseNo" type="text"></u-input>
 				</u-form-item>
 				<u-form-item  :label-position="labelPosition" label="装修" prop="decoration" label-width="180" left-icon="eye" :leftIconStyle="{color:'#d5d5d5'}">
-					<u-input :border="border" type="select" placeholder="请选择装修(必选)":select-open="decorationShow" v-model="model.decoration"  @click="decorationShow = true"></u-input>
+					<u-input :border="border" type="select" placeholder="请选择装修":select-open="decorationShow" v-model="model.decoration"  @click="decorationShow = true"></u-input>
 				</u-form-item>
 				<u-form-item  :label-position="labelPosition" label="房东姓名" prop="ownerName" label-width="180"
 				left-icon="account" :leftIconStyle="{color:'#d5d5d5'}">
@@ -40,7 +40,7 @@
 				</u-form-item>
 				<u-form-item label-width="180" :label-position="labelPosition" label="付款方式" prop="payType"
 				left-icon="rmb-circle" :leftIconStyle="{color:'#d5d5d5'}">
-					<u-input :border="border" type="select" :select-open="actionSheetShow" v-model="model.payType" placeholder="请选择付款方式(必选)" @click="actionSheetShow = true"></u-input>
+					<u-input :border="border" type="select" :select-open="actionSheetShow" v-model="model.payType" placeholder="请选择付款方式" @click="actionSheetShow = true"></u-input>
 				</u-form-item>
 			</u-form>
 			<u-select mode="single-column" :list="selectList" v-model="selectShow" @confirm="selectConfirm"></u-select>
@@ -127,13 +127,13 @@ export default {
 						trigger: ['change','blur'],
 					}
 				],
-				address: [
-					{
-						required: true,
-						message: '请输入详细地址',
-						trigger: ['change','blur'],
-					}
-				],
+				// address: [
+				// 	{
+				// 		required: true,
+				// 		message: '请输入详细地址',
+				// 		trigger: ['change','blur'],
+				// 	}
+				// ],
 				// houseNo: [
 				// 	{
 				// 		required: true,
@@ -141,13 +141,13 @@ export default {
 				// 		trigger: ['change','blur'],
 				// 	}
 				// ],
-				decoration: [
-					{
-						required: true,
-						message: '请选择装修',
-						trigger: ['change','blur'],
-					}
-				],
+				// decoration: [
+				// 	{
+				// 		required: true,
+				// 		message: '请选择装修',
+				// 		trigger: ['change','blur'],
+				// 	}
+				// ],
 				ownerName: [
 					{
 						required: true,
@@ -162,13 +162,13 @@ export default {
 						trigger: ['change','blur'],
 					}
 				],
-				payType: [
-					{
-						required: true,
-						message: '请选择付款方式',
-						trigger: ['change','blur'],
-					}
-				],
+				// payType: [
+				// 	{
+				// 		required: true,
+				// 		message: '请选择付款方式',
+				// 		trigger: ['change','blur'],
+				// 	}
+				// ],
 			},
 			border: false,
 			check: false,
@@ -229,7 +229,7 @@ export default {
 					this.model.agentPhone = this.model.owerPhone
 					this.model.agentUserId = this.model.publishId
 					this.model.agentName = this.model.ownerName
-					console.log(this.model)
+					// console.log(this.model)
 					return this.$u.route({
 						url: '/pages/detail/addHouse',
 						params: {
@@ -295,6 +295,16 @@ export default {
 					this.model.roomLabel = '主卧'
 				}else if(this.model.roomType == 2){
 					this.model.roomLabel = '次卧'
+				}
+				//console.log(this.model)
+				if(this.model.price == 0) {
+					this.model.price = '面议'
+				}
+				if(!this.model.roomArea || this.model.roomArea == 0) {
+					this.model.roomArea = 'xx'
+				}
+				if(!this.model.houseArea || this.model.houseArea == 0) {
+					this.model.houseArea = 'xx'
 				}
 			});
 		},

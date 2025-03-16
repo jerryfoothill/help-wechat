@@ -273,7 +273,16 @@
 					id: houseId
 				}).then(result => {
 					let room = result.data
-					console.log(room)
+					// console.log(room)
+					if(room.price == 0) {
+						room.price = '面议'
+					}
+					if(!room.roomArea || room.roomArea == 0) {
+						room.roomArea = 'xx'
+					}
+					if(!room.houseArea || room.houseArea == 0) {
+						room.houseArea = 'xx'
+					}
 					if(room.type == 0){
 						room.type = '整租'
 					}else if(room.type == 1){
@@ -324,7 +333,7 @@
 					this.user = room.user
 					this.village = room.village
 					this.room = room
-					console.log(this.room.agentName, this.room.agentPhone, room.agentName, room.agentPhone)
+					// console.log(this.room.agentName, this.room.agentPhone, room.agentName, room.agentPhone)
 					// 判断是否收藏
 					this.selectHouseHeart(houseId);
 					//查询房源评价
@@ -345,7 +354,7 @@
 						imageUrl = this.room.faceUrl
 					}
 					this.room.faceUrl = imageUrl
-					console.log(this.room.faceUrl, imageUrl)
+					// console.log(this.room.faceUrl, imageUrl)
 					this.$u.mpShare = {
 						title:  shareTitle, // 默认为小程序名称，可自定义
 						// 支持PNG及JPG，默认为当前页面的截图
@@ -437,7 +446,7 @@
 				let imgArr = this.swiperlist.map(val=>{
 					return val.image
 				})
-				console.log(imgArr);
+				// console.log(imgArr);
 				 // 预览图片
 				uni.previewImage({
 					current: index,

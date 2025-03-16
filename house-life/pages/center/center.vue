@@ -13,7 +13,15 @@
 				
 			</view>
 			<view class="buttom" v-else>
-				<button @tap="wxLogin()" class="clearBtn">
+				<button open-type="getPhoneNumber" @getphonenumber="weChatLogin" class="clearBtn">
+					<view class="loginType">
+						<view class="item">
+							<view class="icon"><u-icon size="100" name="weixin-fill" color="rgb(83,194,64)"></u-icon></view>
+							微信登录
+						</view>
+					</view>
+				</button>
+				<!-- <button @tap="wxLogin()" class="clearBtn">
 					<view class="loginType">
 						<view class="item">
 							<view class="icon"><u-icon size="100" name="weixin-fill" color="rgb(83,194,64)"></u-icon></view>
@@ -21,7 +29,7 @@
 						</view>
 						
 					</view>
-				</button>
+				</button> -->
 				<!-- <view class="hint">
 					登录代表同意
 					<text class="link">开源字节用户协议、隐私政策，</text>

@@ -8,7 +8,7 @@
 			<view class="t-b">
 				您好，
 				<br />
-				欢迎使用 爱LanXi
+				欢迎使用 职住无忧
 				<br />
 				点击下面图片登录，才能发布信息
 			</view>
@@ -31,22 +31,22 @@
 		</view> -->
 		
 		<!-- #ifdef MP-WEIXIN -->  
-		<!-- <view class="buttom">
+		<view class="buttom">
 			<button open-type="getPhoneNumber" @getphonenumber="weChatLogin" class="clearBtn">
 				<view class="loginType">
 					<view class="item">
-						<view class="icon"><u-icon size="60" name="weixin-fill" color="rgb(83,194,64)"></u-icon></view>
+						<view class="icon"><u-icon size="200" name="weixin-fill" color="rgb(83,194,64)"></u-icon></view>
 						微信手机号登录
 					</view>
 				</view>
 			</button>
-			<!-- <view class="hint">
-				登录代表同意
-				<text class="link">开源字节用户协议、隐私政策，</text>
-				并授权使用您的账号信息（如昵称、头像、收获地址）以便您统一管理
-			</view> --
-		</view> -->
-		<view class="buttom">
+			<view class="hint">
+				登录代表您同意
+				<text class="link">我们的用户协议、隐私政策，</text>
+				并授权我们使用您的微信信息，用以监管信息的发布
+			</view>
+		</view>
+		<!-- <view class="buttom">
 			<button @tap="wxLogin()" class="clearBtn">
 				<view class="loginType">
 					<view class="item">
@@ -59,8 +59,8 @@
 				登录代表同意
 				<text class="link">开源字节用户协议、隐私政策，</text>
 				并授权使用您的账号信息（如昵称、头像、收获地址）以便您统一管理
-			</view> -->
-		</view>
+			</view> --
+		</view> -->
 		<!-- #endif -->
 	</view>
 </template>
@@ -131,16 +131,16 @@ export default {
 			if(code){
 				uni.showLoading({title:"登录中....",mask:true})
 				let url = "/api/miniWxApi/getPhoneNum?code="+code;
-				console.log(url)
+				// console.log(url)
 				this.$u.get(url).then(res => {
-					console.log(res)
+					// console.log(res)
 					let phoneNum = res.phoneNum
 					let weChatUrl = "/api/weChatLogin";
 					this.$u.post(weChatUrl,{
 						username: phoneNum,
 						code: code
 					}).then(data => {
-						console.log(data)
+						// console.log(data)
 						uni.hideLoading();
 						// 登录成功初始化token与用户信息
 						this.$u.vuex('vuex_token', data.token);
@@ -162,17 +162,17 @@ export default {
 			if (code) {
 				uni.showLoading({title:"登录中....",mask:true})
 				let url = "/api/miniWxApi/getOpenId?code="+ code;
-				console.log(url)
+				// console.log(url)
 				this.$u.get(url).then(res => {
-					console.log(res)
+					// console.log(res)
 					let openId = res.openId
-					console.log(openId)
+					// console.log(openId)
 					let weChatUrl = "/api/wxLogin";
 					this.$u.post(weChatUrl,{
 						username: openId,
 						code: code
 					}).then(data => {
-						console.log(data)
+						// console.log(data)
 						uni.hideLoading();
 						// 登录成功初始化token与用户信息
 						this.$u.vuex('vuex_token', data.token);

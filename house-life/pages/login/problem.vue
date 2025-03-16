@@ -6,12 +6,12 @@
 				{{item.body}}
 			</u-collapse-item>
 		</u-collapse>
-		<view class="u-m-t-20">
+		<!-- <view class="u-m-t-20">
 			<u-button class="u-m-20" type="default" @click="server" plain>
 				<u-icon name="level" color="#969799" size="38"></u-icon>
 				前往官网
 			</u-button>
-		</view>
+		</view> -->
 	</view>
 </template>
 
@@ -22,32 +22,32 @@ export default {
 			appUrl: false,
 			url: "https://sourcebyte.cn",
 			itemList: [
+				// {
+				// 	head: "初始密码是什么？",
+				// 	body: "初始密码默认为手机号码,为了您的账户安全,请进入个人中心进行修改。",
+				// 	open: false,
+				// },
 				{
-					head: "初始密码是什么？",
-					body: "初始密码默认为手机号码,为了您的账户安全,请进入个人中心进行修改。",
-					open: false,
-				},
-				{
-					head: "技术支持电话是多少？",
-					body: "联系电话：18720989281",
-					open: false,
-				},
-				{
-					head: "关于我们",
-					body: "我们专注提供专业的软件产品和技术。为合作伙伴提供安全可靠的软件产品与解决方案，共同帮助终端用户实现业务创新、快速发展。" ,
+					head: "技术支持邮件是什么？",
+					body: "jerryfoothill@gmail.com",
 					open: true,
 				},
 				{
-					head: "加入我们",
-					body: "邮箱：261648947@qq.com",
-					open: false,
+					head: "关于我们",
+					body: "本平台免费帮助外来务工人员找房子、找工作，帮助当地居民与企业出租房屋和招募员工。" ,
+					open: true,
 				},
+				// {
+				// 	head: "加入我们",
+				// 	body: "邮箱：261648947@qq.com",
+				// 	open: false,
+				// },
 			],
 		}
 	},
 	methods: {
 		server(){
-			let url = "https://sourcebyte.vip"
+			let url = ""
 			// #ifdef  H5
 				window.open(url, '_blank');
 			// #endif
