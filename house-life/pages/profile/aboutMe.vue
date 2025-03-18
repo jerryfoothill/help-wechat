@@ -5,7 +5,7 @@
 	<view class="titleZ text-center align-center">
 		<text class="text-bold" style="font-size: 28px;">关于我们</text>
 		<view class="contentZ">
-			<text class="text-xl">本平台免费帮助外来务工人员找房子、找工作，帮助当地居民与企业出租房屋和招募员工。
+			<text class="text-xl">本平台免费帮助外来务工人员找房子、发布需求，帮助当地居民与企业出租房屋和发布需求。
 请大家珍惜使用平台，如果发布非法信息，一切后果自负！
 请大家不要轻信平台上发布的任何信息，请再三确认，以防被骗。
 本平台提供免费服务，不承担任何法律义务。
