@@ -35,8 +35,8 @@
 			<button open-type="getPhoneNumber" @getphonenumber="weChatLogin" class="clearBtn">
 				<view class="loginType">
 					<view class="item">
-						<view class="icon"><u-icon size="200" name="weixin-fill" color="rgb(83,194,64)"></u-icon></view>
-						微信手机号登录
+						<view class="icon"><u-icon size="200" name="lock-fill" color="rgb(83,194,64)"></u-icon></view>
+						手机号快速登录
 					</view>
 				</view>
 			</button>
