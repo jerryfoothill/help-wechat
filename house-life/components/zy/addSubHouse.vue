@@ -221,9 +221,10 @@ export default {
 			if(this.$u.test.isEmpty(this.model.featureList)){
 				return this.$mytip.toast('请至少选择一个房源亮点')
 			}
-			let url = "api/houseApi/saveHouse";
+			
+			let url = this.$u.http.config.static_urls.addHouse
 			if(this.model.id){
-				url = "api/houseApi/updateHouse";
+				url = this.$u.http.config.static_urls.updateHouse
 			}
 			this.model.publishId = uni.getStorageSync('lifeData').vuex_user.user.userId;
 			this.$u.post(url,this.model).then(data => {

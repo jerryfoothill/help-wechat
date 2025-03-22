@@ -5,15 +5,21 @@ const install = (Vue, vm) => {
 	Vue.prototype.$u.http.setConfig({
 		// baseUrl打包app时放开，h5模式下会和vue.config.js代理冲突，导致失效
 		baseUrl: config.baseUrl,
-		web_prefix: config.web_prefix
+		web_prefix: config.web_prefix,
+		static_urls: config.static_urls,
 		
 	});
 	// 请求拦截，配置Token等参数
 	Vue.prototype.$u.http.interceptor.request = (config) => {
-		// config.header.Token = '5d33018e653d897fc259b42cf022c1b3';
-		// 方式一，存放在vuex的token，假设使用了uView封装的vuex方式，见：https://uviewui.com/components/globalVariable.html
-		// 自定义token头
-		// config.header.Authorization = vm.vuex_token;
+		// 从vuex中获取token
+		// const token = vm.vuex_token;
+		// let lifeData = uni.getStorageSync('lifeData');
+		// console.log(lifeData)
+		// // 如果有token，则添加到请求头中
+		// if (lifeData && lifeData.vuex_token) {
+		// 	config.header['X-Access-Token'] = lifeData.vuex_token;
+		// }
+		// console.log(config)
 		return config; 
 	};
 	// 响应拦截，判断状态码是否通过

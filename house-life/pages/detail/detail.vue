@@ -246,14 +246,25 @@
 					})
 				}
 				// 收藏
-				let url = "api/houseApi/saveHeart";
+				let url = this.$u.http.config.static_urls.addHouseHeart
+				if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+						url = this.$u.http.config.static_urls.updateHouseHeart
+				}
+				//console.log(this.room.heart)
 				this.$u.post(url, {
-					heart: this.room.heart,
+					heart: this.room.heart ? 1 : 0,
 					houseId: this.room.id,
 					userId: vuex_user.user.userId,
 				}).then(result => {
+					//console.log(result)
 					this.room.heart = !this.room.heart
-					this.$mytip.toast(result.msg)
+					if (this.$u.http.config.static_urls.server === 'source-vue') {
+						this.$mytip.toast(result.msg)
+					}
+					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+						this.$mytip.toast(result.message)
+						console.log(this.room.heart)
+					}
 				});
 			},
 			goHome(){
@@ -268,12 +279,19 @@
                 });
             },
 			findHouseById(houseId){
-				let url = "api/houseApi/findHouseById";
+				let url = this.$u.http.config.static_urls.findHouseById
 				this.$u.get(url, {
 					id: houseId
 				}).then(result => {
-					let room = result.data
-					// console.log(room)
+					//console.log(result)
+					let room = "";
+					if (this.$u.http.config.static_urls.server === 'source-vue') {
+						room = result.data;
+					}
+					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+						room = result.result
+					}
+					console.log(room)
 					if(room.price == 0) {
 						room.price = '面议'
 					}
@@ -310,36 +328,57 @@
 					}else{
 						room.floor = room.floor + '层'
 					}
-					this.swiperlist = room.imageList.map(val=>{
-						let imgUrl = val.imgUrl
-						if(!imgUrl.includes(config.staticUrl)){
-							imgUrl = config.staticUrl+config.web_prefix+val.imgUrl
-						}else{
-							imgUrl = val.imgUrl
-						}
-						return {
-							title: val.imageName,
-							image: imgUrl
-						}
-					})
-					this.tagList = room.featureList.map(val=>{
-						return {
-							title: val.feature,
-						}
-					})
+					if (this.$u.http.config.static_urls.server === 'source-vue') {
+						this.swiperlist = room.imageList.map(val=>{
+							let imgUrl = val.imgUrl
+							if(imgUrl && !imgUrl.includes(config.staticUrl)){
+								imgUrl = config.staticUrl+config.web_prefix+val.imgUrl
+							}else{
+								imgUrl = val.imgUrl
+							}
+							return {
+								title: val.imageName,
+								image: imgUrl
+							}
+						})
+						this.tagList = room.featureList.map(val=>{
+							return {
+								title: val.feature,
+							}
+						})
+					}
+					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+						var arr = room.faceUrl.split(",");
+						arr.forEach((item) => {
+							const token = uni.getStorageSync('lifeData').vuex_token;
+							let slist = {
+								title: "",
+								image: item.includes(config.staticUrl)? item + '?token=' + token : config.staticUrl+"/"+item + '?token=' + token
+							}
+							this.swiperlist.push(slist)
+						})
+						//console.log(arr, this.swiperlist)
+					}
 					if(room.agentAvatar != null && !room.agentAvatar.includes(config.staticUrl)){
 						room.agentAvatar = config.staticUrl+room.agentAvatar
 					}
 					this.user = room.user
-					this.village = room.village
+					if (this.$u.http.config.static_urls.server === 'source-vue') {
+						this.village = room.village
+					}
+					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+						this.village.name = room.villageName
+					}
 					this.room = room
 					// console.log(this.room.agentName, this.room.agentPhone, room.agentName, room.agentPhone)
 					// 判断是否收藏
 					this.selectHouseHeart(houseId);
 					//查询房源评价
-					this.selectHouseEvals(houseId);
+					// this.selectHouseEvals(houseId);
 					
 					// 分享自定义标题与图片
+					//console.log(this.village, this.room.faceUrl)
+					
 					let shareTitle = ''
 					if(room.type == '整租'){
 						shareTitle = this.village.name + " " + this.room.houseNum + this.room.houseHall + this.room.toiletNum + " " + this.room.decoration+ " ¥" + this.room.price+"/月"
@@ -348,7 +387,7 @@
 					}
 
 					let imageUrl = ''
-					if(!this.room.faceUrl.includes(config.staticUrl)){
+					if(this.room.faceUrl && !this.room.faceUrl.includes(config.staticUrl)){
 						imageUrl = config.staticUrl+config.web_prefix+this.room.faceUrl
 					}else{
 						imageUrl = this.room.faceUrl
@@ -407,12 +446,20 @@
 				let lifeData = uni.getStorageSync('lifeData');
 				let vuex_user = lifeData.vuex_user
 				if(vuex_user){
-					let url = "api/houseApi/selectHouseHeart";
+					// let url = "api/houseApi/selectHouseHeart";
+					let url = this.$u.http.config.static_urls.selectHouseHeart
 					this.$u.get(url, {
 						houseId: houseId,
 						userId: vuex_user.user.userId,
 					}).then(result => {
-						this.room.heart = result.data
+						//console.log(result)
+						if (this.$u.http.config.static_urls.server === 'source-vue') {
+							this.room.heart = result.data
+						}
+						if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+							this.room.heart = result.result.records[0] ? (result.result.records[0].heart == 0 ? true : false) : false
+							console.log(this.room.heart)
+						}
 					});
 				}
 			},			

@@ -107,7 +107,7 @@
 				   // {name:"求职信息",src:"/static/img/index/cover_2022/jobs.png",url:"/pages/job/jobSeekingList"},
 				   // {name:"招聘员工",src:"/static/img/index/cover_2022/recruit.png",type:"5"},
 				   // {name:"招聘信息",src:"/static/img/index/cover_2022/rlist.png",url:"pages/job/recruitList"},
-				   {name:"发布信息",src:"/static/img/index/cover_2022/recruit.png",type:"6"},
+				   {name:"发布信息",src:"/static/img/index/cover_2022/info.png",type:"6"},
 				   {name:"信息列表",src:"/static/img/index/cover_2022/rlist.png",url:"pages/info/infoList"},
 				],
 				loadStatus: 'loadmore',
@@ -179,7 +179,7 @@
 					this.flowList = []
 					this.$refs.uWaterfall.clear();
 				}
-				let url = "/api/houseApi/findHouseRoomList";
+				let url = this.$u.http.config.static_urls.findHouseRoomList
 				this.$u.get(url, {
 					state:1,
 					// villageCity:uni.getStorageSync('lifeData').vuex_city,
@@ -188,7 +188,14 @@
 					orderByColumn: 'update_time,create_time',
 					isAsc: 'desc'
 				}).then(result => {
-					const data = result.rows;
+					//console.log(result)
+					let data = "";
+					if (this.$u.http.config.static_urls.server === 'source-vue') {
+						data = result.rows;
+					}
+					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+						data = result.result.records
+					}
 					if(this.pageNum>1 && data.length < this.pageSize){
 						return this.loadStatus = 'nomore';
 					}
@@ -206,8 +213,15 @@
 						if(!item.houseArea || item.houseArea == 0) {
 							item.houseArea = 'xx'
 						}
-						if(!item.faceUrl.includes(config.staticUrl)){
-							item.image = config.staticUrl+config.web_prefix+item.faceUrl
+						if(item.faceUrl && !item.faceUrl.includes(config.staticUrl)){
+							if (this.$u.http.config.static_urls.server === 'source-vue') {
+								item.image = config.staticUrl+config.web_prefix+item.faceUrl
+							}
+							if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+								var arr = item.faceUrl.split(",");
+								const token = uni.getStorageSync('lifeData').vuex_token;
+								item.image = config.staticUrl+config.web_prefix+"/" + arr[0] + '?token=' + token
+							}
 						}else{
 							item.image = item.faceUrl
 						}
@@ -265,29 +279,42 @@
 						})
 					}else{
 						// 判断Token是否有效
-						let url = "/api/profile/isExpiration";
-						return this.$u.get(url,{
-							token:token
-						}).then(obj => {
-							if(obj.data){
-								// 没有token过期则跳转到登录
-								return uni.reLaunch({
-									url:'../login/login'
-								})
-							}else{
-								console.log(item.type)
-								if (item.type === "2") {
-									return this.$u.route('/pages/detail/preHouse');
-								} else if (item.type === "3") {
-									return this.$u.route('/pages/job/addJobSeeking')
-								} else if (item.type === "5") {
-									return this.$u.route('/pages/job/addRecruit')
-								} else if (item.type === "6") {
-									return this.$u.route('/pages/info/addInfo')
+						if (this.$u.http.config.static_urls.server === 'source-vue') {
+							let url = "/api/profile/isExpiration";
+							return this.$u.get(url,{
+								token:token
+							}).then(obj => {
+								if(obj.data){
+									// 没有token过期则跳转到登录
+									return uni.reLaunch({
+										url:'../login/login'
+									})
+								}else{
+									console.log(item.type)
+									if (item.type === "2") {
+										return this.$u.route('/pages/detail/preHouse');
+									} else if (item.type === "3") {
+										return this.$u.route('/pages/job/addJobSeeking')
+									} else if (item.type === "5") {
+										return this.$u.route('/pages/job/addRecruit')
+									} else if (item.type === "6") {
+										return this.$u.route('/pages/info/addInfo')
+									}
+										
 								}
-									
+							});
+						}
+						if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+							if (item.type === "2") {
+								return this.$u.route('/pages/detail/preHouse');
+							} else if (item.type === "3") {
+								return this.$u.route('/pages/job/addJobSeeking')
+							} else if (item.type === "5") {
+								return this.$u.route('/pages/job/addRecruit')
+							} else if (item.type === "6") {
+								return this.$u.route('/pages/info/addInfo')
 							}
-						});
+						}
 					}
 				}else if(item.type){
 					// return this.$u.route('/pages/search/searchList');
@@ -321,18 +348,19 @@
 				});
 			},
 			getNoticecList(){
-				let url = "/api/notice/findNoticeList";
-				this.$u.get(url,{
-					pageNum:1,
-					pageSize:50,
-					orderByColumn:'create_time',
-					isAsc:'desc'
-				}).then(obj => {
-					let data = obj.rows
-					data.filter(item=>{
-						this.noticeList.push(item.noticeTitle)
-					})
-				});
+				// TODO:
+				// let url = "/api/notice/findNoticeList";
+				// this.$u.get(url,{
+				// 	pageNum:1,
+				// 	pageSize:50,
+				// 	orderByColumn:'create_time',
+				// 	isAsc:'desc'
+				// }).then(obj => {
+				// 	let data = obj.rows
+				// 	data.filter(item=>{
+				// 		this.noticeList.push(item.noticeTitle)
+				// 	})
+				// });
 			},
 			moreInfo(){
 				uni.navigateToMiniProgram({

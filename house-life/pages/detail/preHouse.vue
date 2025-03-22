@@ -8,6 +8,10 @@
 		<!-- #endif -->
 		<view class="wrap">
 			<u-form :model="model" :rules="rules" ref="uForm" :errorType="errorType">
+				<!-- <u-form-item :label-position="labelPosition" label="村庄名称" prop="villageName" label-width="180"
+				left-icon="map" :leftIconStyle="{color:'#d5d5d5'}">
+					<u-input :border="border" type="select" :select-open="selectShow" v-model="model.villageName" placeholder="请选择小区(必选)" @click="selectShow = true"></u-input>
+				</u-form-item> -->
 				<u-form-item  :label-position="labelPosition" label="村庄名称" prop="villageName" label-width="180"
 				left-icon="map" :leftIconStyle="{color:'#d5d5d5'}">
 					<u-input :border="border" placeholder="请输入村庄名称(必填)" v-model="model.villageName" type="text"></u-input>
@@ -261,13 +265,20 @@ export default {
 			this.model.payType = this.actionSheetList[index].text;
 		},
 		findVillageList() {
-			let url = "/api/houseApi/findVillageList";
+			let url = this.$u.http.config.static_urls.findVillageList
 			this.$u.get(url,{
-					city:uni.getStorageSync('lifeData').vuex_city,
+					//city:uni.getStorageSync('lifeData').vuex_city,
             		orderByColumn: 'name',
             		isAsc: 'desc'
             	}).then(result => {
-				const data = result.rows
+					//console.log(result)
+					let data = ""
+				if (this.$u.http.config.static_urls.server === 'source-vue') {
+					data = result.rows
+				}
+				if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+					data = result.result.records
+				}
 				for (let i = 0; i < data.length; i++) {
 				    // 先转成字符串再转成对象，避免数组对象引用导致数据混乱
 				    let item = data[i]

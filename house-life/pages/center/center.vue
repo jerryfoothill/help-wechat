@@ -16,8 +16,8 @@
 				<button open-type="getPhoneNumber" @getphonenumber="weChatLogin" class="clearBtn">
 					<view class="loginType">
 						<view class="item">
-							<view class="icon"><u-icon size="100" name="weixin-fill" color="rgb(83,194,64)"></u-icon></view>
-							微信登录
+							<view class="icon"><u-icon size="100" name="lock-fill" color="rgb(83,194,64)"></u-icon></view>
+							点击登录
 						</view>
 					</view>
 				</button>
@@ -101,7 +101,9 @@
 		},
 		onShow(){
 			// 检查token
-			this.checkToken();
+			if (this.$u.http.config.static_urls.server === 'source-vue') {
+				this.checkToken();
+			}
 		},
 		methods: {
 			logout() {
@@ -170,36 +172,114 @@
 			updateAvatar(){
 				this.avatar = uni.getStorageSync('lifeData').vuex_user.user.avatar.includes(config.staticUrl)?uni.getStorageSync('lifeData').vuex_user.user.avatar:config.staticUrl+uni.getStorageSync('lifeData').vuex_user.user.avatar
 			},
-			async wxLogin(e){
-				const {
-					code
-				} = await wx.login();			
-			
-				if (code) {
+			weChatLogin(e){
+				let code= e.detail.code;
+				console.log("e: ", e)
+				if(code){
 					uni.showLoading({title:"登录中....",mask:true})
-					let url = "/api/miniWxApi/getOpenId?code="+ code;
-					console.log(url)
-					this.$u.get(url).then(res => {
+					let url = "/" + config.web_prefix + "/sys/wechatPhoneLogin"
+					// console.log(url)
+					this.$u.post(url, {
+						code: e.detail.code,
+						encryptedData: e.detail.encryptedData,
+						iv: e.detail.iv
+					}).then(res => {
 						console.log(res)
-						let openId = res.openId
-						console.log(openId)
-						let weChatUrl = "/api/wxLogin";
-						this.$u.post(weChatUrl,{
-							username: openId,
-							code: code
-						}).then(data => {
-							console.log(data)
+						if (res.success) {					  
 							uni.hideLoading();
+							const { result } = res
+							const userInfo = result.userInfo
+							
+							let user = {}
+							user.userId = userInfo.id
+							user.userName = userInfo.username
+							user.nickName = userInfo.realname
+							let loginUser = {}
+							loginUser.user = user
+							
 							// 登录成功初始化token与用户信息
-							this.$u.vuex('vuex_token', data.token);
-							this.$u.vuex('vuex_user', data.loginUser);
+							this.$u.vuex('vuex_token', result.token);
+							this.$u.vuex('vuex_user', loginUser);
 							uni.switchTab({
 								url: '/pages/index/index'
 							})
-						});
+						}
 					});
 				}else{
 					this.$mytip.toast('登录失败')
+				}
+			},
+			async wxLogin(e){
+				const {
+					code
+				} = await wx.login();	
+						
+				if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+					if (code) {
+						uni.showLoading({title:"登录中....",mask:true})
+			
+							console.log(code)
+							let weChatUrl = "/sys/wechatLogin"
+							this.$u.post(weChatUrl,{
+								code: code
+							}).then(res => {
+								console.log(res)
+								if (res.success) {					  
+									uni.hideLoading();
+									const { result } = res
+									const userInfo = result.userInfo
+									
+									let user = {}
+									user.userId = userInfo.id
+									user.userName = userInfo.username
+									user.nickName = userInfo.realname
+									user.tenantId = userInfo.loginTenantId
+									let loginUser = {}
+									loginUser.user = user
+									
+									// 登录成功初始化token与用户信息
+									this.$u.vuex('vuex_token', result.token);
+									this.$u.vuex('vuex_user', loginUser);
+									uni.switchTab({
+										url: '/pages/index/index'
+									})
+									console.log(loginUser)
+								}
+							});
+			
+					}else{
+						this.$mytip.toast('登录失败')
+					}
+				
+				}
+				if (this.$u.http.config.static_urls.server === 'source-vue') {
+			
+					if (code) {
+						uni.showLoading({title:"登录中....",mask:true})
+						let url = "/api/miniWxApi/getOpenId?code="+ code;
+						// console.log(url)
+						this.$u.get(url).then(res => {
+							// console.log(res)
+							let openId = res.openId
+							// console.log(openId)
+							let weChatUrl = "/api/wxLogin";
+							this.$u.post(weChatUrl,{
+								username: openId,
+								code: code
+							}).then(data => {
+								console.log(data)
+								uni.hideLoading();
+								// 登录成功初始化token与用户信息
+								this.$u.vuex('vuex_token', data.token);
+								this.$u.vuex('vuex_user', data.loginUser);
+								uni.switchTab({
+									url: '/pages/index/index'
+								})
+							});
+						});
+					}else{
+						this.$mytip.toast('登录失败')
+					}
 				}
 			
 			},

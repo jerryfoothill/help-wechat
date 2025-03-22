@@ -23,8 +23,16 @@ class Request {
 		options.responseType = options.responseType || this.config.responseType;
 		options.url = options.url || '';
 		options.params = options.params || {};
-		options.header = Object.assign({}, this.config.header, options.header);
+		let lifeData = uni.getStorageSync('lifeData');
+		let loginUser = lifeData.vuex_user
+		// console.log(lifeData, loginUser, loginUser.user)
+		let header_token = {
+			  'X-Access-Token': lifeData.vuex_token,
+			  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
+		}
+		options.header = Object.assign({}, this.config.header, options.header, header_token);
 		options.method = options.method || this.config.method;
+		// console.log(options)
 
 		return new Promise((resolve, reject) => {
 			options.complete = (response) => {
@@ -145,6 +153,7 @@ class Request {
 
 		// get请求
 		this.get = (url, data = {}, header = {}) => {
+			//console.log("header:", header)
 			return this.request({
 				method: 'GET',
 				url,

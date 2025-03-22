@@ -91,24 +91,26 @@
 						url:'../login/login'
 					})
 				}
-				this.userId=vuex_user.userId;
+				this.userId=vuex_user.user.userId;
+				//console.log(this.userId)
 				this.$refs.inputDialog.open();
 				//判断是否有评价权限
-				// let url = "api/houseApi/checkAuthEvals";
-				// this.$u.get(url, {
-				// 	houseId: this.houseId,
-				// 	userId:this.userId
+				let url = "api/houseApi/checkAuthEvals";
+				this.$u.get(url, {
+					houseId: this.houseId,
+					userId:this.userId
 					
-				// }).then(result => {	
-				// 	if(result.code === 200 && result.data.length>0){
-				// 		this.$refs.inputDialog.open();
-				// 	}else{
-				// 		this.$mytip.toast("只有租客才能进行评论！");
-				// 	}				
-				// });
+				}).then(result => {	
+					if(result.code === 200 && result.data.length>0){
+						this.$refs.inputDialog.open();
+					}else{
+						this.$mytip.toast("只有租客才能进行评论！");
+					}				
+				});
 			},			
 			submitEval(){
 				let url = "api/houseApi/saveHouseEvals";
+				//console.log(this.userId)
 				this.$u.get(url, {
 					houseId: this.houseId,
 					evalu: this.ownevalu,

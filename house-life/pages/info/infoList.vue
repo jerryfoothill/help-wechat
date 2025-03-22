@@ -1,6 +1,8 @@
 <template>
   <view class="container">
-    <view class="select-container">请选择信息类型：
+    <u-form >
+      <u-form-item label="信息类型" prop="infoType" 
+      label-width="180" :label-position="labelPosition" left-icon="list" :leftIconStyle="{color:'#d5d5d5'}">
       <u-input
         v-model="typeLabel"
         type="select"
@@ -8,9 +10,10 @@
         placeholder="请选择信息类型"
         @click="typeShow = true"
       />
-    </view>
+    </u-form-item>
     
     <u-select v-model="typeShow" :list="typeList" @confirm="typeConfirm"></u-select>
+	</u-form>
     
     <view class="waterfall-container">
       <view class="waterfall-column">
@@ -62,14 +65,7 @@ export default {
       typeLabel: '全部',
       current: 0,
       typeList: [
-        { value: '0', label: '全部' },
-        { value: '1', label: '寻人启事' },
-        { value: '2', label: '寻物启事' },
-        { value: '3', label: '失物招领' },
-        { value: '4', label: '招工信息' },
-        { value: '5', label: '求职信息' },
-        { value: '6', label: '求购信息' },
-        { value: '7', label: '出售信息' },
+        { value: '0', label: '全部' }
       ],
       infoList: [],
       leftList: [],
@@ -78,19 +74,11 @@ export default {
       pageSize: 10,
       loadStatus: 'loadmore',
       emptyIcon: "/static/empty/default.png",
-      typeMap: {
-        '1': '寻人启事',
-        '2': '寻物启事',
-        '3': '失物招领',
-        '4': '招工信息',
-        '5': '求职信息',
-        '6': '求购信息',
-        '7': '出售信息',
-      }
+      typeMap: {}
     }
   },
   onLoad() {
-    this.fetchInfoList()
+    this.getInfoTypes()
   },
   onReachBottom() {
     if (this.loadStatus === 'loadmore') {
@@ -110,12 +98,63 @@ export default {
       this.loadStatus = 'loadmore'
       this.fetchInfoList()
     },
+    getInfoTypes() {
+		let lifeData = uni.getStorageSync('lifeData');
+		let loginUser = lifeData.vuex_user
+		//console.log(lifeData, loginUser, loginUser.user)
+      uni.request({
+        url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.infoType_list,
+        method: 'GET',
+        header: {
+          'Authorization': 'Bearer ' + uni.getStorageSync('token'),
+		  'X-Access-Token': lifeData.vuex_token,
+		  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
+        },
+        success: (res) => {
+          if (res.statusCode === 200 && res.data.code === 200) {
+			  this.typeMap = {}
+			  
+			  if (this.$u.http.config.static_urls.server === 'source-vue') {
+			    this.typeList = [
+				  { value: '0', label: '全部' },
+				  ...res.data.data
+				]            
+				
+				res.data.data.forEach(item => {
+				  this.typeMap[item.value] = item.label
+				})
+			  }
+            
+			if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+				this.typeList = res.data.result.records
+				this.typeList.forEach((item) => {
+					item.label = item.name
+					this.typeMap[item.value] = item.label
+				})
+				this.typeList = [
+				  { value: '0', label: '全部' },
+				  ...this.typeList
+				]
+			}
+            
+            this.fetchInfoList()
+          }
+        }
+      })
+    },
     fetchInfoList() {
       if (this.loadStatus === 'loading' || this.loadStatus === 'nomore') return
 
       this.loadStatus = 'loading'
+	  let lifeData = uni.getStorageSync('lifeData');
+	  let loginUser = lifeData.vuex_user
+	  //console.log(lifeData, loginUser, loginUser.user)
+	  // let header_token = {
+	  // 	  'X-Access-Token': lifeData.vuex_token,
+	  // 	  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
+	  // }
       uni.request({
-        url: this.$u.http.config.baseUrl + '/api/infoApi/findInfoList',
+        url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.info_list,
         method: 'GET',
         data: {
           page: this.page,
@@ -124,13 +163,26 @@ export default {
         },
         header: {
           'Authorization': 'Bearer ' + uni.getStorageSync('token'),
+		  'X-Access-Token': lifeData.vuex_token,
+		  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
         },
         success: (res) => {
+			//console.log(res)
           if (res.statusCode === 200 && res.data.code === 200) {
-            const newList = res.data.rows.map(item => ({
-              ...item,
-              trueInfoImage: item.infoImage ? config.baseUrl + config.web_prefix + item.infoImage : ''
-            }))
+			  let newList = {}
+			  if (this.$u.http.config.static_urls.server === 'source-vue') {
+					newList = res.data.rows.map(item => ({
+					  ...item,
+					  trueInfoImage: item.infoImage ? config.baseUrl + config.web_prefix + item.infoImage : ''
+					}))
+			  }
+			  
+			  if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+				  newList = res.data.result.records.map(item => ({
+				    ...item,
+				    trueInfoImage: item.infoImage ? config.baseUrl + config.web_prefix + "/" + item.infoImage : ''
+				  }))
+			  }
 
             // 将新数据分配到左右两列
             newList.forEach((item, index) => {

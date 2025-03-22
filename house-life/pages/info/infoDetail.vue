@@ -42,10 +42,10 @@
         </view>
       </view>
       
-      <view class="publisher-info" v-if="info.userName">
+      <!-- <view class="publisher-info" v-if="info.userName">
         <image :src="info.userAvatar || '/static/avatar/default.png'" class="avatar"></image>
         <text class="publisher-name">{{ info.userName }}</text>
-      </view>
+      </view> -->
     </view>
     <u-empty v-else text="加载中..." mode="loading"></u-empty>
   </view>
@@ -76,21 +76,34 @@ export default {
       return this.typeMap[type] || '未知类型'
     },
     fetchInfoDetail(id) {
+		let lifeData = uni.getStorageSync('lifeData');
+		let loginUser = lifeData.vuex_user
       uni.request({
-        url: this.$u.http.config.baseUrl + `/api/infoApi/findInfoById`,
+        url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.info_findInfoById,
         method: 'GET',
         data: {
           id: id
         },
         header: {
           'Authorization': 'Bearer ' + uni.getStorageSync('token'),
+		  'X-Access-Token': lifeData.vuex_token,
+		  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
         },
         success: (res) => {
           if (res.statusCode === 200 && res.data.code === 200) {
-            this.info = {
-              ...res.data.data,
-              trueInfoImage: res.data.data.infoImage ? config.baseUrl + config.web_prefix + res.data.data.infoImage : ''
-            }
+			  //console.log(res)
+			    if (this.$u.http.config.static_urls.server === 'source-vue') {
+					this.info = {
+					  ...res.data.data,
+					  trueInfoImage: res.data.data.infoImage ? config.baseUrl + config.web_prefix + res.data.data.infoImage : ''
+					}
+			    }
+				if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+					this.info = {
+					  ...res.data.result,
+					  trueInfoImage: res.data.result.infoImage ? config.baseUrl + config.web_prefix + "/" + res.data.result.infoImage : ''
+					}
+				}
           } else {
             this.$u.toast(res.data.msg || '获取详情失败')
           }

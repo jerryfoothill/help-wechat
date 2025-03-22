@@ -61,7 +61,8 @@
 		},
 		methods: {
 			findHeartList() {
-				let url = "/api/houseApi/findHouseHeartList";
+				// let url = "/api/houseApi/findHouseHeartList";
+				let url = this.$u.http.config.static_urls.findHouseHeartList
 				let lifeData = uni.getStorageSync('lifeData');
 				let vuex_user = lifeData.vuex_user
 				this.$u.get(url,{
@@ -72,6 +73,7 @@
 					isAsc: 'desc'
 				}
 				).then(result => {
+					//console.log(result)
 					const data = result.rows;
 					this.houseList = data;
 					for (let i = 0; i < this.houseList.length; i++) {

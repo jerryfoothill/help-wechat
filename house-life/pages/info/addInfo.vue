@@ -111,34 +111,60 @@ export default {
         trueInfoImage: '',
         userId: uni.getStorageSync('lifeData').vuex_user.userId,
       },
-      typeList: [
-        { value: '1', label: '寻人' },
-        { value: '2', label: '寻物' },
-        { value: '3', label: '失物招领' },
-        { value: '4', label: '招工' },
-        { value: '5', label: '求职' },
-        { value: '6', label: '求购' },
-        { value: '7', label: '出售' },
-      ],
+      typeList: [],
       rules: {
-        infoType: [{ required: true, message: '请选择信息类型', trigger: ['change','blur'] }],
+        // infoType: [{ required: true, message: '请选择信息类型', trigger: ['change','blur'] }],
         title: [{ required: true, message: '请输入标题', trigger: ['change','blur'] }],
         location: [{ required: true, message: '请输入地点', trigger: ['change','blur'] }],
-        // infoDate: [{ required: true, message: '请选择时间', trigger: ['change','blur'] }],
         contactName: [{ required: true, message: '请输入联系人姓名', trigger: ['change','blur'] }],
         contactPhone: [{ required: true, message: '请输入联系电话', trigger: ['change','blur'] }],
         content: [{ required: true, message: '请输入详细内容', trigger: ['change','blur'] }],
       },
     }
   },
+  onLoad() {
+    this.getInfoTypes()
+  },
   onReady() {
     this.$refs.uForm.setRules(this.rules)
   },
   methods: {
+    // 获取信息类型列表
+    getInfoTypes() {
+	  let lifeData = uni.getStorageSync('lifeData');
+	  let loginUser = lifeData.vuex_user
+	  console.log(lifeData, loginUser, loginUser.user)
+      uni.request({
+        url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.infoType_list,
+        method: 'GET',
+        header: {
+          'Authorization': 'Bearer ' + lifeData.vuex_token,
+		  'X-Access-Token': lifeData.vuex_token,
+		  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
+        },
+        success: (res) => {
+			//console.log(res)
+          if (res.statusCode === 200 && res.data.code === 200) {
+			if (this.$u.http.config.static_urls.server === 'source-vue') {
+				this.typeList = res.data.data
+			}
+			if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+				this.typeList = res.data.result.records			
+				this.typeList.forEach((item) => {
+					item.label = item.name
+				})
+			}
+			
+			//console.log(this.typeList, res.data.result.records)
+          }
+        }
+      })
+    },
     // 选择信息类型
     typeConfirm(e) {
       this.model.infoType = e[0].value
       this.typeLabel = e[0].label
+	  //console.log(e, this.model.infoType, this.typeLabel)
     },
     // 选择时间
     dateClick() {
@@ -174,24 +200,41 @@ export default {
       uni.showLoading({
         title: '上传中...'
       })
-      
+      let lifeData = uni.getStorageSync('lifeData');
+      let loginUser = lifeData.vuex_user
       uni.uploadFile({
-        url: this.$u.http.config.baseUrl + '/api/infoApi/uploadInfoImage',
+        url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.uploadInfoImage,
         filePath: filePath,
         name: 'file',
         header: {
-          'Authorization': 'Bearer ' + uni.getStorageSync('token')
+          'Authorization': 'Bearer ' + uni.getStorageSync('token'),
+		  'X-Access-Token': lifeData.vuex_token,
+		  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
         },
         success: (uploadRes) => {
           const result = JSON.parse(uploadRes.data)
-          if (result.code === 200) {
-            this.model.infoImage = result.url
-            this.model.trueInfoImage = config.baseUrl + config.web_prefix + result.url
-            this.$u.toast('图片上传成功')
-			console.log(this.model.trueInfoImage)
-          } else {
-            this.$u.toast(result.msg || '图片上传失败')
-          }
+		  //console.log(result)
+		  if (this.$u.http.config.static_urls.server === 'source-vue') {
+			  if (result.code === 200) {
+				this.model.infoImage = result.url
+				this.model.trueInfoImage = config.baseUrl + config.web_prefix + result.url
+				this.$u.toast('图片上传成功')
+				console.log(this.model.trueInfoImage)
+			  } else {
+				this.$u.toast(result.msg || '图片上传失败')
+			  }
+		  }
+		  if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+			  //console.log(result.success)
+			  // if (result.success === 'true') {
+			  				this.model.infoImage = result.message
+			  				this.model.trueInfoImage = config.baseUrl + config.web_prefix + "/" + result.message
+			  				this.$u.toast('图片上传成功')
+			  				console.log(this.model.trueInfoImage)
+			  // } else {
+			  // 				this.$u.toast(result.msg || '图片上传失败')
+			  // }
+		  }
         },
         fail: (err) => {
           console.error(err)
@@ -214,13 +257,16 @@ export default {
           if(!this.$u.test.mobile(this.model.contactPhone)){
             return this.$mytip.toast('请输入正确的手机号码')
           }
-          
+          let lifeData = uni.getStorageSync('lifeData');
+          let loginUser = lifeData.vuex_user
           uni.request({
-            url: this.$u.http.config.baseUrl + '/api/infoApi/addInfo',
+            url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.info_add,
             method: 'POST',
             data: this.model,
             header: {
               'Authorization': 'Bearer ' + uni.getStorageSync('token'),
+			  'X-Access-Token': lifeData.vuex_token,
+			  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
             },
             success: (res) => {
               if (res.statusCode === 200 && res.data.code === 200) {

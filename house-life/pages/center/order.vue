@@ -118,7 +118,7 @@
 				this.current = current;
 			},
 			findHouseList(idx) {
-				let url = "/api/houseApi/findHouseRoomList";
+				let url = this.$u.http.config.static_urls.findHouseRoomList
 				let defaultData = {
 					state:idx,
 					publishId:uni.getStorageSync('lifeData').vuex_user.user.userId,
@@ -129,8 +129,15 @@
 					isAsc: 'desc'
 				}
 				this.$u.get(url, {...defaultData,...this.searchData}).then(result => {
-					const data = result.rows;
+					let data = "";
+					if (this.$u.http.config.static_urls.server === 'source-vue') {
+						data = result.rows;
+					}
+					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+						data = result.result.records
+					}
 					this.houseList = data;
+					//console.log(data)
 					for (let i = 0; i < this.houseList.length; i++) {
 						// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
 						let item = this.houseList[i]
@@ -143,7 +150,7 @@
 						if(!item.houseArea || item.houseArea == 0) {
 							item.houseArea = 'xx'
 						}
-						if(!item.faceUrl.includes(config.staticUrl)){
+						if(item.faceUrl && !item.faceUrl.includes(config.staticUrl)){
 							item.image = config.staticUrl+config.web_prefix+item.faceUrl
 						}else{
 							item.image = item.faceUrl

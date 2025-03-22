@@ -65,6 +65,8 @@
 	</view>
 </template>
 <script>
+	
+import config from "@/common/config.js" // 全局配置文件
 export default {
 	data() {
 		return {
@@ -128,27 +130,36 @@ export default {
 		},
 		weChatLogin(e){
 			let code= e.detail.code;
+			console.log("e: ", e)
 			if(code){
 				uni.showLoading({title:"登录中....",mask:true})
-				let url = "/api/miniWxApi/getPhoneNum?code="+code;
+				let url = "/" + config.web_prefix + "/sys/wechatPhoneLogin"
 				// console.log(url)
-				this.$u.get(url).then(res => {
-					// console.log(res)
-					let phoneNum = res.phoneNum
-					let weChatUrl = "/api/weChatLogin";
-					this.$u.post(weChatUrl,{
-						username: phoneNum,
-						code: code
-					}).then(data => {
-						// console.log(data)
+				this.$u.post(url, {
+					code: e.detail.code,
+					encryptedData: e.detail.encryptedData,
+					iv: e.detail.iv
+				}).then(res => {
+					console.log(res)
+					if (res.success) {					  
 						uni.hideLoading();
+						const { result } = res
+						const userInfo = result.userInfo
+						
+						let user = {}
+						user.userId = userInfo.id
+						user.userName = userInfo.username
+						user.nickName = userInfo.realname
+						let loginUser = {}
+						loginUser.user = user
+						
 						// 登录成功初始化token与用户信息
-						this.$u.vuex('vuex_token', data.token);
-						this.$u.vuex('vuex_user', data.loginUser);
+						this.$u.vuex('vuex_token', result.token);
+						this.$u.vuex('vuex_user', loginUser);
 						uni.switchTab({
 							url: '/pages/index/index'
 						})
-					});
+					}
 				});
 			}else{
 				this.$mytip.toast('登录失败')
@@ -157,33 +168,74 @@ export default {
 		async wxLogin(e){
 			const {
 				code
-			} = await wx.login();			
+			} = await wx.login();	
+					
+			if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+				if (code) {
+					uni.showLoading({title:"登录中....",mask:true})
 
-			if (code) {
-				uni.showLoading({title:"登录中....",mask:true})
-				let url = "/api/miniWxApi/getOpenId?code="+ code;
-				// console.log(url)
-				this.$u.get(url).then(res => {
-					// console.log(res)
-					let openId = res.openId
-					// console.log(openId)
-					let weChatUrl = "/api/wxLogin";
-					this.$u.post(weChatUrl,{
-						username: openId,
-						code: code
-					}).then(data => {
-						// console.log(data)
-						uni.hideLoading();
-						// 登录成功初始化token与用户信息
-						this.$u.vuex('vuex_token', data.token);
-						this.$u.vuex('vuex_user', data.loginUser);
-						uni.switchTab({
-							url: '/pages/index/index'
-						})
+						//console.log(code)
+						let weChatUrl = "/sys/wechatLogin"
+						this.$u.post(weChatUrl,{
+							code: code
+						}).then(res => {
+							//console.log(res)
+							if (res.success) {					  
+								uni.hideLoading();
+								const { result } = res
+								const userInfo = result.userInfo
+								
+								let user = {}
+								user.userId = userInfo.id
+								user.userName = userInfo.username
+								user.nickName = userInfo.realname
+								user.tenantId = userInfo.loginTenantId
+								let loginUser = {}
+								loginUser.user = user
+								
+								// 登录成功初始化token与用户信息
+								this.$u.vuex('vuex_token', result.token);
+								this.$u.vuex('vuex_user', loginUser);
+								uni.switchTab({
+									url: '/pages/index/index'
+								})
+								//console.log(loginUser)
+							}
+						});
+
+				}else{
+					this.$mytip.toast('登录失败')
+				}
+			
+			}
+			if (this.$u.http.config.static_urls.server === 'source-vue') {
+
+				if (code) {
+					uni.showLoading({title:"登录中....",mask:true})
+					let url = "/api/miniWxApi/getOpenId?code="+ code;
+					// console.log(url)
+					this.$u.get(url).then(res => {
+						// console.log(res)
+						let openId = res.openId
+						// console.log(openId)
+						let weChatUrl = "/api/wxLogin";
+						this.$u.post(weChatUrl,{
+							username: openId,
+							code: code
+						}).then(data => {
+							//console.log(data)
+							uni.hideLoading();
+							// 登录成功初始化token与用户信息
+							this.$u.vuex('vuex_token', data.token);
+							this.$u.vuex('vuex_user', data.loginUser);
+							uni.switchTab({
+								url: '/pages/index/index'
+							})
+						});
 					});
-				});
-			}else{
-				this.$mytip.toast('登录失败')
+				}else{
+					this.$mytip.toast('登录失败')
+				}
 			}
 		
 		},
