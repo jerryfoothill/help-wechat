@@ -348,16 +348,19 @@
 						})
 					}
 					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
-						var arr = room.faceUrl.split(",");
-						arr.forEach((item) => {
-							const token = uni.getStorageSync('lifeData').vuex_token;
-							let slist = {
-								title: "",
-								image: item.includes(config.staticUrl)? item + '?token=' + token : config.staticUrl+"/"+item + '?token=' + token
-							}
-							this.swiperlist.push(slist)
-						})
-						//console.log(arr, this.swiperlist)
+						if (room.faceUrl) {
+							var arr = room.faceUrl.split(",");
+							arr.forEach((item) => {
+								const token = uni.getStorageSync('lifeData').vuex_token;
+								let slist = {
+									title: "",
+									image: item.includes(config.staticUrl)? item + '?token=' + token : config.staticUrl+"/"+item + '?token=' + token
+								}
+								this.swiperlist.push(slist)
+							})
+							//console.log(arr, this.swiperlist)
+						}
+						
 					}
 					if(room.agentAvatar != null && !room.agentAvatar.includes(config.staticUrl)){
 						room.agentAvatar = config.staticUrl+room.agentAvatar
