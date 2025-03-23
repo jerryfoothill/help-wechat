@@ -28,7 +28,7 @@ class Request {
 		// console.log(lifeData, loginUser, loginUser.user)
 		let header_token = {
 			  'X-Access-Token': lifeData.vuex_token,
-			  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
+			  'X-Tenant-Id': loginUser? (loginUser.user ? loginUser.user.tenantId : "") : ""
 		}
 		options.header = Object.assign({}, this.config.header, options.header, header_token);
 		options.method = options.method || this.config.method;
