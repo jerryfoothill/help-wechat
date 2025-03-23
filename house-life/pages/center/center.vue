@@ -7,7 +7,7 @@
 					<u-avatar :src="avatar" size="140"></u-avatar>
 				</view>
 				<view class="u-flex-1" >
-					<view class="u-font-18 u-p-b-20">{{vuex_user.user.userName}}</view>
+					<view class="u-font-18 u-p-b-20">{{vuex_user.user.nickName}}</view>
 					<view class="u-font-14 u-tips-color">昵称:{{vuex_user.user.nickName}}</view>
 				</view>
 				
