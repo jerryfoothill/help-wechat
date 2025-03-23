@@ -74,8 +74,15 @@
 				}
 				).then(result => {
 					//console.log(result)
-					const data = result.rows;
+					let data = "";
+					if (this.$u.http.config.static_urls.server === 'source-vue') {
+						data = result.rows;
+					}
+					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+						data = result.result.records
+					}
 					this.houseList = data;
+					console.log(this.houseList)
 					for (let i = 0; i < this.houseList.length; i++) {
 						// 先转成字符串再转成对象，避免数组对象引用导致数据混乱
 						let item = this.houseList[i]
@@ -88,8 +95,15 @@
 						if(!item.houseArea || item.houseArea == 0) {
 							item.houseArea = 'xx'
 						}
-						if(!item.faceUrl.includes(config.staticUrl)){
-							item.image = config.staticUrl+config.web_prefix+item.faceUrl
+						if(item.faceUrl && !item.faceUrl.includes(config.staticUrl)){
+							if (this.$u.http.config.static_urls.server === 'source-vue') {
+								item.image = config.staticUrl+config.web_prefix+item.faceUrl
+							}
+							if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+								var arr = item.faceUrl.split(",");
+								const token = uni.getStorageSync('lifeData').vuex_token;
+								item.image = config.staticUrl+config.web_prefix+"/" + arr[0] + '?token=' + token
+							}
 						}else{
 							item.image = item.faceUrl
 						}
