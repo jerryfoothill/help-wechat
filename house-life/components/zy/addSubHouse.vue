@@ -27,13 +27,21 @@
 							</view>
 						</u-form-item>
 						<view class="custom-gap"></view>
-						<u-form-item :label-position="labelPosition" label="房源图片" label-width="150" required>
-							<u-upload 
-							:custom-btn="true" ref="uUpload" :auto-upload="true" :action="action" :max-size="10 * 1024 * 1024" max-count="9" width="160" height="160" :size-type="siteType">
-								<view slot="addBtn" class="slot-btn" hover-class="slot-btn__hover" hover-stay-time="150">
-									<u-icon name="plus" size="60" :color="$u.color['lightColor']"></u-icon>
-								</view>
-							</u-upload>
+						<u-form-item :label-position="labelPosition" label="房源图片" label-width="150" >
+						  <view class="upload-box">
+						    <template v-if="trueFaceUrl && trueFaceUrl.length > 0">
+						      <view class="preview-box" v-for="(url, index) in trueFaceUrl" :key="index">
+						        <image :src="url" mode="aspectFill" class="preview-image"></image>
+						        <view class="delete-icon" @click="deleteImage(index)">
+						          <u-icon name="close" color="#ffffff" size="20"></u-icon>
+						        </view>
+						      </view>
+						    </template>
+						    <view class="upload-btn" v-if="!trueFaceUrl || trueFaceUrl.length < 2" @click="chooseImage">
+						      <u-icon name="plus" size="40" color="#c0c4cc"></u-icon>
+						      <view class="upload-text">上传图片</view>
+						    </view>
+						  </view>
 						</u-form-item>
 						<u-form-item label-width="150"  :label-position="labelPosition" label="房源描述">	
 							<u-input type="textarea" :border="border" placeholder="请填写房屋描述" v-model="model.introduce" />
@@ -157,6 +165,8 @@ export default {
 			errorType: ['toast'],
 			actionSheetShow: false,
 			dateLabel:'随时入住',
+			trueFaceUrl: [],
+			faceUrl:'',
 			// 图片服务器地址
 			action: config.staticUrl + '/common/upload',
 			siteType:['compressed'],
@@ -187,13 +197,16 @@ export default {
 	methods: {
 		submit() {
 			if(this.$u.test.isEmpty(this.model.roomType)){
-				return this.$mytip.toast('请选择租房间')
+				this.model.roomType = 0
+				//return this.$mytip.toast('请选择租房间')
 			}
 			if(this.$u.test.isEmpty(this.model.roomCode)){
+				this.model.roomCode = 0
 				return this.$mytip.toast('请输入房间号')
 			}
 			if(this.$u.test.isEmpty(this.model.roomArea)){
-				return this.$mytip.toast('请输入房屋面积')
+				this.model.houseArea = 0
+				//return this.$mytip.toast('请输入房屋面积')
 			}
 			// if(this.$u.test.isEmpty(this.model.direction)){
 			// 	return this.$mytip.toast('请输入朝向')
@@ -201,25 +214,28 @@ export default {
 			if(this.$u.test.isEmpty(this.model.price)){
 				return this.$mytip.toast('请输入租金')
 			}
-			let files = [];
-			// 通过filter，筛选出上传进度为100的文件(因为某些上传失败的文件，进度值不为100，这个是可选的操作)
-			files = this.$refs.uUpload.lists.filter(val => {
-				return val.progress == 100;
-			})
-			if(this.$u.test.isEmpty(files)){
-				return this.$mytip.toast('请至少选择一张房源图片')
-			}
-			let imageList = files.map(val => {
-				return {
-					imageName: val.response.realName,
-					imagePath: val.response.fileName,
-					imgUrl: val.response.url, 
-					imageSize: val.file.size
-				}
-			})
-			this.model.imageList = imageList
+			// let files = [];
+			// // 通过filter，筛选出上传进度为100的文件(因为某些上传失败的文件，进度值不为100，这个是可选的操作)
+			// files = this.$refs.uUpload.lists.filter(val => {
+			// 	return val.progress == 100;
+			// })
+			// if(this.$u.test.isEmpty(files)){
+			// 	return this.$mytip.toast('请至少选择一张房源图片')
+			// }
+			// let imageList = files.map(val => {
+			// 	return {
+			// 		imageName: val.response.realName,
+			// 		imagePath: val.response.fileName,
+			// 		imgUrl: val.response.url, 
+			// 		imageSize: val.file.size
+			// 	}
+			// })
+			// this.model.imageList = imageList
 			if(this.$u.test.isEmpty(this.model.featureList)){
-				return this.$mytip.toast('请至少选择一个房源亮点')
+				let featureList = [{feature: "看房方便"}]
+				this.model.featureList = featureList
+				// console.log(this.model.featureList)
+				 // return this.$mytip.toast('请至少选择一个房源亮点')
 			}
 			
 			let url = this.$u.http.config.static_urls.addHouse
@@ -282,7 +298,87 @@ export default {
 		changeDate(e){
 			this.model.startDate = e.result
 			this.dateLabel = e.result
-		}
+		},
+		// 选择图片
+		chooseImage() {
+		  uni.chooseImage({
+		    count: 1,
+		    sizeType: ['compressed'],
+		    sourceType: ['album', 'camera'],
+		    success: (res) => {
+		      this.uploadImage(res.tempFilePaths[0])
+		    }
+		  })
+		},
+		// 上传图片
+		uploadImage(filePath) {
+		  uni.showLoading({
+		    title: '上传中...'
+		  })
+		  let lifeData = uni.getStorageSync('lifeData');
+		  let loginUser = lifeData.vuex_user
+		  uni.uploadFile({
+		    url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.uploadInfoImage,
+		    filePath: filePath,
+		    name: 'file',
+		    header: {
+		      'Authorization': 'Bearer ' + uni.getStorageSync('token'),
+			  'X-Access-Token': lifeData.vuex_token,
+			  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
+		    },
+		    success: (uploadRes) => {
+		      const result = JSON.parse(uploadRes.data)
+			  //console.log(result)
+			  if (this.$u.http.config.static_urls.server === 'source-vue') {
+				  if (result.code === 200) {
+					if (this.faceUrl.length == 0) {
+						this.faceUrl = result.message
+					} else {
+						this.faceUrl += "," + result.message
+					}
+					this.model.faceUrl = this.faceUrl
+					this.trueFaceUrl.push(config.baseUrl + config.web_prefix + result.url)
+					this.$u.toast('图片上传成功')
+					console.log(this.trueFaceUrl)
+				  } else {
+					this.$u.toast(result.msg || '图片上传失败')
+				  }
+			  }
+			  if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+				  console.log(result)
+				  if (result.success) {
+						if (this.faceUrl.length == 0) {
+							this.faceUrl = result.message
+						} else {
+							this.faceUrl += "," + result.message
+						}
+						this.model.faceUrl = this.faceUrl
+				  				
+						const token = uni.getStorageSync('lifeData').vuex_token;
+						this.trueFaceUrl.push(config.baseUrl + config.web_prefix + "/" + result.message + '?token=' + token)
+						this.$u.toast('图片上传成功')
+						console.log(this.model.faceUrl, this.trueFaceUrl)
+				  } else {
+						this.$u.toast(result.msg || '图片上传失败')
+				  }
+			  }
+		    },
+		    fail: (err) => {
+		      console.error(err)
+		      this.$u.toast('图片上传失败')
+		    },
+		    complete: () => {
+		      uni.hideLoading()
+		    }
+		  })
+		},
+		// 删除图片
+		deleteImage(index) {
+		  this.trueFaceUrl.splice(index, 1);
+		  if (this.trueFaceUrl.length === 0) {
+		    this.faceUrl = '';
+		  }
+		},
 	}
 };
 </script>
@@ -342,4 +438,101 @@ export default {
 	margin: 0 -200rpx 0 -200rpx;
 	background-color: rgb(235, 236, 238);
 }
+
+.upload-box {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10rpx;
+}
+
+.preview-box {
+  position: relative;
+  width: 160rpx;
+  height: 160rpx;
+  margin: 10rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.delete-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 4rpx;
+  border-radius: 0 0 0 8rpx;
+}
+
+.upload-btn {
+  width: 160rpx;
+  height: 160rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f5f6;
+  border-radius: 8rpx;
+  margin: 10rpx;
+}
+
+.upload-text {
+  font-size: 20rpx;
+  color: #c0c4cc;
+  margin-top: 6rpx;
+}
 </style>
+.upload-box {
+  padding: 20rpx;
+}
+
+.image-container {
+  position: relative;
+  width: 160rpx;
+  height: 160rpx;
+  margin: 10rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.delete-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 4rpx;
+  border-radius: 0 0 0 8rpx;
+}
+
+.hover-effect {
+  opacity: 0.8;
+}
+
+.upload-btn {
+  width: 160rpx;
+  height: 160rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f5f6;
+  border-radius: 8rpx;
+  margin: 10rpx;
+}
+
+.upload-text {
+  font-size: 24rpx;
+  color: #c0c4cc;
+  margin-top: 10rpx;
+}
