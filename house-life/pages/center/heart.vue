@@ -90,10 +90,10 @@
 							item.price = '面议'
 						}
 						if(!item.roomArea || item.roomArea == 0) {
-							item.roomArea = 'xx'
+							item.roomArea = ''
 						}
 						if(!item.houseArea || item.houseArea == 0) {
-							item.houseArea = 'xx'
+							item.houseArea = ''
 						}
 						if(item.faceUrl && !item.faceUrl.includes(config.staticUrl)){
 							if (this.$u.http.config.static_urls.server === 'source-vue') {

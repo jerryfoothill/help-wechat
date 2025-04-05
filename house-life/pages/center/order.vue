@@ -150,10 +150,10 @@
 							item.price = '面议'
 						}
 						if(!item.roomArea || item.roomArea == 0) {
-							item.roomArea = 'xx'
+							item.roomArea = ''
 						}
 						if(!item.houseArea || item.houseArea == 0) {
-							item.houseArea = 'xx'
+							item.houseArea = ''
 						}
 						if(item.faceUrl && !item.faceUrl.includes(config.staticUrl)){
 							item.image = config.staticUrl+config.web_prefix+item.faceUrl

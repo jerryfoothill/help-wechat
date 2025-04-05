@@ -22,11 +22,21 @@
 				<u-cell-item title="服务费另计" value="在线咨询"></u-cell-item>
 			</u-cell-group>		
 		</button> -->
-		<view v-if="room.introduce">
+		<view>
 			<u-gap height="10" bg-color="#f8f8f8"></u-gap>
 			<u-card title="房源介绍" :border="false" :head-border-bottom="false" padding="0" title-size="38">
-				<view class="u-padding-top-45 item" slot="body">
-					{{room.introduce}}
+				<view class="u-padding-top-45" slot="body">
+					<view class="u-flex" style="justify-content: space-between;">
+						<view class="item">
+							<view v-if="room.houseArea">房源面积：{{room.houseArea}} 平方米</view>
+							<view v-else-if="room.roomArea">房源面积：{{room.roomArea}} 平方米</view>
+							<view v-if="room.direction">房源朝向：{{room.direction}}</view>
+							<view v-if="room.decoration">装修情况：{{room.decoration}}</view>
+							<view v-if="room.startDate">起租时间：{{room.startDate}}</view>
+							<view v-if="room.payType">付款方式：{{room.payType}}</view>
+							<view v-if="room.introduce">房源介绍：{{room.introduce}}</view>
+						</view>
+					</view>
 				</view>
 			</u-card>
 		</view>
@@ -301,10 +311,10 @@
 						room.price = '面议'
 					}
 					if(!room.roomArea || room.roomArea == 0) {
-						room.roomArea = 'xx'
+						room.roomArea = ''
 					}
 					if(!room.houseArea || room.houseArea == 0) {
-						room.houseArea = 'xx'
+						room.houseArea = ''
 					}
 					if(room.type == 0){
 						room.type = '整租'

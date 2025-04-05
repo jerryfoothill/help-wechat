@@ -50,7 +50,7 @@
 			                         @click="clickImage(item.id)"></u-lazy-load>
 			            <view class="item-title">{{item.villageName}} {{item.type == '整租' ? item.houseNum + item.houseHall + item.toiletNum : item.roomType}}</view>
 						<view class="item-price">¥{{item.price}}</view>
-			             <view class="item-desc">{{item.type}} | {{item.type == '整租' ? item.houseArea : item.roomArea}}㎡ | {{item.decoration}} </view>
+			             <view class="item-desc">{{item.type}} | {{item.type == '整租' ? item.houseArea : item.roomArea}} ㎡ | {{item.decoration}} </view>
 			        </view>
 			    </template>
 			    <template v-slot:right="{rightList}">
@@ -59,7 +59,7 @@
 			                         @click="clickImage(item.id)"></u-lazy-load>
 			            <view class="item-title">{{item.villageName}} {{item.type == '整租' ? item.houseNum + item.houseHall + item.toiletNum : item.roomType}}</view>
 			            <view class="item-price">¥{{item.price}}</view>
-						 <view class="item-desc">{{item.type}} | {{item.type == '整租' ? item.houseArea : item.roomArea}}㎡ | {{item.decoration}} </view>
+						 <view class="item-desc">{{item.type}} | {{item.type == '整租' ? item.houseArea : item.roomArea}} ㎡ | {{item.decoration}} </view>
 			        </view>
 			    </template>
 			</u-waterfall>
@@ -208,10 +208,10 @@
 						}
 						//console.log(item.roomArea, item.houseArea)
 						if(!item.roomArea || item.roomArea == 0) {
-							item.roomArea = 'xx'
+							item.roomArea = ''
 						}
 						if(!item.houseArea || item.houseArea == 0) {
-							item.houseArea = 'xx'
+							item.houseArea = ''
 						}
 						if(item.faceUrl && !item.faceUrl.includes(config.staticUrl)){
 							if (this.$u.http.config.static_urls.server === 'source-vue') {
