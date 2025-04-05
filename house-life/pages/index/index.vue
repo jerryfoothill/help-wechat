@@ -89,11 +89,11 @@
 				houseList: [],
 				swiperList: [
 					{
-						image: 'https://www.51mzp.com/web-api/profile/upload/swiper2.png',
+						image: 'https://www.51mzp.com/jeecgboot/swiper2.png'+ '?token=' +uni.getStorageSync('lifeData').vuex_token,
 					    title: '身无彩凤双飞翼，心有灵犀一点通'
 					},
 					{
-						image: 'https://www.51mzp.com/web-api/profile/upload/swiper.png',
+						image: 'https://www.51mzp.com/jeecgboot/swiper.png'+ '?token=' +uni.getStorageSync('lifeData').vuex_token,
 					    title: '身无彩凤双飞翼，心有灵犀一点通'
 					},
                 ],

@@ -53,13 +53,26 @@
 		data() {
 			return {
 				empty:'/static/empty/default.png',
-				houseHistory:uni.getStorageSync('houseHistory').reverse()
+				houseHistory: ''
 			};
 		},
 		onLoad() {
-			
+			this.getHouseHistory()
 		},
 		methods: {
+			getHouseHistory() {
+				this.houseHistory =  uni.getStorageSync('houseHistory').reverse()
+				this.houseHistory.forEach(item=>{
+					if (item.faceUrl) {
+						console.log(item.faceUrl)
+						var arr = item.faceUrl.split(",");
+						const token = uni.getStorageSync('lifeData').vuex_token;
+						// item.faceUrl = config.staticUrl+config.web_prefix+"/" + arr[0] + '?token=' + token
+						item.faceUrl = arr[0] + '?token=' + token
+					}
+				})
+				//console.log(this.houseHistory)
+			},
 			clickImage(houseId) {
 				this.$u.route({
 					url: '/pages/detail/detail',

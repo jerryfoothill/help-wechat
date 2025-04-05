@@ -6,11 +6,9 @@
 		<u-toast ref="uToast" />
 		<view class="img-a">
 			<view class="t-b">
-				您好，
-				<br />
-				欢迎使用 职住无忧
-				<br />
-				点击下面图片登录，才能发布信息
+				点击下面登录按钮
+				<br /><br />
+				开始找房子、找工作、找朋友 ...				
 			</view>
 		</view>
 		<!-- <view class="login-view">
@@ -36,7 +34,7 @@
 				<view class="loginType">
 					<view class="item">
 						<view class="icon"><u-icon size="200" name="lock-fill" color="rgb(83,194,64)"></u-icon></view>
-						手机号快速登录
+						点我快速登录
 					</view>
 				</view>
 			</button>
@@ -46,7 +44,7 @@
 				并授权我们使用您的微信信息，用以监管信息的发布
 			</view>
 		</view>
-		<view class="buttom">
+		<!-- <view class="buttom">
 			<button @tap="wxLogin()" class="clearBtn">
 				<view class="loginType">
 					<view class="item">
@@ -55,12 +53,7 @@
 					</view>
 				</view>
 			</button>
-			<!-- <view class="hint">
-				登录代表同意
-				<text class="link">开源字节用户协议、隐私政策，</text>
-				并授权使用您的账号信息（如昵称、头像、收获地址）以便您统一管理
-			</view> -->
-		</view>
+		</view> -->
 		<!-- #endif -->
 	</view>
 </template>

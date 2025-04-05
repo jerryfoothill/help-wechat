@@ -92,7 +92,8 @@
         },
         methods: {
             findHouseList() {
-            	let url = "/api/houseApi/findHouseRoomList";
+            	// let url = "/api/houseApi/findHouseRoomList";
+				let url = this.$u.http.config.static_urls.findHouseRoomList
 				let defaultData = {
 					state:1,
 					// villageCity:uni.getStorageSync('lifeData').vuex_city,
@@ -104,7 +105,13 @@
             	this.$u.get(url, {...defaultData,...this.searchData}).then(result => {
 					// console.log(this.searchData);
 					// console.log(result);
-					const data = result.rows;
+					let data = "";
+					if (this.$u.http.config.static_urls.server === 'source-vue') {
+						data = result.rows;
+					}
+					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+						data = result.result.records
+					}
             		if(this.pageNum>1 && data.length < this.pageSize){
             			return this.loadStatus = 'nomore';
             		}
@@ -121,11 +128,16 @@
 				if(!item.houseArea || item.houseArea == 0) {
 					item.houseArea = 'xx'
 				}
-            			if(!item.faceUrl.includes(config.staticUrl)){
+            			if(item.faceUrl && !item.faceUrl.includes(config.staticUrl)){
             				item.image = config.staticUrl+config.web_prefix+item.faceUrl
             			}else{
             				item.image = item.faceUrl
             			}
+						if (item.faceUrl && this.$u.http.config.static_urls.server === 'jeecgboot') {
+							var arr = item.faceUrl.split(",");
+							const token = uni.getStorageSync('lifeData').vuex_token;
+							item.image = config.staticUrl+config.web_prefix+"/" + arr[0] + '?token=' + token
+						}
             			if(item.type == 0){
             				item.type = '整租'
             			}else if(item.type == 1){
@@ -154,13 +166,21 @@
             	});
             },
 			findVillageList() {
-				let url = "/api/houseApi/findVillageList";
+				// let url = "/api/houseApi/findVillageList";
+				let url = this.$u.http.config.static_urls.findVillageList
 				this.$u.get(url,{
 					city:uni.getStorageSync('lifeData').vuex_city,
             		orderByColumn: 'name',
             		isAsc: 'desc'
             	}).then(result => {
-					const data = result.rows
+					// const data = result.rows
+					let data = ""
+					if (this.$u.http.config.static_urls.server === 'source-vue') {
+						data = result.rows
+					}
+					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+						data = result.result.records
+					}
 					for (let i = 0; i < data.length; i++) {
 					    // 先转成字符串再转成对象，避免数组对象引用导致数据混乱
 					    let item = data[i]

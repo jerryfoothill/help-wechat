@@ -267,9 +267,14 @@
 					}
 				});
 			},
+			// goHome(){
+			// 	uni.reLaunch({
+			// 		url:'../index/index'
+			// 	})
+			// },
 			goHome(){
-				uni.reLaunch({
-					url:'../index/index'
+				uni.switchTab({
+					url: '/pages/index/index'
 				})
 			},
             clickItem() {
@@ -391,10 +396,14 @@
 
 					let imageUrl = ''
 					if(this.room.faceUrl && !this.room.faceUrl.includes(config.staticUrl)){
-						imageUrl = config.staticUrl+config.web_prefix+this.room.faceUrl
+						var arr = this.room.faceUrl.split(",");
+						imageUrl = config.staticUrl+config.web_prefix+"/" + arr[0]
+						// const token = uni.getStorageSync('lifeData').vuex_token;
+						// imageUrl = config.staticUrl+config.web_prefix+"/" + arr[0] + '?token=' + token
 					}else{
 						imageUrl = this.room.faceUrl
 					}
+					//console.log(this.room.faceUrl, imageUrl)
 					this.room.faceUrl = imageUrl
 					// console.log(this.room.faceUrl, imageUrl)
 					this.$u.mpShare = {
@@ -425,6 +434,8 @@
 						newArr.push(houseHistory[index]);
 					})
 					uni.setStorageSync('houseHistory',newArr)
+					//console.log(houseHistory)
+					
 					
 					// 经纬度
 					this.longitude = room.longitude

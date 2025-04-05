@@ -178,9 +178,10 @@ export default {
 			  }
 			  
 			  if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+				  const token = uni.getStorageSync('lifeData').vuex_token;
 				  newList = res.data.result.records.map(item => ({
 				    ...item,
-				    trueInfoImage: item.infoImage ? config.baseUrl + config.web_prefix + "/" + item.infoImage : ''
+				    trueInfoImage: item.infoImage ? config.baseUrl + config.web_prefix + "/" + item.infoImage + '?token=' + token : ''
 				  }))
 			  }
 

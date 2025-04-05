@@ -99,9 +99,10 @@ export default {
 					}
 			    }
 				if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+					const token = uni.getStorageSync('lifeData').vuex_token;
 					this.info = {
 					  ...res.data.result,
-					  trueInfoImage: res.data.result.infoImage ? config.baseUrl + config.web_prefix + "/" + res.data.result.infoImage : ''
+					  trueInfoImage: res.data.result.infoImage ? config.baseUrl + config.web_prefix + "/" + res.data.result.infoImage + '?token=' + token : ''
 					}
 				}
           } else {

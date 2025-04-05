@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<!-- <u-navbar title="我的委托" :border-bottom="false" back-text="返回" :custom-back="goHome" ></u-navbar> -->
+		<u-navbar title="我的委托" :border-bottom="false" back-text="返回" :custom-back="goHome" ></u-navbar>
 		<view class="wrap">
 			<view class="u-tabs-box">
 				<u-tabs-swiper activeColor="#2979ff" ref="tabs" :list="list" :current="current" @change="change" :is-scroll="false" swiperWidth="750"></u-tabs-swiper>
@@ -96,6 +96,11 @@
 			this.getOrderList(3);
 		},
 		methods: {
+			goHome(){
+				uni.switchTab({
+					url: '/pages/index/index'
+				})
+			},
 			login(){
 				this.$u.route('/pages/login/login')
 			},
@@ -155,6 +160,13 @@
 						}else{
 							item.image = item.faceUrl
 						}
+						
+						if (item.faceUrl && this.$u.http.config.static_urls.server === 'jeecgboot') {
+							var arr = item.faceUrl.split(",");
+							const token = uni.getStorageSync('lifeData').vuex_token;
+							item.image = config.staticUrl+config.web_prefix+"/" + arr[0] + '?token=' + token
+						}
+						
 						if(item.type == 0){
 							item.type = '整租'
 						}else if(item.type == 1){

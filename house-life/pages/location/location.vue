@@ -37,20 +37,28 @@
 			}
 		},
 		onLoad() {
-			this.findLocation()
+			// this.findLocation()
 		},
+		
 		methods: {
+			goHome(){
+				uni.switchTab({
+					url: '/pages/index/index'
+				})
+			},
 			clickCity(item){
 				this.$u.vuex('vuex_city', item);
-				return uni.reLaunch({
-					url:'../index/index'
-				})
+				this.goHome()
+				// return uni.reLaunch({
+				// 	url:'../index/index'
+				// })
 			},
 			setLocation(){
 				this.$u.vuex('vuex_city', this.locationCity);
-				return uni.reLaunch({
-					url:'../index/index'
-				})
+				this.goHome()
+				// return uni.reLaunch({
+				// 	url:'../index/index'
+				// })
 			},
 			findLocation(){
 				let that = this

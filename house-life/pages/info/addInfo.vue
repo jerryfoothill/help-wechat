@@ -228,7 +228,8 @@ export default {
 			  //console.log(result.success)
 			  // if (result.success === 'true') {
 			  				this.model.infoImage = result.message
-			  				this.model.trueInfoImage = config.baseUrl + config.web_prefix + "/" + result.message
+							const token = uni.getStorageSync('lifeData').vuex_token;
+			  				this.model.trueInfoImage = config.baseUrl + config.web_prefix + "/" + result.message + '?token=' + token
 			  				this.$u.toast('图片上传成功')
 			  				console.log(this.model.trueInfoImage)
 			  // } else {

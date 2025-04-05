@@ -30,7 +30,7 @@
             "style" :                                                                                    
             {
 				//"navigationStyle": "custom" ,// 隐藏系统导航栏
-                "navigationBarTitleText": "密码登录",
+                "navigationBarTitleText": "登录",
                 "enablePullDownRefresh": false
             }
         }
@@ -251,7 +251,7 @@
             "path" : "pages/center/order",
             "style" :                                                                                    
             {
-				//"navigationStyle": "custom" ,// 隐藏系统导航栏
+				"navigationStyle": "custom" ,// 隐藏系统导航栏
                 "navigationBarTitleText": "我的委托",
                 "enablePullDownRefresh": false
             }

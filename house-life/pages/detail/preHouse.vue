@@ -127,7 +127,7 @@ export default {
 				villageName: [
 					{
 						required: true,
-						message: '请选择小区',
+						message: '请输入村庄',
 						trigger: ['change','blur'],
 					}
 				],

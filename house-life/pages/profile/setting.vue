@@ -31,13 +31,19 @@
 			profile(){
 				this.$u.route('/pages/profile/profile')
 			},
+			goHome(){
+				uni.switchTab({
+					url: '/pages/index/index'
+				})
+			},
 			logout() {
 				// 登录成功修改token与用户信息
 				this.$u.vuex('vuex_token', '');
 				this.$u.vuex('vuex_user', {});
-				return uni.reLaunch({
-					url:'../index/index'
-				})
+				this.goHome()
+				// return uni.reLaunch({
+				// 	url:'../index/index'
+				// })
 			},
 			changePassword(){
 				this.$u.route('/pages/profile/password')
