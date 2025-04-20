@@ -35,6 +35,24 @@
             }
         }
 		,{
+		    "path" : "pages/profile/privacy",
+		    "style" :                                                                                    
+		    {
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
+		        "navigationBarTitleText": "隐私政策",
+		        "enablePullDownRefresh": false
+		    }
+		}
+		,{
+		    "path" : "pages/profile/agreement",
+		    "style" :                                                                                    
+		    {
+				//"navigationStyle": "custom" ,// 隐藏系统导航栏
+		        "navigationBarTitleText": "使用协议",
+		        "enablePullDownRefresh": false
+		    }
+		}
+		,{
 		    "path" : "pages/login/code",
 		    "style" :                                                                                    
 		    {

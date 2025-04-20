@@ -1,6 +1,7 @@
 <template>
 	<view>
 		<!-- <u-navbar :is-back="false" title="我的" :border-bottom="false"></u-navbar> -->
+		<u-toast ref="uToast" />
 		<view class="u-flex user-box u-p-l-30 u-p-r-20 u-p-t-30 u-p-b-30">
 			<view class="u-flex" @click="profile" v-if="vuex_user.user.userName">
 				<view class="u-m-r-20">
@@ -10,31 +11,23 @@
 					<view class="u-font-18 u-p-b-20">{{vuex_user.user.nickName}}</view>
 					<view class="u-font-14 u-tips-color">昵称:{{vuex_user.user.nickName}}</view>
 				</view>
-				
 			</view>
 			<view class="buttom" v-else>
-				<button open-type="getPhoneNumber" @getphonenumber="weChatLogin" class="clearBtn">
+				<button :open-type="isChecked ? 'getPhoneNumber' : ''" @getphonenumber="weChatLogin" @tap="handleLoginClick" class="clearBtn">
 					<view class="loginType">
 						<view class="item">
 							<view class="icon"><u-icon size="100" name="lock-fill" color="rgb(83,194,64)"></u-icon></view>
 							点击登录
 						</view>
+						<view class="agreement-check">
+							<checkbox :checked="isChecked" @tap="toggleCheckbox" style="transform:scale(0.7)"/>
+							<text class="agreement-text">我已阅读并同意</text>
+							<text class="agreement-link" @tap="openAgreement('user')">《使用协议》</text>
+							<text class="agreement-text">和</text>
+							<text class="agreement-link" @tap="openAgreement('privacy')">《隐私政策》</text>
+						</view>
 					</view>
 				</button>
-				<!-- <button @tap="wxLogin()" class="clearBtn">
-					<view class="loginType">
-						<view class="item">
-							<view class="icon"><u-icon size="100" name="weixin-fill" color="rgb(83,194,64)"></u-icon></view>
-							<view>微信登录</view>
-						</view>
-						
-					</view>
-				</button> -->
-				<!-- <view class="hint">
-					登录代表同意
-					<text class="link">开源字节用户协议、隐私政策，</text>
-					并授权使用您的账号信息（如昵称、头像、收获地址）以便您统一管理
-				</view> -->
 			</view>
 		</view>
 		
@@ -79,6 +72,8 @@
 	export default {
 		data() {
 			return {
+				show: true,
+				isChecked: false,
 				//avatar:uni.getStorageSync('lifeData').vuex_user.user.avatar.includes(config.staticUrl)?uni.getStorageSync('lifeData').vuex_user.user.avatar:config.staticUrl+uni.getStorageSync('lifeData').vuex_user.user.avatar,
 				show:true,
 				navList:[
@@ -172,7 +167,30 @@
 			updateAvatar(){
 				this.avatar = uni.getStorageSync('lifeData').vuex_user.user.avatar.includes(config.staticUrl)?uni.getStorageSync('lifeData').vuex_user.user.avatar:config.staticUrl+uni.getStorageSync('lifeData').vuex_user.user.avatar
 			},
+			toggleCheckbox() {
+				this.isChecked = !this.isChecked;
+			},
+			openAgreement(type) {
+				if(type === 'user') {
+					this.$u.route('/pages/profile/agreement');
+				} else if(type === 'privacy') {
+					this.$u.route('/pages/profile/privacy');
+				}
+			},
+			handleLoginClick() {
+				if (!this.isChecked) {
+					this.$refs.uToast.show({
+						title: '请先阅读并同意使用协议和隐私政策',
+						type: 'warning',
+						duration: 5000
+					});
+				}
+			},
 			weChatLogin(e){
+				if(!this.isChecked) {
+					this.$mytip.toast('请阅读并同意使用协议和隐私政策');
+					return;
+				}
 				let code= e.detail.code;
 				console.log("e: ", e)
 				if(code){
@@ -324,5 +342,31 @@
 .clearBtn::after{
 	position: unset !important;
 	border: unset;
+}
+
+.agreement-check {
+	margin-top: 20rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.agreement-text {
+	font-size: 24rpx;
+	color: #606266;
+}
+
+.agreement-link {
+	font-size: 24rpx;
+	color: #2979ff;
+}
+.loginType {
+  .item {
+    display: flex;
+    align-items: center;
+    .icon {
+      margin-right: 20rpx;
+    }
+  }
 }
 </style>

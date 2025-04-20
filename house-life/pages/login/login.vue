@@ -6,9 +6,11 @@
 		<u-toast ref="uToast" />
 		<view class="img-a">
 			<view class="t-b">
-				点击下面登录按钮
+				欢迎使用 51找找找
 				<br /><br />
-				开始找房子、找工作、找朋友 ...				
+				找房子、找工作、找朋友 ...	
+				<br /><br />
+				请点击下方按钮登录后再发布信息			
 			</view>
 		</view>
 		<!-- <view class="login-view">
@@ -30,7 +32,7 @@
 		
 		<!-- #ifdef MP-WEIXIN -->  
 		<view class="buttom">
-			<button open-type="getPhoneNumber" @getphonenumber="weChatLogin" class="clearBtn">
+			<button :open-type="isAgree ? 'getPhoneNumber' : ''" @getphonenumber="weChatLogin" @tap="handleLoginClick" class="clearBtn">
 				<view class="loginType">
 					<view class="item">
 						<view class="icon"><u-icon size="200" name="lock-fill" color="rgb(83,194,64)"></u-icon></view>
@@ -38,10 +40,14 @@
 					</view>
 				</view>
 			</button>
-			<view class="hint">
-				登录代表您同意
-				<text class="link">我们的用户协议、隐私政策，</text>
-				并授权我们使用您的微信信息，用以监管信息的发布
+			<view class="agreement-check">
+				<checkbox-group @change="checkboxChange">
+					<checkbox :checked="isAgree" style="transform:scale(0.7)" />
+				</checkbox-group>
+				<text class="agreement-text">我已阅读并同意</text>
+				<text class="agreement-link" @tap="goToAgreement">《使用协议》</text>
+				<text class="agreement-text">和</text>
+				<text class="agreement-link" @tap="goToPrivacy">《隐私政策》</text>
 			</view>
 		</view>
 		<!-- <view class="buttom">
@@ -67,6 +73,7 @@ export default {
 			// password: '',
 			username: '18720989281',
 			password: '123456',
+			isAgree: false,
 		}
 	},
 	// onLoad() {
@@ -94,6 +101,15 @@ export default {
 	// 	}
 	// },
 	methods: {
+		handleLoginClick() {
+			if (!this.isAgree) {
+				this.$refs.uToast.show({
+					title: '请先阅读并同意使用协议和隐私政策',
+					type: 'warning',
+					duration: 5000
+				});
+			}
+		},
 		login() {
 			if(!this.$u.test.mobile(this.username)){
 				return this.$refs.uToast.show({
@@ -122,6 +138,13 @@ export default {
 			});
 		},
 		weChatLogin(e){
+			if (!this.isAgree) {
+				this.$refs.uToast.show({
+					title: '请先阅读并同意使用协议和隐私政策',
+					type: 'warning'
+				});
+				return;
+			}
 			let code= e.detail.code;
 			console.log("e: ", e)
 			if(code){
@@ -236,6 +259,19 @@ export default {
 			this.$u.route({
 				url: 'pages/login/account'
 			})
+		},
+		checkboxChange(e) {
+			this.isAgree = !this.isAgree;
+		},
+		goToAgreement() {
+			uni.navigateTo({
+				url: '/pages/profile/agreement'
+			});
+		},
+		goToPrivacy() {
+			uni.navigateTo({
+				url: '/pages/profile/privacy'
+			});
 		}
 	}
 };
@@ -396,15 +432,36 @@ page {
 		}
 	}
 	
-	.hint {
-		position: absolute;
-		bottom: 0;
-		padding: 20rpx 40rpx;
-		font-size: 20rpx;
+	.agreement-check {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 10rpx 20rpx;
+		font-size: 24rpx;
 		color: $u-tips-color;
+		line-height: 1.2;
 		
-		.link {
+		checkbox-group {
+			display: flex;
+			align-items: center;
+			margin-right: 2rpx;
+		}
+		
+		checkbox {
+			transform: scale(0.7);
+			margin: 0;
+		}
+		
+		.agreement-text {
+			color: $u-tips-color;
+			margin: 0 2rpx;
+			line-height: 1.2;
+		}
+		
+		.agreement-link {
 			color: #2979ff;
+			line-height: 1.2;
+			cursor: pointer;
 		}
 	}
 }
