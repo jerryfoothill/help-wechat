@@ -50,7 +50,9 @@
 			                         @click="clickImage(item.id)"></u-lazy-load>
 			            <view class="item-title">{{item.villageName}} {{item.type == '整租' ? item.houseNum + item.houseHall + item.toiletNum : item.roomType}}</view>
 						<view class="item-price">¥{{item.price}}</view>
-			             <view class="item-desc">{{item.type}} | {{item.type == '整租' ? item.houseArea : item.roomArea}} ㎡ | {{item.decoration}} </view>
+			             <view class="item-desc" v-if="item.type == '整租' && item.houseArea ">{{item.houseArea}} 平方 </view>
+			             <view class="item-desc" v-else-if="item.roomArea">{{item.roomArea}} 平方 </view>
+			             <view class="item-desc" v-if="item.decoration">{{item.decoration}} </view>
 			        </view>
 			    </template>
 			    <template v-slot:right="{rightList}">
@@ -59,7 +61,9 @@
 			                         @click="clickImage(item.id)"></u-lazy-load>
 			            <view class="item-title">{{item.villageName}} {{item.type == '整租' ? item.houseNum + item.houseHall + item.toiletNum : item.roomType}}</view>
 			            <view class="item-price">¥{{item.price}}</view>
-						 <view class="item-desc">{{item.type}} | {{item.type == '整租' ? item.houseArea : item.roomArea}} ㎡ | {{item.decoration}} </view>
+						 <view class="item-desc" v-if="item.type == '整租' && item.houseArea ">{{item.houseArea}} 平方 </view>
+						 <view class="item-desc" v-else-if="item.roomArea">{{item.roomArea}} 平方 </view>
+						 <view class="item-desc" v-if="item.decoration">{{item.decoration}} </view>
 			        </view>
 			    </template>
 			</u-waterfall>
@@ -84,7 +88,7 @@
 			return {
 				keyword: '',
 				pageNum: 1,
-				pageSize: 20,
+				pageSize: 10,
 				scrollTop: 0,
 				houseList: [],
 				swiperList: [
@@ -183,7 +187,7 @@
 				this.$u.get(url, {
 					state:1,
 					// villageCity:uni.getStorageSync('lifeData').vuex_city,
-					pageNum: this.pageNum,
+					pageNo: this.pageNum,
 					pageSize: this.pageSize,
 					orderByColumn: 'update_time,create_time',
 					isAsc: 'desc'
@@ -195,9 +199,6 @@
 					}
 					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
 						data = result.result.records
-					}
-					if(this.pageNum>1 && data.length < this.pageSize){
-						return this.loadStatus = 'nomore';
 					}
 					this.houseList = data;
 					for (let i = 0; i < this.houseList.length; i++) {
@@ -250,6 +251,9 @@
 					}
 					++ this.pageNum 
 					this.loadStatus = 'loadmore';
+					if(this.houseList.length < this.pageSize){
+						return this.loadStatus = 'nomore';
+					}
 				});
 			},
 			clickSearch() {

@@ -306,7 +306,7 @@
 					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
 						room = result.result
 					}
-					console.log(room)
+					//console.log(room)
 					if(room.price == 0) {
 						room.price = '面议'
 					}

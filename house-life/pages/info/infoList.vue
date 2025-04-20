@@ -21,10 +21,13 @@
           <image v-if="item.infoImage" :src="item.trueInfoImage" mode="widthFix" class="info-image"></image>
           <view class="title">{{ item.title }}</view>
           <view class="type">{{ getTypeLabel(item.infoType) }}</view>
-          <view class="details">
-            {{ item.location }} | {{ item.infoDate }}
+          <view class="details" v-if="item.location">
+            {{ item.location }}
           </view>
-          <view class="content">{{ item.content }}</view>
+          <view class="details" v-if="item.infoDate">
+             {{ item.infoDate }}
+          </view>
+          <view class="content" v-if="item.content">{{ item.content }}</view>
         </view>
       </view>
       <view class="waterfall-column">
@@ -32,10 +35,13 @@
           <image v-if="item.infoImage" :src="item.trueInfoImage" mode="widthFix" class="info-image"></image>
           <view class="title">{{ item.title }}</view>
           <view class="type">{{ getTypeLabel(item.infoType) }}</view>
-          <view class="details">
-            {{ item.location }} | {{ item.infoDate }}
+          <view class="details" v-if="item.location">
+            {{ item.location }}
           </view>
-          <view class="content">{{ item.content }}</view>
+		  <view class="details" v-if="item.infoDate">
+		     {{ item.infoDate }}
+		  </view>
+          <view class="content" v-if="item.content">{{ item.content }}</view>
         </view>
       </view>
     </view>
@@ -157,7 +163,7 @@ export default {
         url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.info_list,
         method: 'GET',
         data: {
-          page: this.page,
+          pageNo: this.page,
           pageSize: this.pageSize,
           infoType: this.current === 0 ? '' : this.current.toString()
         },

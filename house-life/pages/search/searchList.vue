@@ -14,7 +14,9 @@
 		                           @click="clickImage(item.id)"></u-lazy-load>
 		               <view class="item-title">{{item.villageName}} {{item.type == '整租' ? item.houseNum + item.houseHall + item.toiletNum : item.roomType}}</view>
 		   			<view class="item-price">¥{{item.price}}</view>
-		               <view class="item-desc">{{item.type}} | {{item.type == '整租' ? item.houseArea : item.roomArea}}㎡ | {{item.decoration}} </view>
+		            <view class="item-desc" v-if="item.type == '整租' && item.houseArea ">{{item.houseArea}} 平方 </view>
+		            <view class="item-desc" v-else-if="item.roomArea">{{item.roomArea}} 平方 </view>
+		            <view class="item-desc" v-if="item.decoration">{{item.decoration}} </view>
 		           </view>
 		       </template>
 		       <template v-slot:right="{rightList}">
@@ -23,7 +25,9 @@
 		                           @click="clickImage(item.id)"></u-lazy-load>
 		               <view class="item-title">{{item.villageName}} {{item.type == '整租' ? item.houseNum + item.houseHall + item.toiletNum : item.roomType}}</view>
 		               <view class="item-price">¥{{item.price}}</view>
-		   			 <view class="item-desc">{{item.type}} | {{item.type == '整租' ? item.houseArea : item.roomArea}}㎡ | {{item.decoration}} </view>
+		   			 <view class="item-desc" v-if="item.type == '整租' && item.houseArea ">{{item.houseArea}} 平方 </view>
+		   			 <view class="item-desc" v-else-if="item.roomArea">{{item.roomArea}} 平方 </view>
+		   			 <view class="item-desc" v-if="item.decoration">{{item.decoration}} </view>
 		           </view>
 		       </template>
 		   </u-waterfall>
@@ -97,7 +101,7 @@
 				let defaultData = {
 					state:1,
 					// villageCity:uni.getStorageSync('lifeData').vuex_city,
-            		pageNum: this.pageNum,
+            		pageNo: this.pageNum,
             		pageSize: this.pageSize,
             		orderByColumn: 'update_time,create_time',
             		isAsc: 'desc'
@@ -112,21 +116,12 @@
 					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
 						data = result.result.records
 					}
-            		if(this.pageNum>1 && data.length < this.pageSize){
-            			return this.loadStatus = 'nomore';
-            		}
             		this.houseList = data;
             		for (let i = 0; i < this.houseList.length; i++) {
             		    // 先转成字符串再转成对象，避免数组对象引用导致数据混乱
             		    let item = this.houseList[i]
 				if(item.price == 0){
 					item.price = '面议'
-				}
-				if(!item.roomArea || item.roomArea == 0) {
-					item.roomArea = 'xx'
-				}
-				if(!item.houseArea || item.houseArea == 0) {
-					item.houseArea = 'xx'
 				}
             			if(item.faceUrl && !item.faceUrl.includes(config.staticUrl)){
             				item.image = config.staticUrl+config.web_prefix+item.faceUrl
@@ -163,6 +158,9 @@
             		}
             		++ this.pageNum 
             		this.loadStatus = 'loadmore';
+					if(this.houseList.length < this.pageSize){
+						return this.loadStatus = 'nomore';
+					}
             	});
             },
 			findVillageList() {
