@@ -1,7 +1,7 @@
 <template>
   <view class="container">
     <u-form >
-      <u-form-item label="信息类型" prop="infoType" 
+      <!-- <u-form-item label="信息类型" prop="infoType" 
       label-width="180" :label-position="labelPosition" left-icon="list" :leftIconStyle="{color:'#d5d5d5'}">
       <u-input
         v-model="typeLabel"
@@ -10,10 +10,21 @@
         placeholder="请选择信息类型"
         @click="typeShow = true"
       />
-    </u-form-item>
+    </u-form-item> -->
     
     <u-select v-model="typeShow" :list="typeList" @confirm="typeConfirm"></u-select>
 	</u-form>
+    
+    <scroll-view scroll-x class="type-list" show-scrollbar="false">
+      <view class="type-list-content">
+        <view v-for="(item, index) in typeList" :key="index" 
+          class="type-item" 
+          :class="{ active: current === parseInt(item.value) }" 
+          @click="typeConfirm([item])">
+          {{ item.label }}
+        </view>
+      </view>
+    </scroll-view>
     
     <view class="waterfall-container">
       <view class="waterfall-column">
@@ -259,47 +270,63 @@ export default {
   border-radius: 8rpx;
   padding: 10rpx 20rpx;
 }
-.waterfall-container {
-  display: flex;
-  justify-content: space-between;
+.type-list {
+  width: 100%;
+  white-space: nowrap;
+  margin-bottom: 20rpx;
 }
-.waterfall-column {
-  width: 48%;
+.type-list-content {
+  display: inline-flex;
+  padding: 20rpx;
+}
+.type-item {
+  display: inline-block;
+  padding: 10rpx 30rpx;
+  margin-right: 20rpx;
+  background-color: #f5f5f5;
+  border-radius: 30rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+.type-item.active {
+  background-color: #2979ff;
+  color: #ffffff;
 }
 .item {
   background-color: #ffffff;
-  border-radius: 8rpx;
+  border-radius: 15rpx;
   padding: 20rpx;
   margin-bottom: 20rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
 }
 .info-image {
   width: 100%;
-  border-radius: 8rpx;
-  margin-bottom: 10rpx;
+  border-radius: 12rpx;
+  margin-bottom: 15rpx;
 }
 .title {
-  font-size: 32rpx;
+  font-size: 30rpx;
   font-weight: bold;
+  margin-bottom: 10rpx;
 }
 .type {
   display: inline-block;
-  color: #ffffff;
-  background-color: #2979ff;
+  color: #2979ff;
+  background-color: rgba(41, 121, 255, 0.1);
   padding: 4rpx 12rpx;
-  border-radius: 4rpx;
+  border-radius: 6rpx;
   font-size: 24rpx;
-  margin-top: 10rpx;
 }
 .details {
   color: #999;
-  margin-top: 10rpx;
+  margin-top: 12rpx;
   font-size: 26rpx;
 }
 .content {
-  margin-top: 10rpx;
+  margin-top: 12rpx;
   color: #666;
   font-size: 28rpx;
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
@@ -315,5 +342,5 @@ export default {
   justify-content: center;
   padding: 0 30rpx;
 }
-</style> 
+</style>
  
