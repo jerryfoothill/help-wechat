@@ -76,19 +76,19 @@ export default {
       return this.typeMap[type] || '未知类型'
     },
     fetchInfoDetail(id) {
-		let lifeData = uni.getStorageSync('lifeData');
-		let loginUser = lifeData.vuex_user
+		// let lifeData = uni.getStorageSync('lifeData');
+		// let loginUser = lifeData.vuex_user
       uni.request({
         url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.info_findInfoById,
         method: 'GET',
         data: {
           id: id
         },
-        header: {
-          'Authorization': 'Bearer ' + uni.getStorageSync('token'),
-		  'X-Access-Token': lifeData.vuex_token,
-		  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
-        },
+    //     header: {
+    //       'Authorization': 'Bearer ' + uni.getStorageSync('token'),
+		  // 'X-Access-Token': lifeData.vuex_token,
+		  // 'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
+    //     },
         success: (res) => {
           if (res.statusCode === 200 && res.data.code === 200) {
 			  //console.log(res)

@@ -116,17 +116,22 @@ export default {
       this.fetchInfoList()
     },
     getInfoTypes() {
-		let lifeData = uni.getStorageSync('lifeData');
-		let loginUser = lifeData.vuex_user
-		//console.log(lifeData, loginUser, loginUser.user)
+		// let lifeData = uni.getStorageSync('lifeData');
+		// if (!lifeData || !lifeData.vuex_user) {
+		// 	uni.navigateTo({
+		// 		url: '/pages/login/login'
+		// 	});
+		// 	return;
+		// }
+		// let loginUser = lifeData.vuex_user;
       uni.request({
         url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.infoType_list,
         method: 'GET',
-        header: {
-          'Authorization': 'Bearer ' + uni.getStorageSync('token'),
-		  'X-Access-Token': lifeData.vuex_token,
-		  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
-        },
+    //     header: {
+    //       'Authorization': 'Bearer ' + uni.getStorageSync('token'),
+		  // 'X-Access-Token': lifeData.vuex_token,
+		  // 'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
+    //     },
         success: (res) => {
           if (res.statusCode === 200 && res.data.code === 200) {
 			  this.typeMap = {}
@@ -163,8 +168,8 @@ export default {
       if (this.loadStatus === 'loading' || this.loadStatus === 'nomore') return
 
       this.loadStatus = 'loading'
-	  let lifeData = uni.getStorageSync('lifeData');
-	  let loginUser = lifeData.vuex_user
+	  // let lifeData = uni.getStorageSync('lifeData');
+	  // let loginUser = lifeData.vuex_user
 	  //console.log(lifeData, loginUser, loginUser.user)
 	  // let header_token = {
 	  // 	  'X-Access-Token': lifeData.vuex_token,
@@ -178,11 +183,11 @@ export default {
           pageSize: this.pageSize,
           infoType: this.current === 0 ? '' : this.current.toString()
         },
-        header: {
-          'Authorization': 'Bearer ' + uni.getStorageSync('token'),
-		  'X-Access-Token': lifeData.vuex_token,
-		  'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
-        },
+    //     header: {
+    //       'Authorization': 'Bearer ' + uni.getStorageSync('token'),
+		  // 'X-Access-Token': lifeData.vuex_token,
+		  // 'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
+    //     },
         success: (res) => {
 			//console.log(res)
           if (res.statusCode === 200 && res.data.code === 200) {
