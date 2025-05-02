@@ -43,30 +43,36 @@
 				bg-color="#fff" :duration="5000" border-radius="15"></u-notice-bar>
 			</view>
 			<u-gap height="5"></u-gap>
-			<u-waterfall v-model="flowList" ref="uWaterfall">
-			    <template v-slot:left="{leftList}">
-			        <view class="demo-warter" v-for="(item, index) in leftList" :key="index">
-			            <u-lazy-load threshold="750" border-radius="12" :image="item.image" :index="index"
-			                         @click="clickImage(item.id)"></u-lazy-load>
-			            <view class="item-title">{{item.villageName}} {{item.type == '整租' ? item.houseNum + item.houseHall + item.toiletNum : item.roomType}}</view>
-						<view class="item-price">¥{{item.price}}</view>
-			             <view class="item-desc" v-if="item.type == '整租' && item.houseArea ">{{item.houseArea}} 平方 </view>
-			             <view class="item-desc" v-else-if="item.roomArea">{{item.roomArea}} 平方 </view>
-			             <view class="item-desc" v-if="item.decoration">{{item.decoration}} </view>
-			        </view>
-			    </template>
-			    <template v-slot:right="{rightList}">
-			        <view class="demo-warter" v-for="(item, index) in rightList" :key="index">
-			            <u-lazy-load threshold="750" border-radius="10" :image="item.image" :index="index"
-			                         @click="clickImage(item.id)"></u-lazy-load>
-			            <view class="item-title">{{item.villageName}} {{item.type == '整租' ? item.houseNum + item.houseHall + item.toiletNum : item.roomType}}</view>
-			            <view class="item-price">¥{{item.price}}</view>
-						 <view class="item-desc" v-if="item.type == '整租' && item.houseArea ">{{item.houseArea}} 平方 </view>
-						 <view class="item-desc" v-else-if="item.roomArea">{{item.roomArea}} 平方 </view>
-						 <view class="item-desc" v-if="item.decoration">{{item.decoration}} </view>
-			        </view>
-			    </template>
-			</u-waterfall>
+			<scroll-view scroll-x class="type-list" show-scrollbar="false">
+				<view class="type-list-content">
+					<view v-for="(item, index) in typeList" :key="index" 
+						class="type-item" 
+						:class="{ active: current === item.value }" 
+						@click="switchType(item.value)">
+						{{ item.label }}
+					</view>
+				</view>
+			</scroll-view>
+			<view class="single-column">
+			    <view class="demo-warter" v-for="(item, index) in flowList" :key="index">
+					
+			       <u-lazy-load v-if="item.image && item.image.length > 0" threshold="750" border-radius="12" :image="item.image" :index="index" @click="clickImage(item.id)"></u-lazy-load>
+			       <u-lazy-load v-else threshold="750" border-radius="12" :image="swiperList[1].image" :index="index" @click="clickImage(item.id)"></u-lazy-load>
+					<!-- <u-lazy-load threshold="750" border-radius="12" :image="item.image" :index="index" @click="clickImage(item.id)"></u-lazy-load> -->
+					<view class="item-title" v-if="current === 'house'">{{item.villageName}} {{item.type == '整租' ? item.houseNum + item.houseHall + item.toiletNum : item.roomType}}</view>
+			        <view class="item-title" v-else>{{item.title}}</view>
+					<view class="item-price" v-if="current === 'house'">¥{{item.price}}</view>
+					<view class="item-type" v-else>{{item.type}}</view>
+			         <view class="item-desc" v-if="current === 'house' && item.type == '整租' && item.houseArea">{{item.houseArea}} 平方</view>
+			         <view class="item-desc" v-else-if="current === 'house' && item.roomArea">{{item.roomArea}} 平方</view>
+			         <view class="item-desc" v-if="current === 'house' && item.decoration">{{item.decoration}}</view>
+			         <view class="item-desc" v-else-if="current != 'house' && item.location">{{item.location}}</view>
+			         <view class="item-desc" v-else-if="current != 'house' && item.infoDate">{{item.infoDate}}</view>
+			         <view class="item-content" v-if="current == 'house' && item.introduce">{{item.introduce}}</view>
+					 <view class="item-content" v-else-if="item.content">{{item.content}}</view>
+					 <!-- <view class="item-title" >电话: {{item.agentPhone}}</view> -->
+			    </view>
+			</view>
 		</view>
 		<u-loadmore bg-color="rgb(240, 240, 240)" :status="loadStatus" @loadmore="findHouseList" style="height: 80rpx;line-height: 80rpx;"></u-loadmore>
 		<u-back-top :scroll-top="scrollTop" top="1000"></u-back-top>
@@ -91,6 +97,16 @@
 				pageSize: 10,
 				scrollTop: 0,
 				houseList: [],
+				current: 'house',
+				typeList: [
+					{ value: 'house', label: '租房' },
+					{ value: 'info1', label: '店面厂房' },
+					{ value: 'info2', label: '出售信息' },
+					{ value: 'info3', label: '招工信息' },
+					{ value: 'info4', label: '其他信息' }
+				],
+				infoType: '',
+				infoList: [],
 				swiperList: [
 					{
 						image: 'https://www.51mzp.com/jeecgboot/swiper2.png'+ '?token=' +uni.getStorageSync('lifeData').vuex_token,
@@ -125,6 +141,8 @@
 			// 获取数据
 			this.findHouseList();
 			this.getNoticecList();
+			// 获取信息类型
+			this.getInfoTypes();
 			// 流量统计
 			// this.appSysFlowInfo();
 			uni.$on('findIndexHouseList', (obj) => {
@@ -142,12 +160,20 @@
 		onReachBottom() {
 		    this.loadStatus = 'loading';
 		    // 获取数据
-			this.findHouseList()
+			if (this.current === 'house') {
+				this.findHouseList();
+			} else {
+				this.findInfoList();
+			}
 		},
 		// 下拉刷新
 		onPullDownRefresh() {
 			// 获取数据
-			this.findHouseList(1);
+			if (this.current === 'house') {
+				this.findHouseList(1);
+			} else {
+				this.findInfoList(1);
+			}
 			// 关闭刷新
 			uni.stopPullDownRefresh();
 		},
@@ -177,8 +203,27 @@
 					url: 'pages/notice/notice'
 				})
 			},
+			switchType(type) {
+				this.current = type;
+				this.pageNum = 1;
+				this.flowList = [];
+				if (type === 'house') {
+					this.findHouseList();
+				} else {
+					if (type == 'info1'){
+						this.infoType = '8';
+					}else if (type == 'info2'){
+						this.infoType = '7';
+					}else if (type == 'info3'){
+						this.infoType = '4';
+					}else{
+						this.infoType = '';
+					}
+					this.findInfoList();
+				}
+			},
 			findHouseList(type = 0) {
-				if(type == 1){
+				if(type == 111){
 					this.pageNum = 1
 					this.flowList = []
 					this.$refs.uWaterfall.clear();
@@ -204,6 +249,7 @@
 					for (let i = 0; i < this.houseList.length; i++) {
 					    // 先转成字符串再转成对象，避免数组对象引用导致数据混乱
 					    let item = this.houseList[i]
+						// console.log(item)
 						if(item.price == 0){
 							item.price = '面议'
 						}
@@ -259,13 +305,22 @@
 			clickSearch() {
 			    this.$u.route('/pages/search/search');
 			},
-			clickImage(houseId) {
-				this.$u.route({
-					url: '/pages/detail/detail',
-					params: {
-						houseId: houseId
-					}
-				})
+			clickImage(id) {
+				if (this.current === 'house') {
+					this.$u.route({
+						url: '/pages/detail/detail',
+						params: {
+							houseId: id
+						}
+					})
+				} else {
+					this.$u.route({
+						url: '/pages/info/infoDetail',
+						params: {
+							id: id
+						}
+					})
+				}
 			},
 			clickNav(item){
 				//console.log("come to here", item.type)
@@ -351,6 +406,78 @@
 				  phoneNumber: "17721192050",
 				});
 			},
+			getInfoTypes() {
+			uni.request({
+				url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.infoType_list,
+				method: 'GET',
+				success: (res) => {
+					if (res.statusCode === 200 && res.data.code === 200) {
+						if (this.$u.http.config.static_urls.server === 'source-vue') {
+							this.infoTypeMap = {}
+							res.data.data.forEach(item => {
+								this.infoTypeMap[item.value] = item.label
+							})
+						}
+						if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+							this.infoTypeMap = {}
+							res.data.result.records.forEach((item) => {
+								this.infoTypeMap[item.value] = item.name
+							})
+						}
+					}
+				}
+			})
+		},
+			findInfoList(type = 0) {
+				if(type == 1){
+					this.pageNum = 1
+					this.flowList = []
+					this.$refs.uWaterfall.clear();
+				}
+				uni.request({
+					url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.info_list,
+					method: 'GET',
+					data: {
+						pageNo: this.pageNum,
+						pageSize: this.pageSize,
+						infoType: this.infoType
+					},
+					success: (res) => {
+						if (res.statusCode === 200 && res.data.code === 200) {
+							let newList = {}
+							if (this.$u.http.config.static_urls.server === 'source-vue') {
+								newList = res.data.rows.map(item => ({
+									...item,
+									image: item.infoImage ? config.baseUrl + config.web_prefix + item.infoImage : '',
+									villageName: item.title,
+									type: this.infoTypeMap[item.infoType] || '未知类型'
+								}))
+							}
+							if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+								const token = uni.getStorageSync('lifeData').vuex_token;
+								newList = res.data.result.records.map(item => ({
+									...item,
+									image: item.infoImage ? config.baseUrl + config.web_prefix + "/" + item.infoImage + '?token=' + token : '',
+									villageName: item.title,
+									type: this.infoTypeMap[item.infoType] || '未知类型'
+								}))
+							}
+							newList.forEach((item, index) => {
+								if (index % 2 === 0) {
+									this.flowList.push(item)
+								} else {
+									this.flowList.push(item)
+								}
+							})
+							++ this.pageNum
+							this.loadStatus = 'loadmore';
+							if(newList.length < this.pageSize){
+								return this.loadStatus = 'nomore';
+							}
+						}
+					}
+				})
+			},
 			getNoticecList(){
 				// TODO:
 				// let url = "/api/notice/findNoticeList";
@@ -397,6 +524,32 @@
 			background-color: $u-bg-color;
 		}
 	}
+
+	.type-list {
+		width: 100%;
+		white-space: nowrap;
+		margin-bottom: 20rpx;
+	}
+	
+	.type-list-content {
+		display: inline-flex;
+		padding: 20rpx;
+	}
+	
+	.type-item {
+		display: inline-block;
+		padding: 10rpx 30rpx;
+		margin-right: 20rpx;
+		background-color: #f5f5f5;
+		border-radius: 30rpx;
+		font-size: 28rpx;
+		color: #666;
+	}
+	
+	.type-item.active {
+		background-color: #2979ff;
+		color: #ffffff;
+	}
 	
 	.rowClass{
 		border-radius: 8px;
@@ -413,12 +566,17 @@
 		color: $u-main-color;
 	}
 	
+	.single-column {
+	    padding: 0 20rpx;
+	}
+
 	.demo-warter {
 	    border-radius: 8px;
-	    margin-top: 3px;
+	    margin-bottom: 20rpx;
 	    background-color: #ffffff;
-	    padding: 3px;
+	    padding: 20rpx;
 	    position: relative;
+	    width: 100%;
 	}
 	
 	.u-close {
@@ -452,6 +610,28 @@
 	    color: $u-tips-color;
 		padding-bottom: 5rpx;
 		padding-left: 10rpx;
+	}
+
+	.item-type {
+		display: inline-block;
+		color: #2979ff;
+		background-color: rgba(41, 121, 255, 0.1);
+		padding: 4rpx 12rpx;
+		border-radius: 6rpx;
+		font-size: 24rpx;
+		margin-top: 8rpx;
+	}
+
+	.item-content {
+		margin-top: 12rpx;
+		color: #666;
+		font-size: 28rpx;
+		line-height: 1.5;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	
 	.item-tag {
