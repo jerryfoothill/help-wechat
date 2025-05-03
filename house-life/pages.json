@@ -111,6 +111,7 @@
             "style" :                                                                                    
             {
                //"navigationStyle": "custom" ,// 隐藏系统导航栏
+		"navigationBarTitleText": "查询",
                 "enablePullDownRefresh": false
 				
             }

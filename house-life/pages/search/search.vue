@@ -1,7 +1,7 @@
 <template>
 	<view class="u-margin-left-20 u-margin-right-20">
 		<!-- <u-navbar :is-back="true" title="搜索" :border-bottom="false"></u-navbar> -->
-		<u-search placeholder="请输入小区" v-model="keyword"  @search="clickSearch(value)"
+		<u-search placeholder="请输入村镇名称" v-model="keyword"  @search="clickSearch(value)"
 		 :focus="true" action-text="取消" @custom="cancelSearch"></u-search>
 		<!-- 搜索记录 -->
 		<template v-if="historyList.length > 0">

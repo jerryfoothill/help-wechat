@@ -1,18 +1,14 @@
 <template>
-	<view class="u-p-l-10 u-p-r-10">
+	<view>
 		<u-navbar :is-back="false">
-			<view style="display: flex;justify-content: center;align-items: center;">
-				<view class="u-p-20"  @click="location">
-					{{vuex_city==''?'选择':vuex_city}}
-					<u-icon name="arrow-down-fill" class="u-p-l-10" color="#515356"></u-icon>
-				</view>
+			<view style="display: flex;justify-content: center;align-items: center;width: 100%;padding: 0;">
 				<!-- #ifdef MP-WEIXIN -->  
 				<u-search placeholder="我要找房" v-model="keyword" input-align="center"  :show-action="false" :clearabled="true"
-:disabled="true" style="width: 380rpx;" @click="search"></u-search>
+:disabled="true" style="width: 100%;margin: 0;padding: 0;" @click="search"></u-search>
 				<!-- #endif -->
 				<!-- #ifndef MP-WEIXIN --> 
 				<u-search placeholder="我要找房" v-model="keyword" input-align="center"  :show-action="false" :clearabled="true"
-				:disabled="true" style="width: 580rpx;" @click="search"></u-search>
+				:disabled="true" style="width: 100%;margin: 0;padding: 0;" @click="search"></u-search>
 				<!-- #endif -->
 			</view>
 		</u-navbar>
@@ -152,11 +148,11 @@
 		},
 		onLoad() {
 			// 检查是否已选择城市，如果未选择，跳转到选择城市页面
-			this.checkCity();
+			// this.checkCity();
 			this.findVillageList();
 			// 获取数据
 			this.findHouseList();
-			this.getNoticecList();
+			// this.getNoticecList();
 			// 获取信息类型
 			this.getInfoTypes();
 			// 流量统计
