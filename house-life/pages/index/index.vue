@@ -78,10 +78,22 @@
 		<u-back-top :scroll-top="scrollTop" top="1000"></u-back-top>
 		<u-no-network></u-no-network>
 		<view class="buttom">
-			<view class="loginType">
+			<!-- <view class="loginType">
 				<view class="wechat item">
 					<view class="icon"><u-icon size="60" name="server-man" color="#999" @click="server"></u-icon></view>
 				</view>
+			</view> -->
+			<view class="village-filter" v-if="current === 'house'">
+				<view class="filter-header" @click="toggleVillageList">
+					<text>选择村庄</text>
+					<u-icon :name="showVillageList ? 'arrow-up' : 'arrow-down'" size="24"></u-icon>
+				</view>
+				<scroll-view scroll-y class="village-list" v-if="showVillageList">
+					<view class="village-item" :class="{ active: selectedVillage === null }" @click="selectVillage(null)">全部</view>
+					<view v-for="(item, index) in selectList" :key="index" class="village-item" :class="{ active: selectedVillage === item.label }" @click="selectVillage(item.label)">
+						{{ item.label }}
+					</view>
+				</scroll-view>
 			</view>
 		</view>
 	</view>
@@ -92,6 +104,8 @@
 	export default {
 		data() {
 			return {
+				showVillageList: false,
+				selectedVillage: null,
 				keyword: '',
 				pageNum: 1,
 				pageSize: 10,
@@ -118,6 +132,7 @@
 					},
                 ],
 				noticeList: [],
+				selectList: [],
 				navList:[
 				   {name:"整租",src:"/static/img/index/cover_2022/index_cover1.png",type:"0"},
 				   {name:"合租",src:"/static/img/index/cover_2022/index_cover2.png",type:"1"},
@@ -138,6 +153,7 @@
 		onLoad() {
 			// 检查是否已选择城市，如果未选择，跳转到选择城市页面
 			this.checkCity();
+			this.findVillageList();
 			// 获取数据
 			this.findHouseList();
 			this.getNoticecList();
@@ -207,6 +223,8 @@
 				this.current = type;
 				this.pageNum = 1;
 				this.flowList = [];
+				this.selectedVillage = null;
+				this.showVillageList = false;
 				if (type === 'house') {
 					this.findHouseList();
 				} else {
@@ -222,11 +240,37 @@
 					this.findInfoList();
 				}
 			},
+			findVillageList() {
+				let url = this.$u.http.config.static_urls.findVillageList
+				this.$u.get(url,{
+						//city:uni.getStorageSync('lifeData').vuex_city,
+			    		orderByColumn: 'name',
+			    		isAsc: 'desc'
+			    	}).then(result => {
+						//console.log(result)
+						let data = ""
+					if (this.$u.http.config.static_urls.server === 'source-vue') {
+						data = result.rows
+					}
+					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
+						data = result.result.records
+					}
+					for (let i = 0; i < data.length; i++) {
+					    // 先转成字符串再转成对象，避免数组对象引用导致数据混乱
+					    let item = data[i]
+						this.selectList.push({
+							label: item.name,
+							value: item.id
+						})
+					}
+					// console.log(this.selectList)
+					return data
+				});
+			},
 			findHouseList(type = 0) {
-				if(type == 111){
+				if(type == 111 || type == 1){
 					this.pageNum = 1
 					this.flowList = []
-					this.$refs.uWaterfall.clear();
 				}
 				let url = this.$u.http.config.static_urls.findHouseRoomList
 				this.$u.get(url, {
@@ -235,7 +279,8 @@
 					pageNo: this.pageNum,
 					pageSize: this.pageSize,
 					orderByColumn: 'update_time,create_time',
-					isAsc: 'desc'
+					isAsc: 'desc',
+					villageName: this.selectedVillage
 				}).then(result => {
 					//console.log(result)
 					let data = "";
@@ -507,6 +552,14 @@
 					}
 				})
 			},
+		toggleVillageList() {
+				this.showVillageList = !this.showVillageList;
+			},
+			selectVillage(villageName) {
+				this.selectedVillage = villageName;
+				this.showVillageList = false;
+				this.findHouseList(1);
+			}
 		}
 	}
 </script>
@@ -657,5 +710,44 @@
 			-webkit-box-shadow: 0px 1px 20px 0px rgba(0,0,0,0.1),inset 0px -1px 0px 0px rgba(0,0,0,0.1);
 			box-shadow: 0px 1px 20px 0px rgba(0,0,0,0.1),inset 0px -1px 0px 0px rgba(0,0,0,0.1);
 		}
+	.village-filter {
+		position: fixed;
+		left: 20rpx;
+		bottom: 200rpx;
+		width: 200rpx;
+		background-color: #ffffff;
+		border-radius: 12rpx;
+		box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+		z-index: 999;
+		
+		.filter-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 20rpx;
+			border-bottom: 1rpx solid #eee;
+		}
+		
+		.village-list {
+			max-height: 400rpx;
+			overflow-y: auto;
+		}
+		
+		.village-item {
+			padding: 20rpx;
+			font-size: 28rpx;
+			color: #333;
+			border-bottom: 1rpx solid #eee;
+			
+			&:active {
+				background-color: #f5f5f5;
+			}
+			
+			&.active {
+				color: #2979ff;
+				background-color: #f5f5f5;
+			}
+		}
 	}
+}
 </style>
