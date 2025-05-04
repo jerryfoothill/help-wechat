@@ -489,7 +489,7 @@
 							if (this.$u.http.config.static_urls.server === 'source-vue') {
 								newList = res.data.rows.map(item => ({
 									...item,
-									image: item.infoImage ? config.baseUrl + config.web_prefix + item.infoImage : '',
+									image: item.infoImage ? config.baseUrl + config.web_prefix + item.infoImage.split(",")[0] : '',
 									villageName: item.title,
 									type: this.infoTypeMap[item.infoType] || '未知类型'
 								}))
@@ -498,7 +498,7 @@
 								const token = uni.getStorageSync('lifeData').vuex_token;
 								newList = res.data.result.records.map(item => ({
 									...item,
-									image: item.infoImage ? config.baseUrl + config.web_prefix + "/" + item.infoImage + '?token=' + token : '',
+									image: item.infoImage ? config.baseUrl + config.web_prefix + "/" + item.infoImage.split(",")[0] + '?token=' + token : '',
 									villageName: item.title,
 									type: this.infoTypeMap[item.infoType] || '未知类型'
 								}))

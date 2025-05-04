@@ -43,7 +43,7 @@
       </view>
       <view class="waterfall-column">
         <view v-for="(item, index) in rightList" :key="index" class="item" @click="goToDetail(item.id)">
-          <image v-if="item.infoImage" :src="item.trueInfoImage" mode="widthFix" class="info-image"></image>
+          <image v-if="item.infoImage" :src="item.trueInfoImage.split(',')[0]" mode="widthFix" class="info-image"></image>
           <view class="title">{{ item.title }}</view>
           <view class="type">{{ getTypeLabel(item.infoType) }}</view>
           <view class="details" v-if="item.location">
@@ -189,13 +189,13 @@ export default {
 		  // 'X-Tenant-Id': loginUser.user ? loginUser.user.tenantId : ""
     //     },
         success: (res) => {
-			//console.log(res)
+			// console.log(res)
           if (res.statusCode === 200 && res.data.code === 200) {
 			  let newList = {}
 			  if (this.$u.http.config.static_urls.server === 'source-vue') {
 					newList = res.data.rows.map(item => ({
 					  ...item,
-					  trueInfoImage: item.infoImage ? config.baseUrl + config.web_prefix + item.infoImage : ''
+					  trueInfoImage: item.infoImage ? item.infoImage.split(',').map(img => config.baseUrl + config.web_prefix + img).join(',') : ''
 					}))
 			  }
 			  
@@ -203,7 +203,7 @@ export default {
 				  const token = uni.getStorageSync('lifeData').vuex_token;
 				  newList = res.data.result.records.map(item => ({
 				    ...item,
-				    trueInfoImage: item.infoImage ? config.baseUrl + config.web_prefix + "/" + item.infoImage + '?token=' + token : ''
+					trueInfoImage: item.infoImage ? item.infoImage.split(',').map(img => config.baseUrl + config.web_prefix + img).join(',') : ''
 				  }))
 			  }
 

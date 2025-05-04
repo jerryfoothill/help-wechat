@@ -24,7 +24,14 @@
       
       <view class="section" v-if="info.trueInfoImage">
         <view class="section-title">图片</view>
-        <image :src="info.trueInfoImage" mode="widthFix" class="info-image"></image>
+        <view class="image-list">
+          <image v-for="(image, index) in info.trueInfoImage.split(',')" 
+                 :key="index" 
+                 :src="image" 
+                 mode="widthFix" 
+                 class="info-image"
+                 @click="previewImage(image, info.trueInfoImage.split(','))"></image>
+        </view>
       </view>
       
       <view class="section">
@@ -91,18 +98,18 @@ export default {
     //     },
         success: (res) => {
           if (res.statusCode === 200 && res.data.code === 200) {
-			  //console.log(res)
+			  // console.log(res)
 			    if (this.$u.http.config.static_urls.server === 'source-vue') {
 					this.info = {
 					  ...res.data.data,
-					  trueInfoImage: res.data.data.infoImage ? config.baseUrl + config.web_prefix + res.data.data.infoImage : ''
+					  trueInfoImage: res.data.data.infoImage ? res.data.data.infoImage.split(',').map(img => config.baseUrl + config.web_prefix + img).join(',') : ''
 					}
 			    }
 				if (this.$u.http.config.static_urls.server === 'jeecgboot') {
 					const token = uni.getStorageSync('lifeData').vuex_token;
 					this.info = {
 					  ...res.data.result,
-					  trueInfoImage: res.data.result.infoImage ? config.baseUrl + config.web_prefix + "/" + res.data.result.infoImage + '?token=' + token : ''
+					  trueInfoImage: res.data.result.infoImage ? res.data.result.infoImage.split(',').map(img => config.baseUrl + config.web_prefix + "/" + img + '?token=' + token).join(',') : ''
 					}
 				}
           } else {
@@ -125,6 +132,15 @@ export default {
           }
         })
       }
+    },
+    previewImage(current, urls) {
+      uni.previewImage({
+        current,
+        urls,
+        fail: () => {
+          this.$u.toast('预览图片失败')
+        }
+      })
     }
   }
 }
@@ -191,6 +207,11 @@ export default {
   color: #666;
   line-height: 1.6;
 }
+.image-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
 .info-image {
   width: 100%;
   border-radius: 8rpx;
@@ -225,4 +246,4 @@ export default {
   font-size: 28rpx;
   color: #333;
 }
-</style> 
+</style>
