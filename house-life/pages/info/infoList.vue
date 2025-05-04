@@ -38,7 +38,7 @@
           <view class="details" v-if="item.infoDate">
              {{ item.infoDate }}
           </view>
-          <view class="content" v-if="item.content">{{ item.content }}</view>
+          <view class="content" v-if="item.content">{{ item.content.split('&hc').join('\n') }}</view>
         </view>
       </view>
       <view class="waterfall-column">
@@ -52,7 +52,7 @@
 		  <view class="details" v-if="item.infoDate">
 		     {{ item.infoDate }}
 		  </view>
-          <view class="content" v-if="item.content">{{ item.content }}</view>
+          <view class="content" v-if="item.content">{{ item.content.split('&hc').join('\n') }}</view>
         </view>
       </view>
     </view>
@@ -337,6 +337,7 @@ export default {
   -webkit-line-clamp: 3;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: pre-wrap;
 }
 .add-btn {
   position: fixed;

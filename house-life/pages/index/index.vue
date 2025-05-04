@@ -65,7 +65,7 @@
 			         <view class="item-desc" v-else-if="current != 'house' && item.location">{{item.location}}</view>
 			         <view class="item-desc" v-else-if="current != 'house' && item.infoDate">{{item.infoDate}}</view>
 			         <view class="item-content" v-if="current == 'house' && item.introduce">{{item.introduce}}</view>
-					 <view class="item-content" v-else-if="item.content">{{item.content}}</view>
+					 <view class="item-content" v-else-if="item.content">{{item.content.split('&hc').join('\n')}}</view>
 					 <!-- <view class="item-title" >电话: {{item.agentPhone}}</view> -->
 			    </view>
 			</view>
@@ -681,6 +681,7 @@
 		-webkit-line-clamp: 3;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		white-space: pre-wrap;
 	}
 	
 	.item-tag {

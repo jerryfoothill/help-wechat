@@ -146,7 +146,7 @@ export default {
 				return;
 			}
 			let code= e.detail.code;
-			console.log("e: ", e)
+			// console.log("e: ", e)
 			if(code){
 				uni.showLoading({title:"登录中....",mask:true})
 				let url = "/" + config.web_prefix + "/sys/wechatPhoneLogin"
@@ -156,7 +156,7 @@ export default {
 					encryptedData: e.detail.encryptedData,
 					iv: e.detail.iv
 				}).then(res => {
-					console.log(res)
+					// console.log(res)
 					if (res.success) {					  
 						uni.hideLoading();
 						const { result } = res

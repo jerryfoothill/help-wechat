@@ -133,7 +133,7 @@ export default {
     getInfoTypes() {
 	  let lifeData = uni.getStorageSync('lifeData');
 	  let loginUser = lifeData.vuex_user
-	  console.log(lifeData, loginUser, loginUser.user)
+	  // console.log(lifeData, loginUser, loginUser.user)
       uni.request({
         url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.infoType_list,
         method: 'GET',
@@ -258,6 +258,8 @@ export default {
           if(!this.$u.test.mobile(this.model.contactPhone)){
             return this.$mytip.toast('请输入正确的手机号码')
           }
+	  this.model.content = this.model.content.split('\n').join('&hc')
+	  //console.log(this.model.content)
           let lifeData = uni.getStorageSync('lifeData');
           let loginUser = lifeData.vuex_user
           uni.request({

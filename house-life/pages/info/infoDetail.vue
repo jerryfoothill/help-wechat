@@ -11,7 +11,7 @@
           <text class="label">地点:</text>
           <text>{{ info.location }}</text>
         </view>
-        <view class="info-item">
+        <view class="info-item" v-if="info.infoDate">
           <text class="label">时间:</text>
           <text>{{ info.infoDate }}</text>
         </view>
@@ -112,6 +112,7 @@ export default {
 					  trueInfoImage: res.data.result.infoImage ? res.data.result.infoImage.split(',').map(img => config.baseUrl + config.web_prefix + "/" + img + '?token=' + token).join(',') : ''
 					}
 				}
+				this.info.content = this.info.content.split('&hc').join('\n')
           } else {
             this.$u.toast(res.data.msg || '获取详情失败')
           }
@@ -206,6 +207,7 @@ export default {
   font-size: 28rpx;
   color: #666;
   line-height: 1.6;
+  white-space: pre-wrap;
 }
 .image-list {
   display: flex;
