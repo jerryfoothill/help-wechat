@@ -167,7 +167,7 @@
 				// let url = "/api/houseApi/findVillageList";
 				let url = this.$u.http.config.static_urls.findVillageList
 				this.$u.get(url,{
-					city:uni.getStorageSync('lifeData').vuex_city,
+					// city:uni.getStorageSync('lifeData').vuex_city,
             		orderByColumn: 'name',
             		isAsc: 'desc'
             	}).then(result => {
@@ -179,6 +179,13 @@
 					if (this.$u.http.config.static_urls.server === 'jeecgboot') {
 						data = result.result.records
 					}
+					searchData[0].submenu = [
+												{
+													"name": "不限",
+													"value": ""
+												},
+											]
+					// console.log(searchData, data)
 					for (let i = 0; i < data.length; i++) {
 					    // 先转成字符串再转成对象，避免数组对象引用导致数据混乱
 					    let item = data[i]
@@ -187,6 +194,7 @@
 							value: item.name
 						})
 					}
+					// console.log(searchData)
 					this.filterData = searchData;
 				});
 			},
