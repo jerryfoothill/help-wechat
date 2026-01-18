@@ -90,6 +90,18 @@
 					</view>
 				</scroll-view>
 			</view>
+			<view class="town-filter" v-else>
+				<view class="filter-header" @click="toggleTownList">
+					<text>选择乡镇</text>
+					<u-icon :name="showTownList ? 'arrow-up' : 'arrow-down'" size="24"></u-icon>
+				</view>
+				<scroll-view scroll-y class="town-list" v-if="showTownList">
+					<view class="town-item" :class="{ active: selectedTown === null }" @click="selectTown(null)">全部</view>
+					<view v-for="(item, index) in selectTownList" :key="index" class="town-item" :class="{ active: selectedTown === item.label }" @click="selectTown(item.label)">
+						{{ item.label }}
+					</view>
+				</scroll-view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -101,6 +113,8 @@
 			return {
 				showVillageList: false,
 				selectedVillage: null,
+				showTownList: false,
+				selectedTown: null,
 				keyword: '',
 				pageNum: 1,
 				pageSize: 10,
@@ -128,6 +142,7 @@
                 ],
 				noticeList: [],
 				selectList: [],
+				selectTownList: [],
 				navList:[
 				   {name:"整租",src:"/static/img/index/cover_2022/index_cover1.png",type:"0"},
 				   {name:"合租",src:"/static/img/index/cover_2022/index_cover2.png",type:"1"},
@@ -148,6 +163,7 @@
 		onLoad() {
 			// 检查是否已选择城市，如果未选择，跳转到选择城市页面
 			// this.checkCity();
+			this.listTown();
 			this.findVillageList();
 			// 获取数据
 			this.findHouseList();
@@ -219,7 +235,9 @@
 				this.pageNum = 1;
 				this.flowList = [];
 				this.selectedVillage = null;
+				this.selectedTown = null;
 				this.showVillageList = false;
+				this.showTownList = false;
 				if (type === 'house') {
 					this.findHouseList();
 				} else {
@@ -234,6 +252,30 @@
 					}
 					this.findInfoList();
 				}
+			},
+			listTown() {
+				let url = this.$u.http.config.static_urls.listTown
+				this.$u.get(url,{
+						//city:uni.getStorageSync('lifeData').vuex_city,
+			    		orderByColumn: 'name',
+			    		isAsc: 'desc'
+			    	}).then(result => {
+						//console.log(result)
+						let data = ""
+
+						data = result.result.records
+
+					for (let i = 0; i < data.length; i++) {
+					    // 先转成字符串再转成对象，避免数组对象引用导致数据混乱
+					    let item = data[i]
+						this.selectTownList.push({
+							label: item.name,
+							value: item.id
+						})
+					}
+					// console.log(this.selectTownList)
+					return data
+				});
 			},
 			findVillageList() {
 				let url = this.$u.http.config.static_urls.findVillageList
@@ -472,7 +514,6 @@
 				if(type == 1){
 					this.pageNum = 1
 					this.flowList = []
-					this.$refs.uWaterfall.clear();
 				}
 				uni.request({
 					url: this.$u.http.config.baseUrl + this.$u.http.config.static_urls.info_list,
@@ -480,7 +521,8 @@
 					data: {
 						pageNo: this.pageNum,
 						pageSize: this.pageSize,
-						infoType: this.infoType
+						infoType: this.infoType,
+						town: this.selectedTown
 					},
 					success: (res) => {
 						if (res.statusCode === 200 && res.data.code === 200) {
@@ -554,6 +596,14 @@
 				this.selectedVillage = villageName;
 				this.showVillageList = false;
 				this.findHouseList(1);
+			},
+			toggleTownList() {
+				this.showTownList = !this.showTownList;
+			},
+			selectTown(townName) {
+				this.selectedTown = townName;
+				this.showTownList = false;
+				this.findInfoList(1);
 			}
 		}
 	}
@@ -730,6 +780,45 @@
 		}
 		
 		.village-item {
+			padding: 20rpx;
+			font-size: 28rpx;
+			color: #333;
+			border-bottom: 1rpx solid #eee;
+			
+			&:active {
+				background-color: #f5f5f5;
+			}
+			
+			&.active {
+				color: #2979ff;
+				background-color: #f5f5f5;
+			}
+		}
+	}
+	.town-filter {
+		position: fixed;
+		left: 20rpx;
+		bottom: 200rpx;
+		width: 200rpx;
+		background-color: #ffffff;
+		border-radius: 12rpx;
+		box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
+		z-index: 999;
+		
+		.filter-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 20rpx;
+			border-bottom: 1rpx solid #eee;
+		}
+		
+		.town-list {
+			max-height: 400rpx;
+			overflow-y: auto;
+		}
+		
+		.town-item {
 			padding: 20rpx;
 			font-size: 28rpx;
 			color: #333;

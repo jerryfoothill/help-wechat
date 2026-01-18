@@ -32,6 +32,9 @@
           <image v-if="item.infoImage" :src="item.trueInfoImage" mode="widthFix" class="info-image"></image>
           <view class="title">{{ item.title }}</view>
           <view class="type">{{ getTypeLabel(item.infoType) }}</view>
+		  <view class="details" v-if="item.town">
+		    {{ item.town }}
+		  </view>
           <view class="details" v-if="item.location">
             {{ item.location }}
           </view>

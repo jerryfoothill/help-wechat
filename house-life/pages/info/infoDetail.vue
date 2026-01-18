@@ -7,6 +7,10 @@
       </view>
       
       <view class="info-section">
+		  <view class="info-item"  v-if="info.town">
+		    <text class="label">乡镇:</text>
+		    <text>{{ info.town }}</text>
+		  </view>
         <view class="info-item">
           <text class="label">地点:</text>
           <text>{{ info.location }}</text>

@@ -13,7 +13,10 @@
 	  label-width="180" :label-position="labelPosition" left-icon="edit-pen" :leftIconStyle="{color:'#d5d5d5'}">
         <u-input v-model="model.title" placeholder="请输入标题" />
       </u-form-item>
-
+      <u-form-item label="乡镇" prop="town"
+	  label-width="180" :label-position="labelPosition" left-icon="map" :leftIconStyle="{color:'#d5d5d5'}">
+        <u-input v-model="model.town" placeholder="请输入乡镇" />
+      </u-form-item>
       <u-form-item label="地点" prop="location"
 	  label-width="180" :label-position="labelPosition" left-icon="map" :leftIconStyle="{color:'#d5d5d5'}">
         <u-input v-model="model.location" placeholder="请输入地点" />
@@ -102,6 +105,7 @@ export default {
       model: {
         infoType: '',
         title: '',
+		town: '',
         location: '',
         infoDate: '',
         contactName: '',
@@ -118,7 +122,7 @@ export default {
         location: [{ required: true, message: '请输入地点', trigger: ['change','blur'] }],
         contactName: [{ required: true, message: '请输入联系人姓名', trigger: ['change','blur'] }],
         contactPhone: [{ required: true, message: '请输入联系电话', trigger: ['change','blur'] }],
-        content: [{ required: true, message: '请输入详细内容', trigger: ['change','blur'] }],
+        // content: [{ required: true, message: '请输入详细内容', trigger: ['change','blur'] }],
       },
     }
   },

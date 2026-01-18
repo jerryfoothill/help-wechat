@@ -2,7 +2,6 @@
 // let baseUrl = 'http://192.168.3.110:8088';
 // let staticUrl = 'http://192.168.3.110:8088';
 
-
 // let baseUrl = 'https://www.51mzp.com';
 // let staticUrl = 'https://www.51mzp.com';
 // let web_prefix = "/web-api"
@@ -14,8 +13,8 @@ let vuex_version = '1.0.' + version;
 let flag_hot = false;
 
 //source-vue
-// let baseUrl = 'https://65d5c3a8.r19.cpolar.top';
-// let staticUrl = 'https://65d5c3a8.r19.cpolar.top';
+// let baseUrl = 'https://64d65c76.r32.cpolar.top';
+// let staticUrl = 'https://64d65c76.r32.cpolar.top';
 // let web_prefix = ""
 // let static_urls = {
 // 	server: "source-vue",
@@ -42,8 +41,10 @@ let flag_hot = false;
 
 
 //jeecgboot
-let baseUrl = 'http://192.168.3.102:8080/jeecg-boot';
-let staticUrl = 'http://192.168.3.102:8080/jeecg-boot';
+// let baseUrl = 'http://192.168.3.110:8080/jeecg-boot';
+// let staticUrl = 'http://192.168.3.110:8080/jeecg-boot';
+let baseUrl = 'https://www.51mzp.com/jeecgboot';
+let staticUrl = 'https://www.51mzp.com/jeecgboot';
 let web_prefix = ""
 let static_urls = {
 	server: "jeecgboot",
@@ -64,9 +65,10 @@ let static_urls = {
 	addHouseHeart: '/houseHeart/houseHeart/add',
 	updateHouseHeart: '/houseHeart/houseHeart/edit',
 	listHouseHeart: '/houseHeart/houseHeart/list',
-	findHouseHeartList: '/houseHeart/houseHeart/list',
+	findHouseHeartList: '/houseHeart/houseHeart/queryUserHeartHouses',
 	selectHouseHeart: '/houseHeart/houseHeart/list',
 	queryHouseHeartById: '/houseHeart/houseHeart/queryById',
+	listTown: '/town/town/list',
 }
 
 export default {
