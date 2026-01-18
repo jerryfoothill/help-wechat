@@ -50,11 +50,10 @@
 				</view>
 			</scroll-view>
 			<view class="single-column">
-			    <view class="demo-warter" v-for="(item, index) in flowList" :key="index">
+			    <view class="demo-warter" v-for="(item, index) in flowList" :key="index" @click="goToDetail(item.id)">
 					
-			       <u-lazy-load v-if="item.image && item.image.length > 0" threshold="750" border-radius="12" :image="item.image" :index="index" @click="clickImage(item.id)"></u-lazy-load>
-			       <u-lazy-load v-else threshold="750" border-radius="12" :image="swiperList[1].image" :index="index" @click="clickImage(item.id)"></u-lazy-load>
-					<!-- <u-lazy-load threshold="750" border-radius="12" :image="item.image" :index="index" @click="clickImage(item.id)"></u-lazy-load> -->
+			       <u-lazy-load v-if="item.image && item.image.length > 0" threshold="750" border-radius="12" :image="item.image" :index="index"></u-lazy-load>
+			       <u-lazy-load v-else threshold="750" border-radius="12" :image="swiperList[1].image" :index="index"></u-lazy-load>
 					<view class="item-title" v-if="current === 'house'">{{item.villageName}} {{item.type == '整租' ? item.houseNum + item.houseHall + item.toiletNum : item.roomType}}</view>
 			        <view class="item-title" v-else>{{item.title}}</view>
 					<view class="item-price" v-if="current === 'house'">¥{{item.price}}</view>
@@ -346,7 +345,7 @@
 			clickSearch() {
 			    this.$u.route('/pages/search/search');
 			},
-			clickImage(id) {
+			goToDetail(id) {
 				if (this.current === 'house') {
 					this.$u.route({
 						url: '/pages/detail/detail',

@@ -19,12 +19,9 @@
       
       <view class="section">
         <view class="section-title">详细内容</view>
-        <view class="section-content">{{ info.content }}</view>
-      </view>
-      
-      <view class="section" v-if="info.trueInfoImage">
-        <view class="section-title">图片</view>
-        <view class="image-list">
+        <view class="section-content" v-if="info.content">{{ info.content }}</view>
+
+        <view class="image-list" v-if="info.trueInfoImage">
           <image v-for="(image, index) in info.trueInfoImage.split(',')" 
                  :key="index" 
                  :src="image" 
@@ -72,6 +69,7 @@ export default {
         '5': '求职信息',
         '6': '求购信息',
         '7': '出售信息',
+		'8': '出租信息',
       }
     }
   },
